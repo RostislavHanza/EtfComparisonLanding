@@ -31,6 +31,7 @@
 ## Ověření a spolupráce
 
 - Před změnou zkontroluj stav Gitu a zachovej cizí úpravy. Necommituj, nenasazuj do produkce a nespouštěj kampaně bez výslovného zadání.
+- Pro všechny nové commity používej Conventional Commits v angličtině: `type(scope): description` (scope je volitelný), například `docs: update landing page plan`. Anglicky piš i případné tělo a patičky commit zprávy. Dosavadní commity kvůli tomuto pravidlu neměň.
 - Po implementaci spusť dostupný build a typecheck. Testy zaměř na důležité chování: formulář, serverovou validaci, souhlasy, duplicity, potvrzení adresy a chybové stavy.
 - Mobilní stránku ověř v prohlížeči a serverovou integraci skutečným testovacím požadavkem. Pouhé spuštění procesu nebo mock nepotvrzuje funkční doručení.
 - V reportu uveď změny, provedené kontroly a konkrétní neověřené části. Neoznačuj neprovedené testy ani produkční integraci za funkční.
