@@ -1,6 +1,22 @@
-# ETF přehled — druhé kolo vizuálních návrhů
+# ETF přehled — redakční srovnávač a vizuální návrhy
 
 Mobilní návrhy české landing page podle [plánu](docs/PLAN.md). React, Vite, TypeScript strict a Tailwind CSS. **Pouze frontend:** bez Supabase, backendu, ukládání adres, skutečných e-mailů a analytiky.
+
+## Výchozí stránka: původní Editorial
+
+Bez query parametru nebo přes `?variant=editorial` se otevře původní krémově zelený Editorial z commitu `1716fea`, rozšířený o funkční frontendový srovnávač. Historie ani ostatní návrhy se nevracejí zpět.
+
+Vyberte 2–3 tickery SPY, VOO, IVV → reaktivní tabulka → číselná částka nebo posuvník → graf orientačních ročních nákladů → pokračování k e-mailu → simulace odeslání → interaktivní náhled se zachovaným výběrem a částkou. Výchozí částka je 100 000 Kč; povolený rozsah 0–10 milionů. Neplatný vstup zobrazí chybu, graf ponechá poslední platnou částku a pokračování zablokuje.
+
+**Údaje nejsou ověřené:** primární zdroje SPY, VOO a IVV vrátily HTTP 403. Všechny parametry včetně nákladovosti jsou výslovně DEMO, ne aktuální skutečnost. Zdrojové odkazy v tabulce jsou pouze k následné kontrole. DEMO sazby: SPY 0,0945 %, VOO/IVV 0,03 %. Před skutečným použitím je nutné prověřit každý údaj a burzu.
+
+Kalkulace: částka × expense ratio / 100; například 100 000 Kč × 0,03 % = 30 Kč za rok. Nezahrnuje poplatky brokera, měnové konverze, daně ani změny hodnoty investice; není predikcí výnosů. Náklad se obvykle promítá do hodnoty fondu. Zachováno upozornění na PRIIPs/KID a dostupnost pro retail v EU.
+
+Demo náhled lze otevřít v další kartě přes odkaz vytvořený v náhledu, např. `?variant=editorial&view=preview&etfs=VOO,IVV&amount=250000`. Obsahuje pouze tickery a částku, žádnou adresu; je veřejný, bez autentizace a nezaručuje zabezpečený přístup. E-mail se nikam neodesílá, neukládá a po simulaci se pole vymaže.
+
+Kód: `src/EditorialComparator.tsx`, `src/etfData.ts`, `src/editorial-comparator.css`. Výpočty ověřte na Node.js 24 pomocí `node --test tests/costs.test.ts`. Zdrojový prompt a kontroly: [AI log srovnávače](ai-log/2026-10-09-editorial-comparator.md).
+
+## Zachované návrhy druhého kola
 
 ## Spuštění
 
@@ -22,7 +38,7 @@ Otevřete adresu vypsanou Vitem. Návrhy přepínejte horní lištou (na mobilu 
 | `?variant=steps-blue` | Samostatný výběr, nastavení a e-mail | Bílá + modrá |
 | `?variant=steps-green` | Stejný postup v krocích | Bílá + zelená |
 
-V rámci barevné dvojice se mění jen paleta, ne geometrie. Přepnutí barvy zachovává výběr, nastavení i fázi; přepnutí konceptu je resetuje. URL podporuje obnovení a historii. Výchozí koncept je Editorial – Blue; neznámý parametr na něj bezpečně spadne. Původní `editorial`, `compact` a `steps` jsou aliasy modrých návrhů; první kolo Terminal a Guide lze stále otevřít přes `?variant=terminal` a `?variant=guide`, ale nejsou v přepínači druhého kola.
+V rámci barevné dvojice se mění jen paleta, ne geometrie. Přepnutí barvy zachovává výběr, nastavení i fázi; přepnutí konceptu je resetuje. URL podporuje obnovení a historii. Výchozí je původní Editorial se srovnávačem; neznámý parametr na něj bezpečně spadne. Původní `compact` a `steps` jsou aliasy modrých návrhů; první kolo Terminal a Guide lze stále otevřít přes `?variant=terminal` a `?variant=guide`, ale nejsou v přepínači druhého kola.
 
 Vyberte dvě až tři ukázkové položky, nastavte náklady / zaměření / dividendy a rizika (minimálně jeden parametr) a pokračujte k e-mailu. E-mail není na úvodní obrazovce. Formulář vyzkoušejte testovací adresou: následná ukázka výslovně sděluje, že se nic neodeslalo. Skutečné srovnání prototyp neposkytuje.
 
@@ -46,9 +62,9 @@ Návrhy jsou určeny pro větev `design-exploration`. Při propojení GitHub rep
 
 ## Omezení a další práce
 
-- A–D jsou jasně označené zástupné položky, nikoli skutečná ETF. Neobsahují finanční údaje ani reference. Primární stránky emitenta při pokusu o kontrolu vrátily HTTP 403. Ověřený dataset se zdroji a daty kontroly musí být doplněn samostatně.
+- V zachovaných designových variantách jsou A–D jasně označené zástupné položky, nikoli skutečná ETF. Neobsahují finanční údaje ani reference. Primární stránky emitenta při pokusu o kontrolu vrátily HTTP 403. Ověřený dataset se zdroji a daty kontroly musí být doplněn samostatně.
 - Formulář používá pouze klientskou validaci pro demonstraci. Žádná konfirmace, serverová bezpečnost ani doručování nejsou implementovány. Nezadávejte skutečné osobní údaje.
-- Plánované srovnání se před potvrzením nesmí dostat do klientského bundle; tento prototyp jej vůbec neobsahuje.
+- Pro původní produkční plán je nutné zabezpečit srovnání po potvrzení; aktuální zadání frontendového prototypu výslovně umožňuje veřejné demo porovnání před e-mailem. Není implementováno produkční potvrzování ani ochrana obsahu.
 - Provozovatel, skutečné kontaktní a právní texty, souhlasy, retence a marketing budou doplněny až pro funkční službu. Prototyp nemá marketingový odběr.
 - Události funnelu, A/B experimenty a konverzní odhady zatím nemají výsledky z provozu.
 - Frontendové kontroly nejsou důkazem funkčnosti produkční služby ani kompletního WCAG auditu.
