@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { concepts, designs, funds } from './data'
 import type { Concept, DesignId } from './data'
+import EditorialComparator from './EditorialComparator'
 
 function initialDesign(): DesignId {
   const value = new URLSearchParams(window.location.search).get('variant')
-  if (value === 'terminal' || value === 'guide') return value
+  if (value === 'editorial' || value === 'terminal' || value === 'guide') return value
   const design = designs.find(d => d.id === value || `${value}-blue` === d.id)
-  return design?.id ?? 'editorial-blue'
+  return design?.id ?? 'editorial'
 }
 
 function Selection({ selected, toggle, variant }: { selected: string[], toggle: (id: string) => void, variant: Concept }) {
@@ -141,7 +142,7 @@ function Landing({ variant, palette }: { variant: Concept, palette?: 'blue' | 'g
 export default function App() {
   const [designId, setDesignId] = useState<DesignId>(initialDesign)
   const design = designs.find(d => d.id === designId)
-  const variant: Concept = design?.concept ?? (designId === 'terminal' ? 'terminal' : 'guide')
+  const variant: Concept = design?.concept ?? (designId === 'editorial' ? 'editorial' : designId === 'terminal' ? 'terminal' : 'guide')
   useEffect(() => {const onPop = () => setDesignId(initialDesign()); window.addEventListener('popstate', onPop); return () => window.removeEventListener('popstate', onPop)}, [])
   function choose(value: DesignId) {
     if (value === designId) return
@@ -150,5 +151,5 @@ export default function App() {
     window.history.pushState({}, '', url)
     setDesignId(value)
   }
-  return <><a className="skip-link" href="#main">Přejít na obsah</a><aside className={`concept-bar palette-${design?.palette ?? 'blue'}`} aria-label="Přepínání návrhů"><div className="concept-inner"><span className="prototype-label">DESIGN STUDIE <span>• Kolo 2 / 6 návrhů</span></span><label className="mobile-switch">Návrh<select value={designId} onChange={e => choose(e.target.value as DesignId)}>{!design && <option value={designId}>{concepts.find(c => c.id === variant)?.name} (kolo 1)</option>}{designs.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}</select></label><nav className="desktop-switch" aria-label="Varianty">{designs.map(d => <button key={d.id} onClick={() => choose(d.id)} aria-pressed={designId === d.id}>{d.name}</button>)}</nav></div><p className="concept-description">{design ? `${design.name} · Výběr ETF → nastavení → e-mail → odkaz na srovnání.` : concepts.find(c => c.id === variant)?.note} <strong>Demo bez odesílání.</strong></p></aside><Landing key={variant} variant={variant} palette={design?.palette}/></>
+  return <><a className="skip-link" href="#main">Přejít na obsah</a><aside className={`concept-bar palette-${designId === 'editorial' ? 'original' : design?.palette ?? 'blue'}`} aria-label="Přepínání návrhů"><div className="concept-inner"><span className="prototype-label">DESIGN STUDIE <span>• Editorial + designové návrhy</span></span><label className="mobile-switch">Návrh<select value={designId} onChange={e => choose(e.target.value as DesignId)}><option value="editorial">Editorial – původní / srovnávač</option>{!design && designId !== 'editorial' && <option value={designId}>{concepts.find(c => c.id === variant)?.name} (kolo 1)</option>}{designs.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}</select></label><nav className="desktop-switch" aria-label="Varianty"><button onClick={() => choose('editorial')} aria-pressed={designId === 'editorial'}>Editorial – původní</button>{designs.map(d => <button key={d.id} onClick={() => choose(d.id)} aria-pressed={designId === d.id}>{d.name}</button>)}</nav></div><p className="concept-description">{design ? `${design.name} · Výběr ETF → nastavení → e-mail → odkaz na srovnání.` : designId === 'editorial' ? 'Původní Editorial · Výběr ETF → porovnání a náklady → ukázka e-mailu a odkazu.' : concepts.find(c => c.id === variant)?.note} <strong>Demo bez odesílání.</strong></p></aside>{designId === 'editorial' ? <EditorialComparator/> : <Landing key={variant} variant={variant} palette={design?.palette}/>}</>
 }
