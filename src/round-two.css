@@ -1,0 +1,148 @@
+/* Paired palettes contain only colors. Layout belongs to the concept. */
+.palette-blue {
+  --accent: #195fdb;
+  --soft: #f2f6fc;
+  --line: #dce4ee;
+  --muted: #53697c;
+}
+.palette-green {
+  --accent: #23704e;
+  --soft: #f2f7f4;
+  --line: #dce6df;
+  --muted: #536b60;
+}
+.landing.round-two {
+  --ink: #172c40;
+  --paper: #fff;
+  --surface: #fff;
+  background: var(--paper);
+}
+.landing.round-two.palette-blue {
+  --accent: #195fdb;
+  --soft: #f2f6fc;
+  --line: #dce4ee;
+  --muted: #53697c;
+}
+.landing.round-two.palette-green {
+  --accent: #23704e;
+  --soft: #f2f7f4;
+  --line: #dce6df;
+  --muted: #536b60;
+}
+.concept-bar .desktop-switch button[aria-pressed=true] {
+  background: var(--accent);
+}
+.round-two :is(button, a, input):focus-visible {
+  outline-color: var(--accent);
+}
+.round-two .risk-note,
+.round-two .fund-option,
+.round-two .form-status:not(:empty) {
+  background: var(--soft);
+}
+.round-two .risk-note { margin: 15px 0 22px; }
+.round-two .hero-description { max-width: 490px; }
+.round-two .builder { box-shadow: 0 12px 40px #172c4006; }
+.round-two .builder-heading h2 { font-size: 28px; }
+.round-two .builder-stage { outline-offset: 6px; scroll-margin-top: 145px; }
+.round-two .builder-stage:focus { outline: none; }
+.round-two .selection-summary { margin-bottom: 20px; }
+.round-two .builder-caption {
+  margin-top: 15px;
+  font-size: 11px;
+  text-align: center;
+  color: var(--muted);
+}
+.product-flow {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 25px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.product-flow li {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.flow-number {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  font-size: 10px;
+  flex-shrink: 0;
+}
+.product-flow li[aria-current] { color: var(--accent); font-weight: 700; }
+.product-flow li[aria-current] .flow-number { background: var(--accent); color: white; border-color: var(--accent); }
+.compare-settings { padding-top: 20px; border-top: 1px solid var(--line); }
+.settings-caption { margin: 8px 0 15px; font-size: 11px; color: var(--muted); }
+.parameter-list { display: grid; gap: 6px; }
+.parameter-option { display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 8px 0; cursor: pointer; }
+.parameter-option strong { font-size: 12px; display: block; }
+.parameter-option small { font-size: 11px; display: block; margin-top: 4px; color: var(--muted); }
+.continue-button { margin-top: 20px; }
+.configuration-summary { background: var(--soft); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; margin-top: 18px; }
+.configuration-summary strong { display: block; font-size: 14px; margin: 5px 0; }
+.configuration-summary p { font-size: 11px; color: var(--muted); }
+.round-two .email-panel { border: 0; padding-top: 15px; }
+.demo-result { padding-top: 24px; }
+.result-symbol { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; color: var(--accent); background: var(--soft); font-size: 22px; margin-bottom: 15px; }
+.demo-result p { font-size: 13px; margin-top: 12px; color: var(--muted); }
+.demo-result h3 { font-size: 22px; }
+.round-two .fund-option.chosen { border-color: var(--accent); }
+/* Editorial: open typography and paper-like rules instead of a product card. */
+.round-two.editorial .builder { border-left: 0; border-right: 0; border-bottom: 0; box-shadow: none; padding-left: 0; padding-right: 0; }
+.round-two.editorial .fund-option { background: transparent; }
+.round-two.editorial .compare-settings legend { font-family: Georgia, serif; font-size: 19px; font-weight: 400; }
+.round-two.editorial .hero h1 { font-size: clamp(2.6rem, 5.5vw, 4.6rem); }
+.round-two.editorial .benefit-number { font-family: Georgia, serif; font-size: 20px; }
+/* Compact: selection dashboard with toggle controls and concise configuration. */
+.round-two.compact .hero-cta { display: flex; }
+.round-two.compact .hero h1 { font-size: clamp(2.8rem, 6vw, 5.5rem); }
+.round-two.compact .fund-option { background: var(--soft); }
+.round-two.compact .closing { background: var(--soft); color: var(--ink); }
+.round-two.compact .compare-settings { padding-top: 15px; }
+.round-two.compact .parameter-option { border-bottom: 1px solid var(--line); }
+/* Steps: centered entrance followed by a deliberately sequential configurator. */
+.round-two.steps .builder { background: var(--soft); border-color: var(--line); box-shadow: none; }
+.round-two.steps .fund-option { background: white; }
+.round-two.steps .fund-mark { background: var(--soft); }
+.round-two.steps .benefit-grid article { background: var(--soft); }
+.round-two.steps .closing { background: var(--soft); }
+.round-two.steps .product-flow { padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+.round-two.steps .compare-settings { border: 0; }
+.round-two.steps .configuration-summary { background: white; }
+.round-two.steps .form-note { text-align: left; }
+.round-two.steps .hero { padding-bottom: 30px; }
+@media (min-width: 700px) {
+  .round-two .product-flow { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .round-two .product-flow li { display: block; font-size: 10px; }
+  .round-two .flow-number { margin-bottom: 7px; }
+  .round-two.editorial .opening { gap: 65px; }
+  .round-two.editorial .hero:after { content: 'Výběr. Souvislosti. Rozhodnutí.'; font-size: 26px; line-height: 1.4; color: var(--accent); margin-top: 42px; padding-top: 24px; }
+  .round-two.compact .hero { padding-top: 36px; }
+  .round-two.steps .opening { padding-top: 20px; }
+  .round-two.steps .builder { max-width: 680px; }
+  .round-two.steps .parameter-list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .round-two.steps .parameter-option { flex-direction: column; align-items: flex-start; background: white; border: 1px solid var(--line); border-radius: 10px; padding: 15px; min-height: 125px; }
+}
+@media (min-width: 700px) and (max-width: 1099px) {
+  .concept-bar .desktop-switch { display: none; }
+  .concept-bar .mobile-switch { display: flex; }
+}
+@media (min-width: 1100px) {
+  .desktop-switch button { padding-left: 10px; padding-right: 10px; font-size: 11px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .round-two .fund-option, .round-two .parameter-option { transition: background-color 180ms ease, border-color 180ms ease; }
+  .round-two .parameter-option:hover { background: var(--soft); }
+  .round-two .builder-stage { animation: stage-reveal 160ms ease; }
+  @keyframes stage-reveal { from { opacity: .7; } to { opacity: 1; } }
+}
