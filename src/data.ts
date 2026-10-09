@@ -13,3 +13,14 @@ export const concepts = [
   { id: 'compact', name: '05 · Kompaktní', note: 'Stručný split layout, jednoduché přepínače a formulář v centru.' },
 ] as const
 export type Concept = typeof concepts[number]['id']
+
+// Round two pairs share structure; only palette changes within a concept.
+export const designs = [
+  { id: 'editorial-blue', concept: 'editorial', palette: 'blue', name: 'Editorial – Blue' },
+  { id: 'editorial-green', concept: 'editorial', palette: 'green', name: 'Editorial – Green' },
+  { id: 'compact-blue', concept: 'compact', palette: 'blue', name: 'Compact – Blue' },
+  { id: 'compact-green', concept: 'compact', palette: 'green', name: 'Compact – Green' },
+  { id: 'steps-blue', concept: 'steps', palette: 'blue', name: 'Steps – Blue' },
+  { id: 'steps-green', concept: 'steps', palette: 'green', name: 'Steps – Green' },
+] as const
+export type DesignId = typeof designs[number]['id'] | 'terminal' | 'guide'
