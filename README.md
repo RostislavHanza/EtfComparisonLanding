@@ -1,84 +1,58 @@
-# ETF přehled — redakční srovnávač a vizuální návrhy
+# ETF Comparison Landing
 
-Mobilní návrhy české landing page podle [plánu](docs/PLAN.md). React, Vite, TypeScript strict a Tailwind CSS. **Pouze frontend:** bez Supabase, backendu, ukládání adres, skutečných e-mailů a analytiky.
+Český mobile-first srovnávač ETF: React + Vite + TypeScript + Tailwind, Vercel Functions, Supabase a Nodemailer/Gmail SMTP. Výchozí původní redakční vzhled je zachovaný; backend a frontend jsou propojené, služby zatím nejsou nakonfigurované v tomto prostředí.
 
-## Výchozí stránka: původní Editorial
+## Jak web funguje
 
-Bez query parametru nebo přes `?variant=editorial` se otevře původní krémově zelený Editorial z commitu `1716fea`, rozšířený o funkční frontendový srovnávač. Historie ani ostatní návrhy se nevracejí zpět.
+Redakční úvod → hledání ETF podle tickeru/názvu → výběr 2–5 → tabulka parametrů → částka a graf ročních nákladů → e-mail → unikátní odkaz → potvrzení a obnovený interaktivní přehled. E-mail přichází až po sestavení srovnání. Veřejné porovnání poskytuje hodnotu; uložený návratový odkaz motivuje ke kontaktu. Výběr i částka se uloží v Supabase a po otevření lze změny znovu uložit.
 
-Vyberte 2–3 tickery SPY, VOO, IVV → reaktivní tabulka → číselná částka nebo posuvník → graf orientačních ročních nákladů → pokračování k e-mailu → simulace odeslání → interaktivní náhled se zachovaným výběrem a částkou. Výchozí částka je 100 000 Kč; povolený rozsah 0–10 milionů. Neplatný vstup zobrazí chybu, graf ponechá poslední platnou částku a pokračování zablokuje.
+Kalkulace je částka × expense ratio / 100 (100 000 Kč × 0,03 % = 30 Kč/rok). Nezahrnuje brokera, konverze, daně nebo změny hodnoty investice a nepředpovídá výnosy. PRIIPs/KID a omezená dostupnost amerických ETF pro retail v EU jsou viditelné před formulářem; obsah není doporučení.
 
-**Údaje nejsou ověřené:** primární zdroje SPY, VOO a IVV vrátily HTTP 403. Všechny parametry včetně nákladovosti jsou výslovně DEMO, ne aktuální skutečnost. Zdrojové odkazy v tabulce jsou pouze k následné kontrole. DEMO sazby: SPY 0,0945 %, VOO/IVV 0,03 %. Před skutečným použitím je nutné prověřit každý údaj a burzu.
+FAQ, metodika, rizika a informace o zpracování údajů následují za srovnávačem. Marketingový souhlas je samostatný a nepovinný. Provozovatel musí doplnit svou identitu/kontakt a schválit informační texty; do nastavení správce server nepřijímá kontakty.
 
-Kalkulace: částka × expense ratio / 100; například 100 000 Kč × 0,03 % = 30 Kč za rok. Nezahrnuje poplatky brokera, měnové konverze, daně ani změny hodnoty investice; není predikcí výnosů. Náklad se obvykle promítá do hodnoty fondu. Zachováno upozornění na PRIIPs/KID a dostupnost pro retail v EU.
+## Spuštění a testy
 
-Demo náhled lze otevřít v další kartě přes odkaz vytvořený v náhledu, např. `?variant=editorial&view=preview&etfs=VOO,IVV&amount=250000`. Obsahuje pouze tickery a částku, žádnou adresu; je veřejný, bez autentizace a nezaručuje zabezpečený přístup. E-mail se nikam neodesílá, neukládá a po simulaci se pole vymaže.
-
-Kód: `src/EditorialComparator.tsx`, `src/etfData.ts`, `src/editorial-comparator.css`. Výpočty ověřte na Node.js 24 pomocí `node --test tests/costs.test.ts`. Zdrojový prompt a kontroly: [AI log srovnávače](ai-log/2026-10-09-editorial-comparator.md).
-
-## Zachované návrhy druhého kola
-
-## Spuštění
-
-Node.js 22.12+ nebo 24, npm:
+Node 24, `npm ci`. Pro frontend `npm run dev`; ve druhém terminálu `npm run dev:api` spustí stejné Vercel handlery na lokálním portu 3001. Vite proxy `/api` používá tento adapter. Server čte ignorovaný `.env.local`; před spuštěním nastavte služby podle [.env.example](.env.example) a [SETUP.md](docs/SETUP.md). Alternativně použijte standardní `vercel dev`. Bez konfigurace API vrátí bezpečnou 503 a stránka nabídne opakování načtení, nikoli falešné finanční údaje.
 
 ```sh
-npm ci
-npm run dev
-```
-
-Otevřete adresu vypsanou Vitem. Návrhy přepínejte horní lištou (na mobilu select). Přímé adresy používají tyto query parametry:
-
-| Parametr | Koncept | Paleta |
-| --- | --- | --- |
-| `?variant=editorial-blue` | Redakční seznam se serifovou typografií | Bílá + modrá |
-| `?variant=editorial-green` | Stejný redakční seznam | Bílá + zelená |
-| `?variant=compact-blue` | Kompaktní panel s přepínači | Bílá + modrá |
-| `?variant=compact-green` | Stejný kompaktní panel | Bílá + zelená |
-| `?variant=steps-blue` | Samostatný výběr, nastavení a e-mail | Bílá + modrá |
-| `?variant=steps-green` | Stejný postup v krocích | Bílá + zelená |
-
-V rámci barevné dvojice se mění jen paleta, ne geometrie. Přepnutí barvy zachovává výběr, nastavení i fázi; přepnutí konceptu je resetuje. URL podporuje obnovení a historii. Výchozí je původní Editorial se srovnávačem; neznámý parametr na něj bezpečně spadne. Původní `compact` a `steps` jsou aliasy modrých návrhů; první kolo Terminal a Guide lze stále otevřít přes `?variant=terminal` a `?variant=guide`, ale nejsou v přepínači druhého kola.
-
-Vyberte dvě až tři ukázkové položky, nastavte náklady / zaměření / dividendy a rizika (minimálně jeden parametr) a pokračujte k e-mailu. E-mail není na úvodní obrazovce. Formulář vyzkoušejte testovací adresou: následná ukázka výslovně sděluje, že se nic neodeslalo. Skutečné srovnání prototyp neposkytuje.
-
-```sh
+npm test
+npm run lint
 npm run typecheck
 npm run build
-npm run preview
+npm run preview -- --port 4173
+# v dalším terminálu, po instalaci Chromium:
+npx playwright install chromium
+npm run test:browser
 ```
 
-## Pořadí sekcí a konverzní strategie
+Browser test používá izolované testovací odpovědi API, ne skutečnou databázi nebo odesílání. `BROWSER_PATH` může určit existující Chromium, `TEST_BASE_URL` testovaný build. Testy pokrývají katalog 20 fixtures, maximum pěti fondů, hledání, kalkulačku, formulář, explicitní potvrzení, obnovení/uložení, souhlas a prázdný katalog na šířkách 320–1440 px. SQL testy spouštějí skutečné migrace na PostgreSQL enginu PGlite a ověřují RLS/oprávnění, tokeny, session, retenci a odstranění starého provider RPC. Mail testy kontrolují konfiguraci, TLS, skutečnou MIME strukturu HTML/text, SMTP acceptance a bezpečné logování. Neprokazují živé Supabase/Gmail SMTP doručení.
 
-Příslib → výběr ETF → nastavení srovnání → e-mail → ukázka dalšího kroku; poté výhody nabídky, FAQ, závěrečné CTA a patička. Editorial a Compact mají výběr a nastavení v jednom panelu; Steps je odděluje do dvou kroků. Ve všech šesti variantách se e-mail objeví až po pokračování. Úvod vede k vlastnímu výběru a formulář vysvětluje, že v budoucí službě bude srovnání dostupné až po potvrzení e-mailu. Opakované CTA vede zpět ke stejnému výběru, nevytváří další formulář. Upozornění na PRIIPs/KID je před formulářem.
+## Data a nasazení
 
-## Technické řešení a Vercel
+Produkční katalog není naplněný. Z cloudového prostředí nebylo možné ověřit primární data a podmínky (HTTP 403). [DATA_SOURCES.md](docs/DATA_SOURCES.md) obsahuje schválené zdroje, pravidla a validovaný import. [Seznam 20 kandidátů](data/etf-candidates.csv) není ověřený dataset; cílem je po ruční kontrole zveřejnit přibližně 15–20 fondů. Neověřené fondy se nepublikují. Každé pole má zdroj/platnost/ověření; týdenní kontrola, stáří nad 14 dní vyřadí fond z nových srovnání. Uložené přehledy zachovávají snapshot a jeho datum. Automatický import není implementován.
 
-`src/App.tsx` sdílí obsah a chování, ale mění skutečné struktury výběru a pomocí konceptových CSS kompozic rozložení i typografii. `src/data.ts` obsahuje pouze layoutové fixtures. Tailwind se načítá oficiálním Vite pluginem; původní kompozice jsou v `src/styles.css`, párové palety a úpravy druhého kola v `src/round-two.css`. Barevné varianty jsou definovány v `src/data.ts`. Použity systémové fonty bez externího stahování.
+Vercel: framework Vite, build `npm run build`, output `dist`, Node 24. Serverové proměnné, tři SQL migrace, Gmail app password, ověření SMTP, preview adresy a denní retenční úklid: [SETUP.md](docs/SETUP.md). Tajné klíče patří pouze na server. RLS a explicitní zákazy chrání kontakty; API používá serverovou validaci, honeypot, kontrolu Origin a atomické HMAC rate limity.
 
-Vercel: nastavit kořen projektu na tento checkout, framework **Vite**, install `npm ci`, build `npm run build`, output `dist`. Žádné proměnné prostředí nejsou potřeba. Všechny varianty jsou na kořenové cestě s query parametrem, takže nepotřebují serverové routování. Nasazení zatím nebylo provedeno.
+Odkaz má 256bitový token v fragmentu, bez adresy nebo výběru; DB uchovává hash. Potvrzení tlačítkem zabrání běžnému GET skeneru spotřebovat odkaz. Jednorázové potvrzení platí 7 dní, session ve stejném prohlížeči 30 dní. Návratová URL obsahuje pouze náhodné ID a vyžaduje HttpOnly cookie. Po ztrátě session je v MVP třeba vytvořit nové srovnání. Stav `sent` znamená přijetí Gmail SMTP serverem, nikoli doručení. Gmail neposkytuje spolehlivý delivery webhook; doručení zůstává neověřené do testu ve schránce. Potvrzení přístupu (`confirmed_at`) nastává až po tlačítku. SMTP nemá garantovanou idempotenci; po síťové nejistotě může opakování poslat další zprávu.
 
-Návrhy jsou určeny pro větev `design-exploration`. Při propojení GitHub repozitáře s Vercelem použijte tuto větev pro Preview Deployment; produkční větev ponechte `main`. Samotný push neprokazuje vytvoření ani úspěch Vercel preview.
+Git větev `design-exploration`; `main` se nemerguje. Ve Vercelu otevřete projekt → Deployments → poslední Preview pro tuto větev → Visit. Push sám neprokazuje úspěšný deployment. Doporučená stabilní testovací doména v `APP_BASE_URL`; preview používá vlastní Supabase projekt a explicitní testovací příjemce.
 
-## Omezení a další práce
+## Zachované návrhy
 
-- V zachovaných designových variantách jsou A–D jasně označené zástupné položky, nikoli skutečná ETF. Neobsahují finanční údaje ani reference. Primární stránky emitenta při pokusu o kontrolu vrátily HTTP 403. Ověřený dataset se zdroji a daty kontroly musí být doplněn samostatně.
-- Formulář používá pouze klientskou validaci pro demonstraci. Žádná konfirmace, serverová bezpečnost ani doručování nejsou implementovány. Nezadávejte skutečné osobní údaje.
-- Pro původní produkční plán je nutné zabezpečit srovnání po potvrzení; aktuální zadání frontendového prototypu výslovně umožňuje veřejné demo porovnání před e-mailem. Není implementováno produkční potvrzování ani ochrana obsahu.
-- Provozovatel, skutečné kontaktní a právní texty, souhlasy, retence a marketing budou doplněny až pro funkční službu. Prototyp nemá marketingový odběr.
-- Události funnelu, A/B experimenty a konverzní odhady zatím nemají výsledky z provozu.
-- Frontendové kontroly nejsou důkazem funkčnosti produkční služby ani kompletního WCAG auditu.
+Bez parametru nebo `?variant=editorial` je skutečná API stránka. `?variant=editorial-demo` zachovává předchozí frontendový prototyp s výslovně DEMO údaji a simulací e-mailu. Další návrhy: `editorial-blue`, `editorial-green`, `compact-blue`, `compact-green`, `steps-blue`, `steps-green`, `terminal`, `guide` přes `?variant=…`. Přepínač návrhů zůstává pro preview; archivní formuláře neodesílají a zástupné položky nejsou produkční ETF.
 
-Průběh práce a skutečné prompty: [první kolo](ai-log/2026-10-09-frontend.md) a [druhé kolo](ai-log/2026-10-09-round-two.md).
+## Měření a zbývající omezení
 
-## Provedené kontroly
+Volitelné měření se spustí až po souhlasu. Události: návštěva, interakce, nastavení, formulář, přijetí, odeslání, potvrzení a otevření. Serverové události se párují jen s měřenými návštěvami, bez e-mailů/tokenů v analytice; neměřené návštěvy nejsou součástí měřeného konverzního jmenovatele. Stav doručení je provozní evidence. Dvě reklamy, odhad 3–7 % návštěv na kontakt / 60–80 % kontaktů na potvrzení a tři prioritní A/B hypotézy zůstávají v [PLAN.md](docs/PLAN.md). Jsou to předpoklady, nikoli skutečné výsledky.
 
-Build a typecheck prošly. V Chromium bylo ve druhém kole ověřeno všech šest variant na šířkách 320, 390, 768 a 1440 px včetně výběru a demo formuláře; bez horizontálního přetékání a JS chyb. Ověřeny byly také přepínání, historie, minimum/maximální výběr, neplatný e-mail a načtení produkčního buildu. Kompletní audit přístupnosti ani reálné konverze zatím neproběhly.
+Chybí živé nastavení služeb, ověřený katalog, kontrola podmínek zdrojů a test zprávy ve skutečné schránce. Produkční spuštění tím zůstává blokované. Retenční Cron běží na Vercelu jen na produkčních deploymentech; preview vyžaduje vlastní pravidelný úklid. Fronta automatického retry, obnova použitého odkazu, marketingové kampaně, administrace a A/B platforma jsou odložené. Neproveden plný WCAG/performance ani právní audit. Po konfiguraci proveďte celý akceptační průchod podle SETUP.md.
 
-Ve druhém kole byly navíc porovnány rozměry a pozice prvků mezi modrou a zelenou, zachování stavu při změně palety, nastavení alespoň jednoho parametru a všechny původní URL. Backend, doručování a Vercel nasazení se tím neověřují.
+Průběh práce, dostupné skutečné prompty, kontroly a opravy: [ai-log/](ai-log/).
 
-## Implementace backendu (10. října 2026)
+## Gmail SMTP na Vercelu
 
-Připraveny Supabase migrace, Vercel API a Resend integrace, zatím bez nasazené databáze a ověřených produkčních ETF. Nastavení: [docs/SETUP.md](docs/SETUP.md). Ruční ověření/import: [docs/DATA_SOURCES.md](docs/DATA_SOURCES.md). Výchozí frontend se v následujícím kroku napojí na API.
+Server čte `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=465`, `SMTP_SECURE=true`, `SMTP_USER`, `SMTP_PASSWORD` (Google app password) a `EMAIL_FROM` (zobrazované jméno + stejná adresa jako SMTP_USER). Hodnoty zůstávají ve Vercel Environment Variables; žádný SMTP klíč nepatří do VITE_* nebo Gitu. Nepotřebujete vlastní odesílací doménu ani další placenou službu. Google účet vyžaduje podmínky pro app passwords/2FA; už vytvořené proměnné není třeba posílat do chatu.
 
-`npm test` spouští kalkulačku a databázové testy na lokálním PostgreSQL enginu PGlite; `npm run typecheck` ověřuje i serverovou část. Živé Supabase a skutečné doručování vyžadují ruční nastavení podle dokumentace, nejsou prokázané mock testy.
+Přesný produkční test je v [SETUP.md](docs/SETUP.md#6-test-na-nasazeném-vercelu): chráněný `/api/mail-health` ověří spojení/přihlášení, potom formulář a vlastní schránka ověří skutečné doručení i návratový přehled. Verify samo e-mail neposílá. Z Codexu SMTP spojení selhalo EAI_AGAIN a proměnné zde chybí; úspěch na Vercelu zatím není prokázaný.
+
+Gmail je určený pro malý testovací provoz. Aplikace omezuje pokusy globálně na 100/den, 20/hodinu na IP a 3/hodinu na adresu. Google má vlastní měnící se limity a může blokovat automatizované přihlášení, kvóty nebo odvolané app password; konkrétní aktuální kvótu ověřte u svého účtu. Název From může Gmail přepsat. SMTP TCP dostupnost, timeout a případná deployment protection musí projít živým testem. Bez debug logů, bez vypínání TLS verifikace; chyby logují jen pevný typ a povolený kód. Automatické retry, zpracování bounce a marketingové rozesílání nejsou součástí MVP.

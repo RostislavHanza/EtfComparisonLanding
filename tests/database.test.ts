@@ -2,9 +2,11 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import { PGlite } from '@electric-sql/pglite'
+const smtpMigration=await readFile(new URL('../supabase/migrations/202610100003_gmail_smtp.sql',import.meta.url),'utf8')
+const retention=await readFile(new URL('../supabase/migrations/202610100002_retention.sql',import.meta.url),'utf8')
 const migration=await readFile(new URL('../supabase/migrations/202610100001_mvp.sql',import.meta.url),'utf8')
 const id='11111111-1111-4111-8111-111111111111',other='22222222-2222-4222-8222-222222222222'
-async function database(){const db=new PGlite();await db.exec('create role anon; create role authenticated; create role service_role bypassrls;');await db.exec(migration);return db}
+async function database(){const db=new PGlite();await db.exec('create role anon; create role authenticated; create role service_role bypassrls;');await db.exec(migration);await db.exec(retention);await db.exec(smtpMigration);return db}
 async function seed(db:PGlite){
  for(const ticker of ['TESTA','TESTB','TESTC'])await db.query(`insert into etfs(ticker,name,exchange,tracked_index,expense_ratio_percent,dividends,description,verified_at,data_as_of,sources,verified_by,usage_review,published) values($1,'TEST ONLY','NYSE Arca','Test',0.03,'Test','Test',now(),current_date,$2,'Test','{}',true)`,[ticker,JSON.stringify(Array.from({length:6},()=>({test:true})))])
 }
@@ -24,12 +26,17 @@ test('transactional creation, one-time token, sessions, updates and expiry',asyn
  assert.equal((await db.query("select * from funnel_events where name='email_confirmed'")).rows.length,1)
  }finally{await db.close()}
 })
-test('rate limiter counts atomically and delivery webhooks are deduplicated and ordered safely',async()=>{
+test('rate limiter counts atomically and retired provider RPC is unavailable',async()=>{
  const db=await database();try{
  await seed(db);await create(db);assert.equal((await db.query<{consume_rate_limit:boolean}>("select consume_rate_limit('k',2,60)")).rows[0].consume_rate_limit,true);await db.query("select consume_rate_limit('k',2,60)");assert.equal((await db.query<{consume_rate_limit:boolean}>("select consume_rate_limit('k',2,60)")).rows[0].consume_rate_limit,false)
- await assert.rejects(db.query("select record_email_webhook('early','provider','email.delivered',now())"),/message_not_ready/)
- assert.equal((await db.query('select * from webhook_receipts')).rows.length,0)
- await db.query("update email_messages set provider_id='provider',status='sent' where comparison_id=$1",[id]);await db.query("select record_email_webhook('e1','provider','email.delivered',now())");await db.query("select record_email_webhook('e1','provider','email.delivered',now())");assert.equal((await db.query<{status:string}>('select status from email_messages')).rows[0].status,'delivered')
- await db.query("select record_email_webhook('e2','provider','email.bounced',now())");await db.query("select record_email_webhook('e3','provider','email.delivered',now())");assert.equal((await db.query<{status:string}>('select status from email_messages')).rows[0].status,'bounced')
+ await assert.rejects(db.query("select record_email_webhook('obsolete','obsolete','email.delivered',now())"),/does not exist/)
  }finally{await db.close()}
+})
+
+test('retention deletes expired comparisons and orphaned contacts with dependent personal data',async()=>{
+ const db=await database();try{await seed(db);await create(db);await db.exec("update comparisons set created_at=now()-interval '31 days'");await db.query('select purge_expired_data()');for(const table of ['comparisons','contacts','consent_records','email_messages'])assert.equal((await db.query(`select * from ${table}`)).rows.length,0);assert.equal((await db.query('select * from etfs')).rows.length,3)}finally{await db.close()}
+})
+
+test('withdrawing optional analytics clears attribution and events without deleting the requested comparison',async()=>{
+ const db=await database();try{await seed(db);await create(db);await db.query('select redeem_comparison($1,$2)',['a'.repeat(64),'b'.repeat(64)]);await db.query('select withdraw_analytics($1)',[other]);assert.equal((await db.query<{attribution:null}>('select attribution from comparisons')).rows[0].attribution,null);assert.equal((await db.query('select * from funnel_events')).rows.length,0);assert.equal((await db.query('select * from comparisons')).rows.length,1)}finally{await db.close()}
 })

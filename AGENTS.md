@@ -38,11 +38,12 @@
 
 ## Doplněný rozsah do 16. října 2026
 
-- Interakce před formulářem je pouze výběr 2–3 ETF a preferovaného řazení; návštěvník musí rozumět nabídce a může pokračovat s výchozím výběrem. Neposkytuj vlastní užitečné srovnání před potvrzením e-mailu.
-- Úplná data srovnání nesmí být veřejně v klientském bundle. Přístup ověřuj serverově po potvrzení adresy, včetně přímých požadavků na endpoint. Přístup na jiném zařízení musí zachovat uložený výběr.
+- Schválený funkční rozsah: rozšiřitelný katalog přibližně 15–20 ručně ověřených ETF na NYSE Arca, hledání tickeru/názvu a výběr 2–5 fondů. Parametry, kalkulačka a graf jsou veřejně dostupné před e-mailem; uložené osobní srovnání až po potvrzení přístupu ke schránce. Zachovej původní redakční vzhled.
+- Veřejná ověřená metadata jsou z katalogového API. Uložený výběr a částku chraň serverovou session, včetně přímých požadavků na endpoint. První potvrzení může proběhnout na jiném zařízení; jednorázový odkaz a omezení návratu po ztrátě session pravdivě vysvětli. Demo data patří pouze do výslovně označených archivních návrhů a testů.
 - Používej jen skutečné, ověřené údaje. Ke každému poli eviduj primární zdroj, datum platnosti a datum kontroly. AI není finanční zdroj; neověřené hodnoty vynech a popiš omezení.
 - Implementuj funnel podle `docs/PLAN.md`: návštěvy, interakce, formulář, serverové přijetí, potvrzení a otevření srovnání. Zamez dvojímu započítání, úniku osobních údajů a míchání nesrovnatelných kohort. Respektuj souhlas se sledováním.
 - Odhad konverze vždy označ jako předpoklad do ověření. A/B testy prováděj postupně; bez dostatečného vzorku neoznačuj variantu za vítěze.
 - Při implementaci aktualizuj README: pořadí sekcí, konverzní strategie, technické řešení, spuštění, ověřování a konkrétní nedostatky. Rozlišuj hotové funkce od plánu.
 - Do `ai-log/` průběžně ukládej skutečné prompty, kontroly výsledků, zjištěné chyby a opravy. Prompty nevymýšlej zpětně, tajné údaje rediguj a neprovedené kontroly označ.
+- Ruční kontrola dat nejméně týdně; nepublikuj neověřené fondy. Automatický import neimplementuj bez schváleného zdroje a oprávnění. Supabase + Vercel Functions + Nodemailer/Gmail SMTP, bez zbytečných účtů/front a admin systémů.
 - Termín 16. října není důvod přeskočit ověření dat, ochranu kontaktů nebo potvrzovací cestu. Odlož PDF, živá data a složitý screener; blokery popiš před předáním.
