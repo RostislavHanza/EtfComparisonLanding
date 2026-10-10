@@ -76,3 +76,9 @@ Průběh práce a skutečné prompty: [první kolo](ai-log/2026-10-09-frontend.m
 Build a typecheck prošly. V Chromium bylo ve druhém kole ověřeno všech šest variant na šířkách 320, 390, 768 a 1440 px včetně výběru a demo formuláře; bez horizontálního přetékání a JS chyb. Ověřeny byly také přepínání, historie, minimum/maximální výběr, neplatný e-mail a načtení produkčního buildu. Kompletní audit přístupnosti ani reálné konverze zatím neproběhly.
 
 Ve druhém kole byly navíc porovnány rozměry a pozice prvků mezi modrou a zelenou, zachování stavu při změně palety, nastavení alespoň jednoho parametru a všechny původní URL. Backend, doručování a Vercel nasazení se tím neověřují.
+
+## Implementace backendu (10. října 2026)
+
+Připraveny Supabase migrace, Vercel API a Resend integrace, zatím bez nasazené databáze a ověřených produkčních ETF. Nastavení: [docs/SETUP.md](docs/SETUP.md). Ruční ověření/import: [docs/DATA_SOURCES.md](docs/DATA_SOURCES.md). Výchozí frontend se v následujícím kroku napojí na API.
+
+`npm test` spouští kalkulačku a databázové testy na lokálním PostgreSQL enginu PGlite; `npm run typecheck` ověřuje i serverovou část. Živé Supabase a skutečné doručování vyžadují ruční nastavení podle dokumentace, nejsou prokázané mock testy.
