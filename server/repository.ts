@@ -9,7 +9,7 @@ export interface Repository {
   read(sessionHash: string, id: string): Promise<SavedComparison | null>;
   update(sessionHash: string, id: string, tickers: string[], amountCzk: number): Promise<boolean>;
   event(name: EventName, attribution: {visitId: string; campaign: string}, comparisonId?: string): Promise<void>;
-  webhook(eventId: string, providerId: string, type: string, at: string): Promise<void>;
+  withdrawAnalytics(visitId:string):Promise<void>;
 }
 export class DatabaseError extends Error {}
 export class SupabaseRepository implements Repository {
@@ -36,5 +36,5 @@ export class SupabaseRepository implements Repository {
     const {error}=await this.db.from('funnel_events').insert({name,visit_id:a.visitId,campaign:a.campaign,comparison_id:comparisonId??null});
     if(error && error.code!=='23505')throw new DatabaseError('event_failed')
   }
-  async webhook(eventId:string,providerId:string,type:string,at:string) { await this.rpc('record_email_webhook',{p_event_id:eventId,p_provider_id:providerId,p_type:type,p_at:at}) }
+  async withdrawAnalytics(visitId:string){await this.rpc('withdraw_analytics',{p_visit_id:visitId})}
 }

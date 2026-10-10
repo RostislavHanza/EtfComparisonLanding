@@ -38,6 +38,6 @@ Datum nesmí být budoucí, ověření nesmí být starší než 14 dní. Jeden 
 
 ## Budoucí automatizace
 
-Pro MVP není implementován automatický import ani Vercel Cron. Aktuální údaje (index, nákladovost, dividendová politika) kontrolovat týdně a při oznámené změně. Denní režim má smysl až pro dynamické údaje jako NAV, které nyní nesbíráme.
+Pro MVP není implementován automatický import ani Cron pro ETF data. Denní Vercel Cron slouží pouze úklidu osobních údajů. Aktuální údaje (index, nákladovost, dividendová politika) kontrolovat týdně a při oznámené změně. Denní režim má smysl až pro dynamické údaje jako NAV, které nyní nesbíráme.
 
 Automatizaci doplnit až pro dokumentované API nebo export s povolením zpracování a zveřejnění. Adaptér bude ukládat návrh změn, ověřovat identitu/typy/rozsahy/datum a neočekávané změny vyžadovat ruční schválení. Cron bude autentizovaný, idempotentní, s limity a auditním výsledkem; při chybě nikdy neoznačí stará data za právě ověřená a nepřepíše je neúplnou dávkou.

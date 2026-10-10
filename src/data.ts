@@ -23,4 +23,4 @@ export const designs = [
   { id: 'steps-blue', concept: 'steps', palette: 'blue', name: 'Steps – Blue' },
   { id: 'steps-green', concept: 'steps', palette: 'green', name: 'Steps – Green' },
 ] as const
-export type DesignId = typeof designs[number]['id'] | 'editorial' | 'terminal' | 'guide'
+export type DesignId = typeof designs[number]['id'] | 'editorial' | 'editorial-demo' | 'terminal' | 'guide'

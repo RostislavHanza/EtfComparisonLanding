@@ -1,61 +1,60 @@
 # Plán landing page
 
+Aktualizace 10. října 2026 podle schváleného funkčního MVP a následné změny poskytovatele na Gmail SMTP. Nahrazuje původní omezení na 2–3 ETF a uzamčené porovnání před e-mailem. Termín předání: 16. října 2026.
+
 ## Cíl a rozsah MVP
 
-Získat e-mail českého retailového investora přicházejícího z mobilní reklamy výměnou za stručné, srozumitelné srovnání ETF obchodovaných na NYSE Arca. Primární metrika: počet úspěšně potvrzených kontaktů vůči návštěvám stránky. Sekundárně sledovat odeslání formuláře, chyby a dokončení potvrzení e-mailu.
+Český mobilní návštěvník z reklamy sestaví užitečné srovnání ETF a získá e-mailem odkaz na uložený interaktivní přehled. Primární metrika je potvrzený přístup ke schránce vůči měřeným návštěvám. Bez účtů, plateb, živých cen, výnosových predikcí, PDF a složitého screeneru.
 
-Jedna česká landing page, jeden hlavní formulář a jedna nabídka. Bez účtů, plateb, personalizovaných doporučení, živých cen a komplexního screeneru. Před implementací ověřit konkrétní ETF, licenci a zdroje dat, podobu srovnání a poskytovatele e-mailů.
+Rozšiřitelný katalog přibližně 15–20 skutečných ETF na NYSE Arca, hledání tickeru/názvu, porovnání 2–5. Neověřené fondy se nezveřejňují. Aktuální implementace neobsahuje produkční seed; ověřený katalog musí být doplněn validovaným importem. Původní Editorial zůstává výchozí, archivní návrhy jsou jasně označená dema.
 
-## Struktura stránky a mobilní UX
+## Pořadí sekcí a konverzní cesta
 
-1. **Úvod:** konkrétní příslib („Porovnejte vybraná americká ETF na jednom místě“), krátké vysvětlení, co návštěvník získá, a CTA „Získat srovnání zdarma“. Úvodní CTA posouvá na interaktivní výběr a navazující formulář. Jasně slíbit doručení až po potvrzení e-mailu. Text sladit s reklamou.
-2. **Interaktivní výběr:** nabídnout 3–5 ověřených ETF a umožnit vybrat 2–3 k porovnání; zobrazit pouze název, ticker a zaměření. Volitelně zvolit pořadí podle nákladů nebo dividend. Průběžně ukázat souhrn výběru a CTA „Poslat mé srovnání“. Nezobrazovat vlastní srovnávací údaje ani pořadí před potvrzením. Výchozí dvojice a možnost přeskočit výběr zabrání zbytečné překážce na mobilu.
-3. **Co je ve srovnání:** náklady, diverzifikace, distribuce dividend a praktická omezení pro českého investora. Stručně vysvětlit TER a měnové riziko. U dat uvést zdroj a datum aktualizace.
-4. **Důvěryhodnost a FAQ:** skutečný provozovatel, metodika, dostupnost ETF v EU, co přijde e-mailem a jak se odhlásit. Bez smyšlených referencí a garancí výnosu.
-5. **Závěrečné CTA a patička:** odkaz na hlavní formulář, kontakt, ochrana osobních údajů a upozornění, že jde o vzdělávací obsah, nikoli investiční doporučení.
+1. **Redakční úvod:** příslib porovnání a CTA ke srovnávači; e-mailový formulář není v úvodní obrazovce.
+2. **Výběr a hledání:** předvybrané dvě dostupné ETF, možnost změnit výběr na 2–5, jasný souhrn a datum ověření.
+3. **Porovnání:** index, expense ratio, dividendy, charakteristika, data kontroly/platnosti a primární zdroje. Veřejná ověřená metadata pocházejí z API, nikoli demonstračního seed souboru.
+4. **Kalkulačka:** číselné pole/posuvník Kč, orientační roční náklady v tabulce a jednoduchém grafu. Částka × expense ratio / 100. Bez brokera, konverzí, daní a změn hodnoty; nejde o výnos ani samostatnou fakturu fondu.
+5. **E-mail až po nastavení:** „Vaše srovnání je připravené“, samostatný nepovinný marketingový souhlas, informace o správci/retenci; odeslání odlišené od doručení.
+6. **Potvrzení a návrat:** e-mail obsahuje pouze unikátní odkaz. Tlačítko potvrdí přístup ke schránce, server vydá session a obnoví výběr i částku. Úpravy lze uložit. Samotný GET náhledu zprávy nespotřebuje token.
+7. **FAQ, souvislosti a patička:** PRIIPs/KID, investiční rizika, zdroje, ochrana údajů a volitelné měření.
 
-Použít jednu hlavní konverzní akci, čitelné písmo, výrazný kontrast a dotykové cíle alespoň 44 × 44 px. Opakované CTA posouvá na stejný formulář. Vyhnout se vyskakovacím oknům, automatickým videím a rušivým animacím.
+Mobil od 320 px, bez horizontálního přetékání, čitelné labely, klávesnice, focus, 44px dotykové cíle, srozumitelné stavy načítání/chyb. Upozornění na omezenou dostupnost amerických ETF pro retail v EU před formulářem; nejde o UCITS alternativy ani doporučení.
 
-## Konverzní cesta
-
-Reklama → úvod → výběr ETF → zadání e-mailu → zpráva „Zkontrolujte svou schránku“ → potvrzení adresy → zpřístupnění užitečného srovnání vybraných ETF. Výběr uložit s kontaktem; potvrzení funguje i na jiném zařízení. Lead magnet je mobilní HTML srovnání s náklady, zaměřením, dividendami, riziky a zdroji. PDF odložit. Potvrzovací e-mail neobsahuje samotné srovnání. Server vydá přístup až po potvrzení; chráněná data nesmí být v předem staženém klientském bundle ani veřejném statickém souboru.
-
-Formulář má pouze e-mail (`type=email`, autocomplete), vysvětlení doručení a odkaz na informace o zpracování údajů. Další marketing vyžaduje samostatný, nepředvyplněný a nepovinný souhlas; jeho odmítnutí nebrání doručení srovnání. Provozovatel před spuštěním určí právní základ, retenční dobu a finální znění informačních textů. Potvrzení adresy není náhradou marketingového souhlasu.
-
-Zobrazit průběh odesílání, srozumitelnou chybu s možností opakovat pokus a bezpečnou stejnou odpověď pro nové i již evidované adresy. Neukazovat stav registrace cizí adresy. Úspěch vykázat až po přijetí požadavku serverem; potvrzený kontakt měřit samostatně.
-
-## Obsahová omezení
-
-Ověřit burzu každého instrumentu: mnoho amerických ETF je obchodováno na NYSE Arca, nikoli přímo na NYSE. Používat přesné označení. Americká ETF mohou být českému retailu nedostupná kvůli požadavkům PRIIPs/KID; tuto informaci uvést viditelně před formulářem. Případné UCITS alternativy jasně oddělit od srovnávaných amerických ETF. Nezaměňovat „nejlepší“ s vhodností pro konkrétního investora a neslibovat budoucí výnosy.
+Reklama → výběr → kalkulačka → e-mail → odeslání odkazu → explicitní potvrzení → uložený přehled. Marketing není podmínkou vyžádaného doručení. Přístupový odkaz neobsahuje osobní údaje. Jednorázové potvrzení platí 7 dní, session v potvrzujícím prohlížeči 30 dní. První potvrzení může být na jiném zařízení; po použití odkazu/ztrátě session MVP nabídne novou žádost, bez automatické obnovy starého přehledu.
 
 ## Technické řešení
 
-- **Frontend:** React, Vite, TypeScript v strict režimu a Tailwind. Staticky sestavitelná stránka na Vercelu; minimum knihoven, lokální optimalizované obrázky a fonty. Veřejný seznam ETF v typovaných datech; úplné srovnání v serverovém datovém souboru se zdroji a datem ověření. Bez závislosti na placeném burzovním API v MVP.
-- **Příjem kontaktů:** serverová Vercel Function `/api/leads` validuje e-mail a souhlas, omezuje frekvenci požadavků a velikost těla, kontroluje původ a honeypot. Limiter musí fungovat napříč instancemi, nikoli jen v paměti procesu. CAPTCHA přidat až při prokázaném zneužívání.
-- **Supabase:** tabulka kontaktů s interním ID, normalizovaným unikátním e-mailem, stavem potvrzení, časy vytvoření a potvrzení, verzí informačního textu a případným marketingovým souhlasem s časem a verzí. Minimální retenční data; neukládat IP dlouhodobě bez konkrétního důvodu. Zapnout RLS, nepovolit veřejné čtení ani zápis. Privilegovaný klíč pouze na serveru, nikdy ve frontendových `VITE_*` proměnných.
-- **E-mail:** zvolená transakční služba doručí potvrzení a srovnání; Supabase samo nezajišťuje marketingové doručování. Token potvrzení je náhodný, časově omezený a jednorázový; v databázi pouze hash. Navrhnout idempotentní odesílání a obnovu při selhání e-mailové služby, aby uložený kontakt nezůstal bez zprávy. Doména musí mít SPF/DKIM a vhodné DMARC.
-- **Nasazení:** oddělit lokální, preview a produkční konfiguraci; preview nesmí zapisovat do produkce ani rozesílat skutečné kampaně. Tajné klíče ve Vercel/Supabase nastavení, v repozitáři pouze `.env.example` s názvy. Doménu, poskytovatele e-mailů a region ukládání potvrdit před produkční integrací.
-- **Měření:** nejprve jednoduché anonymní události bez e-mailů v analytice, URL a logách. Reklamní pixely a nepovinné cookies načítat až po odpovídajícím souhlasu. Ověřit SEO metadata, český jazyk a náhled při sdílení; konverzní obsah nesmí záviset na externím sledování.
+- React, Vite, TypeScript strict, Tailwind; minimální doplnění současného redakčního frontendu.
+- Vercel Functions: katalog `GET /api/catalog`, vytvoření `POST /api/comparisons`, potvrzení `POST /api/access`, chráněné čtení/úpravy `GET/PUT /api/comparison?id=…`, měření `POST /api/events`, chráněné ověření SMTP a denní údržba.
+- Supabase: ověřená ETF, kontakty, srovnání/snapshot, oddělené consent records, session, e-mailové stavy, funnel a atomický rate limiter. Migrace, RLS, zákaz anon/authenticated přímých operací i privilegovaných RPC. Secret/service_role pouze na serveru.
+- Server ověřuje 2–5 jedinečných tickerů, publikaci/čerstvost dat, částku, e-mail, typ souhlasu, honeypot, Origin a velikost JSON. HMAC klíče limiteru neobsahují čitelnou IP/adresu.
+- 256bitové tokeny a session: v DB pouze hash; cookie HttpOnly, Secure na HTTPS, SameSite=Lax. Osobní uložená srovnání nejsou přístupná jen se znalostí ID.
+- Gmail SMTP přes Nodemailer na serveru: TLS, validované environment variables, HTML/text zpráva, časové limity. Stav sent znamená přijetí SMTP serverem, nikoli doručení; Gmail neposkytuje spolehlivý delivery webhook a doručení zůstává neověřené do kontroly schránky. confirmed_at samostatně po vědomém tlačítku. Při chybě bezpečný log a pravdivá odpověď. Globálně nejvýše 100 pokusů o odeslání denně pro malé MVP, dále IP/adresní limity. SMTP nemá provider idempotency key: po síťové nejistotě může nový pokus vytvořit další zprávu. Fronta/retry odloženy.
+- Oddělené preview prostředí a testovací adresy; žádné tajné klíče ve VITE_* nebo Gitu. `.env.example` a přesný postup v [SETUP.md](SETUP.md).
+- Retence: nepotvrzené srovnání 30 dní, potvrzené 90 dní od úpravy + následující denní cleanup. Kaskádově odstranit závislá data a osiřelé kontakty. Provozovatel schválí informační texty a zajistí funkční úklid i žádosti subjektů údajů.
 
-## Postup a ověření
+## ETF a aktualizace
 
-1. Schválit nabídku, ověřené ETF a české texty včetně dostupnosti pro retail.
-2. Vytvořit statickou mobilní stránku a formulář s jasnými stavy.
-3. Přidat serverový endpoint, databázi, potvrzení adresy a doručení srovnání.
-4. Ověřit mobilní šířky od 320 px, klávesnici, čtečku obrazovky, kontrast a slabší připojení. Cílit na LCP ≤ 2,5 s, INP ≤ 200 ms a CLS ≤ 0,1; laboratorní měření před spuštěním, reálná data až po získání provozu.
-5. Spustit build a typecheck, otestovat validaci, souhlasy, duplicity, expiraci tokenů, omezení frekvence a selhání doručování. V testovacím prostředí ověřit celou cestu od formuláře po e-mail a srovnání.
-6. Před publikací ověřit kontaktní a právní texty, retenční pravidla, produkční tajné proměnné a odesílací doménu. Spuštění reklam a produkční nasazení vyžaduje samostatné zadání.
+Primární zdroje: nyse.com, ssga.com, investor.vanguard.com, ishares.com a oficiální Vanguard dokumenty. Pro každé pole URL, platnost, datum kontroly a doklad lidského ověření; kontrolor a schválené podmínky použití. [DATA_SOURCES.md](DATA_SOURCES.md) popisuje validovaný dry-run a atomický import. Schválená doména sama nepotvrzuje údaje ani licenci.
 
-## Ověření skutečných údajů ETF
+Týdenní ruční kontrola je vhodná pro index/nákladovost/dividendovou politiku. Nová srovnání nezahrnují fond s ověřením starším než 14 dní. Uložená srovnání zachovávají snapshot a datum; uložením změn přijmou aktuální data. Denní aktualizace má smysl až pro budoucí dynamické údaje, které MVP nesbírá.
 
-Před tvorbou obsahu vybrat 3–5 skutečných ETF a ověřit burzu v oficiálním burzovním seznamu a údaje ve factsheetu, prospektu nebo na produktové stránce emitenta. Ke každému poli uchovat URL zdroje, datum platnosti údaje a datum kontroly. Nákladovost přebírat s přesným názvem z dokumentace emitenta; nezaměňovat ji automaticky s evropským TER. U proměnlivých údajů používat stejné rozhodné datum nebo rozdíl výslovně vysvětlit. Výnosová data v MVP vynechat, pokud nelze ověřit srovnatelnou metodiku.
+Oficiální data/API/podmínky nebylo možné z tohoto prostředí ověřit kvůli HTTP 403. Nevymýšlet data ani dostupnost API. Automatický import nyní neimplementovat; později jen dokumentované povolené API/export, validace a audit, podezřelé změny ručně schválit. Denní Cron v MVP slouží pouze retenci, nikoli importu ETF.
 
-AI výstup není zdroj. Druhá kontrola musí porovnat publikované hodnoty s primárním dokumentem. Neověřené pole vynechat a uvést omezení, nikoli doplnit odhad. Tento plán zatím neobsahuje ověřený dataset a netvrdí, že konkrétní ETF již byla prověřena.
+## Implementační kroky a ověření
+
+1. Datový model, schválené zdroje, validovaný ruční import.
+2. Vercel API a Supabase transakce, RLS, bezpečný přístup a rate limiting.
+3. Gmail SMTP HTML/text zpráva, bezpečné chybové stavy, oddělené přijetí SMTP a potvrzení; skutečné doručení ověřit ve schránce.
+4. API frontend: hledání, 2–5 ETF, tabulka/graf, e-mail, obnovení a uložení.
+5. Volitelné consented měření, testy SQL/validace/mail chyb/tokenů, mobilní browser testy, dokumentace.
+
+Build a typecheck průběžně. PostgreSQL testy skutečných migrací na PGlite; browser fixtures nejsou produkční data. Živý Supabase, skutečné e-mailové doručení a Vercel nasazení vyžadují nastavení a test podle SETUP.md. Bez tohoto testu ani ověřeného katalogu nepovažovat produkci za hotovou. Cílit na LCP ≤2,5 s, INP ≤200 ms, CLS ≤0,1; plný WCAG/performance audit je samostatná předspouštěcí kontrola.
 
 ## Dvě varianty reklamních textů
 
-- **A — přehlednost:** „Ztrácíte se v amerických ETF? Vyberte si fondy a získejte přehled nákladů, zaměření a rizik v češtině. Srovnání zdarma po potvrzení e-mailu.“ CTA: „Vybrat ETF“.
-- **B — praktické rozdíly:** „Podobné ETF, různé náklady a dividendy. Porovnejte vybraná ETF z NYSE Arca a zjistěte, na co si dát pozor jako český investor. Srovnání zdarma po potvrzení e-mailu.“ CTA: „Získat srovnání“.
+- **A — přehlednost:** „Ztrácíte se v amerických ETF? Vyberte si fondy a získejte přehled nákladů, zaměření a rizik v češtině. Uložte si vlastní přehled přes odkaz e-mailem.“ CTA: „Vybrat ETF“.
+- **B — praktické rozdíly:** „Podobné ETF, různé náklady a dividendy. Porovnejte vybraná ETF z NYSE Arca a zjistěte, na co si dát pozor jako český investor. Uložte si vlastní přehled přes odkaz e-mailem.“ CTA: „Získat srovnání“.
 
 Použít až po ověření obsahu nabídky a burzy. Doprovodný text upozorní, že dostupnost amerických ETF pro český retail může být omezená. Obě reklamy vedou na stejnou stránku s odpovídajícím příslibem; původ rozlišit povolenými UTM hodnotami. Bez slibů výnosu a bez tvrzení o vhodnosti investice.
 
@@ -65,9 +64,11 @@ Použít až po ověření obsahu nabídky a burzy. Doprovodný text upozorní, 
 | --- | --- | --- |
 | `landing_view` | První zobrazení v měřené návštěvě | Výchozí počet návštěv podle kampaně |
 | `comparison_interacted` | První změna výběru ETF nebo řazení | Podíl návštěv s interakcí |
+| `comparison_configured` | Pokračování od kalkulačky k e-mailu | Dokončené nastavení |
 | `form_started` | První práce s e-mailovým polem | Přechod k formuláři |
 | `lead_submit_attempt` | Pokus o odeslání | Diagnostika tření a validace |
 | `lead_accepted` | Server přijme platnou žádost | Přijaté kontakty; oddělit duplicity |
+| `email_sent` | Gmail SMTP přijme příjemce/zprávu a server uloží stav | Odeslání, nikoli doručení |
 | `email_confirmed` | Server poprvé platně potvrdí adresu | Hlavní konverze |
 | `comparison_opened` | Server úspěšně zpřístupní srovnání | Skutečné převzetí hodnoty |
 
@@ -93,9 +94,9 @@ Testovat postupně po spuštění, jednu změnu najednou, s náhodným stabilní
 
 ## Dokumentace a termín 16. října 2026
 
-Rozsah do termínu: jedna landing page, jednoduchý výběr 2–3 ETF, ověřená serverová data, jeden formulář, potvrzení e-mailu, chráněné srovnání a základní funnel. Bez vlastního screeneru, účtů, PDF generátoru, živých cen a vlastní platformy A/B testů. Pro omezení frekvence využít Supabase nebo podporované řešení poskytovatele; nepřidávat samostatnou infrastrukturu bez potřeby.
+Rozsah do termínu: jedna landing page, vyhledávání v ověřeném katalogu a výběr 2–5 ETF, ověřená serverová data, jeden formulář, potvrzení e-mailu, chráněné srovnání a základní funnel. Bez vlastního screeneru, účtů, PDF generátoru, živých cen a vlastní platformy A/B testů. Pro omezení frekvence využít Supabase nebo podporované řešení poskytovatele; nepřidávat samostatnou infrastrukturu bez potřeby.
 
-- **9.–10. října:** dokončit plán, vybrat a ověřit data; určit provozovatele, doménu a e-mailovou službu. Vývoj začne až po samostatném zadání.
+- **9.–10. října:** dokončit plán, vybrat a ověřit data; určit provozovatele, doménu a e-mailovou službu. Implementace byla schválena; chybějící služby a data zůstávají podmínkou spuštění.
 - **11.–12. října:** mobilní stránka, interaktivní výběr a obsah.
 - **13.–14. října:** Supabase, serverové endpointy, potvrzení, chráněný přístup a měření.
 - **15. října:** test celé cesty, mobilní a přístupnostní kontrola, opravy; ověření dat a doručování.
@@ -105,4 +106,4 @@ Harmonogram předpokládá včasné zadání implementace a přístupy ke služb
 
 **README:** při implementaci nahradit současný nadpis vysvětlením pořadí sekcí (příslib → vlastní výběr → hodnota nabídky → důvěra → CTA), strategie potvrzeného kontaktu, technického toku a místního spuštění. Uvést konfiguraci bez tajných hodnot, zdroje ETF, provedené testy a aktuální nedostatky: omezení dostupnosti ETF, ruční aktualizace dat, závislost na doručování, mezery měření a dosud neověřené konverzní předpoklady. Důsledně rozlišit plánované a hotové funkce.
 
-**`ai-log/`:** vést datované Markdown záznamy od plánování po implementaci. Uchovat skutečné použité prompty a jejich pořadí, stručný popis výsledku, provedené kontroly se zdroji/příkazy, nalezené chyby, opravy a neověřené části. Citlivé údaje redigovat. Nezaměňovat plán kontrol za jejich provedení ani zpětně nevymýšlet prompty. Evidovat zejména ověření finančních dat člověkem či kontrolou primárního zdroje a opravu původního návrhu veřejné ukázky na zpřístupnění až po potvrzení e-mailu. README i logy jsou součástí předání, nikoli volitelný dodatek.
+**`ai-log/`:** vést datované Markdown záznamy od plánování po implementaci. Uchovat skutečné použité prompty a jejich pořadí, stručný popis výsledku, provedené kontroly se zdroji/příkazy, nalezené chyby, opravy a neověřené části. Citlivé údaje redigovat. Nezaměňovat plán kontrol za jejich provedení ani zpětně nevymýšlet prompty. Evidovat zejména ověření finančních dat a schválené změny rozsahu: veřejné porovnání a chráněné uložené srovnání. README i logy jsou součástí předání, nikoli volitelný dodatek.

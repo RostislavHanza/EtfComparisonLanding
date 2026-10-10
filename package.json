@@ -9,25 +9,36 @@
     "typecheck": "tsc --noEmit",
     "preview": "vite preview --host 0.0.0.0",
     "test": "tsx --test tests/*.test.ts",
-    "import:etfs": "tsx scripts/import-etfs.ts"
+    "import:etfs": "tsx scripts/import-etfs.ts",
+    "dev:api": "tsx scripts/dev-api.ts",
+    "test:browser": "node tests/browser/mvp.mjs",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.3",
+    "nodemailer": "^10.1.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "resend": "^6.32.1"
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.8",
+    "@eslint/js": "^10.0.1",
     "@tailwindcss/vite": "^4.1.0",
     "@types/node": "^26.6.5",
+    "@types/nodemailer": "^8.0.2",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vercel/node": "^23.0.1",
     "@vitejs/plugin-react": "^5.1.0",
+    "eslint": "^10.12.0",
+    "playwright": "^1.64.0",
     "tailwindcss": "^4.1.0",
     "tsx": "^4.23.15",
     "typescript": "~5.9.3",
+    "typescript-eslint": "^8.71.1",
     "vite": "^7.2.0"
+  },
+  "engines": {
+    "node": "24.x"
   }
 }

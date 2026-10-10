@@ -17,9 +17,9 @@ export function attribution(value: unknown) {
   if (value === undefined || value === null) return null
   const v = object(value)
   if (v.consent !== true) return null
-  if (typeof v.visitId !== 'string' || !/^[a-f0-9-]{36}$/.test(v.visitId)) throw new InputError('Neplatné ID návštěvy.')
+  const visitId = uuid(v.visitId)
   const campaign = typeof v.campaign === 'string' && ['ad-a','ad-b','direct'].includes(v.campaign) ? v.campaign : 'direct'
-  return { visitId: v.visitId, campaign }
+  return { visitId, campaign }
 }
 export function leadInput(value: unknown) {
   const body = object(value), selection = comparisonInput(body)

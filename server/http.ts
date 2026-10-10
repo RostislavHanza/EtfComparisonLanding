@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { SupabaseRepository } from './repository.ts'
 import { Application, HttpError, publicError } from './application.ts'
-import { ResendMailer } from './mail.ts'
+import { SmtpMailer,readSmtpConfig } from './mail.ts'
 import type { AppConfig } from './application.ts'
 export function runtime(){
  const base=process.env.APP_BASE_URL,secret=process.env.RATE_LIMIT_SECRET
@@ -11,8 +11,10 @@ export function runtime(){
  const parsed=new URL(base)
  if(parsed.username||parsed.password||parsed.search||parsed.hash||parsed.pathname!=='/'||(parsed.protocol!=='https:'&&!(env==='development'&&['localhost','127.0.0.1'].includes(parsed.hostname))))throw new HttpError(503,'Služba zatím není nakonfigurovaná.')
  const config:AppConfig={baseUrl:parsed.origin,secret,environment:env as AppConfig['environment'],previewRecipients:(process.env.PREVIEW_RECIPIENTS??'').split(',').map(s=>s.trim().toLowerCase()).filter(Boolean)}
+ if(process.env.OPERATOR_NAME?.trim()&&process.env.OPERATOR_CONTACT?.trim())config.privacy={controllerName:process.env.OPERATOR_NAME.trim(),controllerContact:process.env.OPERATOR_CONTACT.trim(),retentionDays:90}
  const repo=new SupabaseRepository(url,key)
- const mail=process.env.RESEND_API_KEY&&process.env.EMAIL_FROM?new ResendMailer(process.env.RESEND_API_KEY,process.env.EMAIL_FROM):undefined
+ let mail:SmtpMailer|undefined
+ try{mail=new SmtpMailer(readSmtpConfig(process.env))}catch{/* Missing/invalid SMTP cannot block the public catalog. Lead creation fails safely. */}
  return {app:new Application(repo,config,mail),baseUrl:parsed.origin}
 }
 export function header(req:VercelRequest,key:string){const v=req.headers[key.toLowerCase()];return Array.isArray(v)?v[0]??'':v??''}
