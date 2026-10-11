@@ -390,8 +390,16 @@
     },
     "legalNotice": {
       "url": "https://tickerinside.com/legal/",
-      "httpStatus": 403,
-      "status": "not_read_network_proxy"
+      "revisionDate": "2026-10-09",
+      "status": "independently_verified_by_operator",
+      "recordedAt": "2026-10-11T20:24:08.149064+00:00",
+      "verificationBasis": "Provozovatel v opravě právě probíhajícího zadání doložil nezávislé otevření a ověření /legal/, /terms/ a /api/. Nejde o nové HTTP měření této úlohy.",
+      "licenseScope": "CC BY 4.0 pro vlastní práci TickerInside v aktuálních API snapshotech včetně komerčního použití s atribucí; aktuální /api/v1/fund/ soubory. Historie holdings a ETF flows mají odlišná pravidla a nepoužíváme je.",
+      "thirdPartyRights": "Licence se automaticky nevztahuje na práva třetích stran.",
+      "relatedOfficialUrls": [
+        "https://tickerinside.com/terms/",
+        "https://tickerinside.com/api/"
+      ]
     },
     "scope": "Current fund JSON metadata and SEC-derived fees; no holdings/history/flows/prices/FIGI; licensing is provider declaration, operator approval still required.",
     "issuerRecheck": [
@@ -476,5 +484,6 @@
         "meaning": "Assistant technical source observation, not human or legal approval"
       }
     ]
-  }
+  },
+  "usageFindingsNotice": "Původní pozorování během rešerše, nikoli aktuální stav rozhodnutí provozovatele. Následné ověření TickerInside od provozovatele je v methodologyReview.legalNotice; rozhodnutí pro omezené faktické demo v priority-five.demo-approval.json není právní povolení emitenta."
 }

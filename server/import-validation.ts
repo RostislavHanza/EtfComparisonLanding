@@ -57,8 +57,14 @@ export function validateImport(input:unknown){
    return (issuers[ticker]??[]).some(host=>onHost(hostname,host))&&/NYSE\s+Arca/i.test(s.evidence)&&s.evidence.split(/[^A-Za-z0-9.-]+/).includes(ticker)
   }))throw new InputError('Burzu doložte na NYSE nebo u příslušného emitenta s výslovným tickerem a NYSE Arca.')
   const review=object(r.usageReview)
-  if(review.approved!==true)throw new InputError('Podmínky použití nejsou schválené.')
-  const usage={approved:true,reviewedAt:date(review.reviewedAt,'práv použití'),reviewer:text(review.reviewer,'kontrolor práv'),basis:text(review.basis,'oprávnění k použití'),policyUrl:approvedUrl(review.policyUrl,true)}
+  if(review.approved!==true)throw new InputError('Použití údajů a publikace nejsou schválené.')
+  // Legacy usage_review remains compatible. An operator decision is not issuer permission or a legal audit.
+  let decision:{approvalType?:'operator-publication-decision';issuerPermissionClaimed?:false;limitations?:string[]}={}
+  if(review.approvalType!==undefined){
+   if(review.approvalType!=='operator-publication-decision'||r.methodology!=='tickerinside-primary-v1'||review.issuerPermissionClaimed!==false||!Array.isArray(review.limitations)||!review.limitations.length||review.limitations.length>8)throw new InputError('Neplatné rozhodnutí provozovatele nebo nedoložené tvrzení o povolení emitenta.')
+   decision={approvalType:review.approvalType,issuerPermissionClaimed:false,limitations:review.limitations.map(value=>text(value,'omezení použití'))}
+  }
+  const usage={approved:true,reviewedAt:date(review.reviewedAt,'rozhodnutí o použití'),reviewer:text(review.reviewer,'schvalovatel použití'),basis:text(review.basis,'podklad rozhodnutí'),policyUrl:approvedUrl(review.policyUrl,true),...decision}
   return{ticker,name:text(r.name,'název'),exchange:r.exchange,tracked_index:text(r.index,'index'),expense_ratio_percent:r.expenseRatioPercent,dividends:text(r.dividends,'dividendy'),description:text(r.description,'charakteristika'),verified_at:verifiedAt,data_as_of:asOf.slice(0,10),sources,verified_by:text(r.verifiedBy,'kontrolor dat'),usage_review:usage,published:true}
  })
 }

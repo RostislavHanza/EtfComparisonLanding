@@ -1,9 +1,8 @@
-// Real researched facts in isolated test fixtures. Not published or approved production data.
+// The prepared operator-approved batch in isolated API fixtures; this does not prove a remote DB import.
 import { readFile } from 'node:fs/promises'
 import { chromium } from 'playwright'
 import assert from 'node:assert/strict'
-const draft=JSON.parse(await readFile('data/review/priority-five.pending.json','utf8')),date=new Date().toISOString()
-const funds=draft.records.map(r=>({...r,verifiedAt:date,dataAsOf:r.snapshotObservedAt.slice(0,10),sources:r.sources.map(s=>({...s,verified_at:date}))}))
+const funds=JSON.parse(await readFile('data/priority-five.approved.json','utf8')).records
 const browser=await chromium.launch({executablePath:process.env.BROWSER_PATH||undefined,args:['--no-sandbox']})
 const base=process.env.TEST_BASE_URL??'http://127.0.0.1:4173'
 try{
