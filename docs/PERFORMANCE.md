@@ -2,7 +2,7 @@
 
 ## Pořadí a ovládání
 
-Výběr 2–5 ETF → částka (číslo/slider) a horizont → řádky zisku/ztráty všech vybraných fondů → historický graf s jediným přepínačem reference → podrobná tabulka → původní e-mailový průchod. Žádné přepínání Historie/Scénář, checkbox nebo tlačítko pro povolení editace. Dominantní graf nákladů odstraněn; expense ratio je u fondu i v tabulce a orientační roční náklad zůstal v tabulce.
+Výběr 2–5 ETF → částka (číslo/slider) a horizont → společná tabulka zisku/ztráty všech vybraných fondů → historický graf s jediným přepínačem reference → podrobná tabulka → původní e-mailový průchod. Žádné přepínání Historie/Scénář, checkbox nebo tlačítko pro povolení editace. Dominantní graf nákladů odstraněn; expense ratio je u fondu i v tabulce a orientační roční náklad zůstal v tabulce.
 
 Každý fond má rovnou editovatelné procento. Automatický předpoklad je CAGR skutečného kumulativního r1/r3/r5:
 
@@ -10,7 +10,7 @@ Každý fond má rovnou editovatelné procento. Automatický předpoklad je CAGR
 
 Vstup se předvyplní zaokrouhleným tempem na dvě desetinná místa; právě tato viditelná sazba je modelový vstup. Model = `investment * (1 + annualAssumption / 100) ** horizonYears`, zisk = model − vklad. Hlavní částka je pouze tento zisk/ztráta, kladné mají znaménko +, nikoli celková budoucí hodnota. Pruhy sdílejí lineární doménu od min(0, zisky) do max(0, zisky); společná nula správně rozlišuje zelené zisky a červené ztráty. Null nemá pruh, nula má nulovou délku. Funguje i jediný fond (e-mail nadále vyžaduje 2–5). Horizont (1/3/5/10/15/20 let) a referenční období (1/3/5 let) jsou odlišné parametry. Výchozí období 5 let a horizont 10 let nejsou předpověď.
 
-Ručně upravená sazba každého fondu přetrvá změnu částky a horizontu i cestu do e-mailového formuláře a zpět. Jediný přepínač referenčního období 1/3/5 let přímo nad historickým grafem záměrně resetuje všechny ruční sazby na CAGR nové reference, zároveň změní graf a zisky, ale zachová horizont. Obnovit podle historie mění pouze daný fond. Vyprázdnění vstupu je také ruční volba. Bez rN je vstup prázdný, žádné 0 % nebo pevný fallback; vlastní sazba funguje i při výpadku historie. Povolené rozmezí −100 až 100 %, neplatné/blank výsledky se nevydávají za poslední platný model. Modelové sazby/horizont jsou lokální stav této návštěvy; e-mailová DB nadále uchovává původní ETF výběr a částku, nikoli nové parametry. Nová navigace/reload osobního odkazu je znovu předvyplní podle historie.
+Ručně upravená sazba každého fondu přetrvá změnu částky a horizontu i cestu do e-mailového formuláře a zpět. Jediný přepínač referenčního období 1/3/5 let přímo nad historickým grafem záměrně resetuje všechny ruční sazby na CAGR nové reference, zároveň změní graf a zisky, ale zachová horizont. Jediné společné tlačítko Obnovit podle historie pod tabulkou obnovuje sazby všech vybraných fondů. Společné záhlaví, jeden popisek a jedna obnova nahrazují opakované popisky v jednotlivých řádcích. Na mobilu zůstávají tři kompaktní sloupce, ticker/numerický vstup/zisk a pruh; plné názvy v řádkovém záhlaví jsou dostupné čtečkám a viditelné v detailním srovnání. Vyprázdnění vstupu je také ruční volba. Bez rN je vstup prázdný, žádné 0 % nebo pevný fallback; vlastní sazba funguje i při výpadku historie. Povolené rozmezí −100 až 100 %, neplatné/blank výsledky se nevydávají za poslední platný model. Modelové sazby/horizont jsou lokální stav této návštěvy; e-mailová DB nadále uchovává původní ETF výběr a částku, nikoli nové parametry. Nová navigace/reload osobního odkazu je znovu předvyplní podle historie.
 
 ## Výkonnost a náklady
 
@@ -58,7 +58,7 @@ GET `/api/performance` stále používá pevný seznam pětice, ověřuje identi
 
 ## Praktický Preview test
 
-Vyberte fondy, nastavte částku a horizont. Všechna procenta jsou okamžitě editovatelná. Přepište SPY na 6 a VOO na −10; změňte částku/horizont: ruční procenta se nemění. Při vkladu 200 000 Kč a horizontu 3 roky musí VOO ukázat −54 200 Kč, nikoli 145 800 Kč. Pruhy mají společnou nulu a ztráta je červená. Obnovte SPY: použije aktuální CAGR, VOO se nezmění. Přepněte u grafu historii: obě sazby se obnoví podle nové reference a graf změní rozsah, horizont zůstane. Zkontrolujte jediný fond, chybějící historii, vlastní nulový/záporný vstup a neplatné hodnoty.
+Vyberte fondy, nastavte částku a horizont. Všechna procenta jsou okamžitě editovatelná. Přepište SPY na 6 a VOO na −10; změňte částku/horizont: ruční procenta se nemění. Při vkladu 200 000 Kč a horizontu 3 roky musí VOO ukázat −54 200 Kč, nikoli 145 800 Kč. Pruhy mají společnou nulu a ztráta je červená. Klikněte pod tabulkou na Obnovit podle historie: sazby všech vybraných fondů se vrátí na aktuální CAGR. Přepněte u grafu historii: obě sazby se obnoví podle nové reference a graf změní rozsah, horizont zůstane. Zkontrolujte jediný fond, chybějící historii, vlastní nulový/záporný vstup a neplatné hodnoty.
 
 Pod pruhy očekávejte historický ETF graf s legendou, skutečným rozsahem a normalizací 100. Posouvejte prst/myš nebo klávesnicí slider Prohlédnout historický týden: tooltip ukáže týden a hodnoty všech křivek. Změna vybraných fondů/ref aktualizuje řady; 5 let ukazuje pravdivý 156týdenní limit. Detailní tabulka, zdroje, nákladovost a následný e-mailový krok zůstávají pod grafem. Síťový panel má jediné načtení balíku performance, žádné fetch na změnu částky.
 
