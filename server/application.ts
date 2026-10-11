@@ -12,10 +12,15 @@ export class Application {
   constructor(private repo:Repository,private config:AppConfig,private mail?:Mailer) {}
   private key(scope:string,value:string){return createHmac('sha256',this.config.secret).update(`${scope}:${value}`).digest('hex')}
   private async limit(scope:string,value:string,count:number,seconds:number){if(!await this.repo.limit(this.key(scope,value),count,seconds))throw new HttpError(429,'Příliš mnoho požadavků. Zkuste to později.')}
-  async catalog(){return {funds:await this.repo.catalog(),privacy:this.config.privacy??null}}
+  async catalog(id?:unknown,session=''){
+    if(id!==undefined)await this.read(id,session)
+    const funds=await this.repo.catalog()
+    return {funds:id===undefined?funds.map(({ticker,name,verifiedAt})=>({ticker,name,verifiedAt})):funds,privacy:this.config.privacy??null}
+  }
   async create(body:unknown,ip:string){
     await this.limit('lead-ip',ip,20,3600)
     const input=leadInput(body)
+    if(input.marketingConsent)throw new InputError('Marketingový souhlas v tomto formuláři nesbíráme.')
     if(!this.config.privacy)throw new HttpError(503,'Odesílání zatím není dostupné: chybí nastavení provozovatele.')
     if(!this.mail)throw new HttpError(503,'Odesílání není nyní dostupné.')
     if(this.config.environment!=='production'&&!this.config.previewRecipients.includes(input.email))throw new HttpError(403,'V testovacím prostředí lze posílat pouze na povolené testovací adresy.')
@@ -36,13 +41,17 @@ export class Application {
     }
     return {status:'sent',message:'Zpráva byla předána k odeslání. Zkontrolujte schránku včetně složky spam.'}
   }
-  async access(body:unknown,ip:string){
+  async access(body:unknown,ip:string,currentSession=''){
     await this.limit('access-ip',ip,30,600)
     const token=tokenInput(body),session=newToken(),id=await this.repo.redeem(hash(token),hash(session))
+    if(!id&&/^[A-Za-z0-9_-]{43}$/.test(currentSession)&&this.repo.reopen){
+      const previous=await this.repo.reopen(hash(token),hash(currentSession))
+      if(previous)return{id:previous,session:currentSession}
+    }
     if(!id)throw new HttpError(410,'Odkaz vypršel, byl již použit nebo není platný. Vraťte se do původního prohlížeče nebo si vyžádejte nové srovnání.')
     return {id,session}
   }
-  async read(id:unknown,session:string){const result=await this.repo.read(hash(tokenInput({token:session})),uuid(id));if(!result)throw new HttpError(401,'Přístup vypršel nebo srovnání není dostupné.');return result}
+  async read(id:unknown,session:string){if(!/^[A-Za-z0-9_-]{43}$/.test(session))throw new HttpError(401,'Přístup vyžaduje platný e-mailový odkaz.');const result=await this.repo.read(hash(tokenInput({token:session})),uuid(id));if(!result)throw new HttpError(401,'Přístup vypršel nebo srovnání není dostupné.');return result}
   async update(id:unknown,session:string,body:unknown,ip:string){
     await this.limit('save-ip',ip,60,600)
     const input=comparisonInput(body)

@@ -7,21 +7,21 @@ import type { HistoricalYears,PerformanceCatalog } from '../shared/performance'
 import { loadPerformance } from './performance-client'
 import HistoricalChart from './HistoricalChart'
 export interface InvestmentSettings {period:HistoricalYears;horizon:number;edits:Record<string,string>}
-interface Props {funds:EtfRecord[];amount:number;draft:string;update:(value:string)=>void;invalid:boolean;settings:InvestmentSettings;onSettingsChange:Dispatch<SetStateAction<InvestmentSettings>>}
-export default function InvestmentCalculator({funds,amount,draft,update,invalid,settings,onSettingsChange}:Props){
+interface Props {comparisonId:string;funds:EtfRecord[];amount:number;draft:string;update:(value:string)=>void;invalid:boolean;settings:InvestmentSettings;onSettingsChange:Dispatch<SetStateAction<InvestmentSettings>>}
+export default function InvestmentCalculator({comparisonId,funds,amount,draft,update,invalid,settings,onSettingsChange}:Props){
  const {period,horizon,edits}=settings
  const setPeriod=(period:HistoricalYears)=>onSettingsChange(previous=>previous.period===period?previous:{...previous,period,edits:{}})
  const setHorizon=(horizon:number)=>onSettingsChange(previous=>({...previous,horizon}))
  const setEdits=(update:(previous:Record<string,string>)=>Record<string,string>)=>onSettingsChange(previous=>({...previous,edits:update(previous.edits)}))
  const [data,setData]=useState<PerformanceCatalog>(),[error,setError]=useState(''),[loading,setLoading]=useState(false)
  const supported=funds.some(f=>PERFORMANCE_TICKERS.includes(f.ticker as typeof PERFORMANCE_TICKERS[number]))
- async function reload(){setLoading(true);setError('');try{setData(await loadPerformance())}catch{setError('Historická data nyní nejsou dostupná. Vlastní předpoklady můžete zadat dál.')}finally{setLoading(false)}}
+ async function reload(){setLoading(true);setError('');try{setData(await loadPerformance(comparisonId))}catch{setError('Historická data nyní nejsou dostupná. Vlastní předpoklady můžete zadat dál.')}finally{setLoading(false)}}
  useEffect(()=>{
   if(!supported)return
   let active=true
-  loadPerformance().then(value=>{if(active)setData(value)}).catch(()=>{if(active)setError('Historická data nyní nejsou dostupná. Vlastní předpoklady můžete zadat dál.')})
+  loadPerformance(comparisonId).then(value=>{if(active)setData(value)}).catch(()=>{if(active)setError('Historická data nyní nejsou dostupná. Vlastní předpoklady můžete zadat dál.')})
   return()=>{active=false}
- },[supported])
+ },[supported,comparisonId])
  const records=funds.flatMap(f=>{const record=data?.funds.find(r=>r.ticker===f.ticker);return record?[record]:[]})
  function restore(){setEdits(previous=>{const next={...previous};for(const f of funds)delete next[f.ticker];return next})}
  const models=funds.map(f=>{
