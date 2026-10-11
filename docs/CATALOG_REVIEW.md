@@ -1,5 +1,7 @@
 # První veřejná pětice: připravená dávka pro demo
 
+Aktualizace při práci na kalkulačce: provozovatel potvrdil, že všech pět ETF již importoval, publikoval a vidí na webu. Níže je evidence původní přípravy a archivní importní postup; kvůli nové kalkulačce jej neopakujte. Tato úloha žádný vzdálený zápis neprovádí.
+
 ## Stav a rozhodnutí provozovatele
 
 Provozovatel v zadání navazujícím na commit 4532ad22ae0fc554628be60adfc37e928689013b výslovně přijal model omezených faktických údajů, transparentní atribuce a vlastních českých popisů a rozhodl o publikaci SPY, VOO, IVV, VTI a IWM pro technické demo. Označení schvalovatele je **admin**, nikoli vymyšlené osobní jméno. Toto rozhodnutí neopakujeme jako požadavek na další právní audit.

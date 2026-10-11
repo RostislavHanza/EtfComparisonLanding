@@ -1,12 +1,12 @@
 # ETF Comparison Landing
 
-Český mobile-first srovnávač ETF: React + Vite + TypeScript + Tailwind, Vercel Functions, Supabase a Nodemailer/Gmail SMTP. Výchozí původní redakční vzhled je zachovaný; backend a frontend jsou propojené, služby zatím nejsou nakonfigurované v tomto prostředí.
+Český mobile-first srovnávač ETF: React + Vite + TypeScript + Tailwind, Vercel Functions, Supabase a Nodemailer/Gmail SMTP. Výchozí původní redakční vzhled je zachovaný; backend a frontend jsou propojené; živé služby se v této úloze neměnily.
 
 ## Jak web funguje
 
-Redakční úvod → hledání ETF podle tickeru/názvu → výběr 2–5 → tabulka parametrů → částka a graf ročních nákladů → e-mail → unikátní odkaz → potvrzení a obnovený interaktivní přehled. E-mail přichází až po sestavení srovnání. Veřejné porovnání poskytuje hodnotu; uložený návratový odkaz motivuje ke kontaktu. Výběr i částka se uloží v Supabase a po otevření lze změny znovu uložit.
+Redakční úvod → hledání ETF podle tickeru/názvu → výběr 2–5 → tabulka parametrů → částka, historický/hypotetický vývoj a roční náklady → e-mail → unikátní odkaz → potvrzení a obnovený interaktivní přehled. E-mail přichází až po sestavení srovnání. Veřejné porovnání poskytuje hodnotu; uložený návratový odkaz motivuje ke kontaktu. Výběr i částka se uloží v Supabase a po otevření lze změny znovu uložit.
 
-Kalkulace je částka × expense ratio / 100 (100 000 Kč × 0,03 % = 30 Kč/rok). Nezahrnuje brokera, konverze, daně nebo změny hodnoty investice a nepředpovídá výnosy. PRIIPs/KID a omezená dostupnost amerických ETF pro retail v EU jsou viditelné před formulářem; obsah není doporučení.
+Kalkulace je částka × expense ratio / 100 (100 000 Kč × 0,03 % = 30 Kč/rok). Nezahrnuje brokera, konverze, daně nebo změny hodnoty investice a nepředpovídá výnosy. Nové historické r1/r3/r5 jsou kumulativní, vlastní scénář používá složené úročení; oba ignorují historický USD/CZK kurz. Historické total returns se nesnižují znovu o expense ratio. Podrobnosti a skutečné výnosy: [PERFORMANCE.md](docs/PERFORMANCE.md). PRIIPs/KID a omezená dostupnost amerických ETF pro retail v EU jsou viditelné před formulářem; obsah není doporučení.
 
 FAQ, metodika, rizika a informace o zpracování údajů následují za srovnávačem. Marketingový souhlas je samostatný a nepovinný. Provozovatel musí doplnit svou identitu/kontakt a schválit informační texty; do nastavení správce server nepřijímá kontakty.
 
@@ -45,7 +45,7 @@ Bez parametru nebo `?variant=editorial` je skutečná API stránka. `?variant=ed
 
 Volitelné měření se spustí až po souhlasu. Události: návštěva, interakce, nastavení, formulář, přijetí, odeslání, potvrzení a otevření. Serverové události se párují jen s měřenými návštěvami, bez e-mailů/tokenů v analytice; neměřené návštěvy nejsou součástí měřeného konverzního jmenovatele. Stav doručení je provozní evidence. Dvě reklamy, odhad 3–7 % návštěv na kontakt / 60–80 % kontaktů na potvrzení a tři prioritní A/B hypotézy zůstávají v [PLAN.md](docs/PLAN.md). Jsou to předpoklady, nikoli skutečné výsledky.
 
-V této úloze nebylo ověřováno živé nastavení služeb ani doručení ve schránce. První schválená katalogová dávka čeká na explicitní zápis správce; úplné podmínky zdrojů nebyly právně auditovány. Produkční spuštění tím zůstává blokované. Retenční Cron běží na Vercelu jen na produkčních deploymentech; preview vyžaduje vlastní pravidelný úklid. Fronta automatického retry, obnova použitého odkazu, marketingové kampaně, administrace a A/B platforma jsou odložené. Neproveden plný WCAG/performance ani právní audit. Po konfiguraci proveďte celý akceptační průchod podle SETUP.md.
+V této úloze nebylo ověřováno živé nastavení služeb ani doručení ve schránce. První pětice je podle potvrzení správce již publikovaná; úplné podmínky zdrojů nebyly právně auditovány. Produkční spuštění tím zůstává blokované. Retenční Cron běží na Vercelu jen na produkčních deploymentech; preview vyžaduje vlastní pravidelný úklid. Fronta automatického retry, obnova použitého odkazu, marketingové kampaně, administrace a A/B platforma jsou odložené. Neproveden plný WCAG/performance ani právní audit. Po konfiguraci proveďte celý akceptační průchod podle SETUP.md.
 
 Průběh práce, dostupné skutečné prompty, kontroly a opravy: [ai-log/](ai-log/).
 
@@ -67,15 +67,7 @@ Dočasná administrátorská diagnostika Preview: otevřete `/?admin=etf-sync`, 
 
 Serverové funkce používají Node.js ESM importy s příponou `.js` (TypeScript je při kontrole řeší na zdrojové `.ts`). `api/tsconfig.json` přebírá samostatnou NodeNext konfiguraci z `tsconfig.server.json`; frontend si ponechává Vite/bundler konfiguraci. `npm run build` nyní obsahuje `npm run check:server`: kompilaci backendu a spuštění všech API endpointů běžným Node.js bez TypeScript loaderu. `npm run check:vercel` navíc použije lokální oficiální `@vercel/node` builder a spustí skutečně zabalené funkční artefakty, včetně regresní kontroly chybějícího `.ts` importu. Neprovádí deployment ani volání Supabase/SMTP. Výstupy těchto kontrol jsou pouze v ignorovaném `.cache/`.
 
-První pětice SPY/VOO/IVV/VTI/IWM je technicky ověřená a provozovatelem výslovně schválená pro omezené faktické demo pod označením `admin`. Finální dávka je `data/priority-five.approved.json`, rozhodnutí `data/review/priority-five.demo-approval.json`. Nejde o právní stanovisko ani souhlas emitentů. Katalog se naplní až po kontrole dávky a explicitním zápisu správce:
-
-```sh
-npm run import:etfs -- data/priority-five.approved.json
-# po kontrole dry run a správného Supabase projektu:
-npm run import:etfs -- data/priority-five.approved.json --apply
-```
-
-Postup, známá omezení licence a ověření `/api/catalog`: [CATALOG_REVIEW.md](docs/CATALOG_REVIEW.md). Vzdálený zápis nebyl proveden; starší pending podklady zůstávají pro audit historie. Není potřeba další programování nebo migrace.
+První pětice SPY/VOO/IVV/VTI/IWM je podle aktuálního potvrzení správce již publikovaná v Supabase a viditelná na webu. Původní finální dávka `data/priority-five.approved.json` a rozhodnutí `data/review/priority-five.demo-approval.json` zůstávají evidencí omezeného faktického demo modelu pod označením admin. Nepouštějte její import znovu kvůli kalkulačce; nové historické API žádné katalogové řádky nemění. Archivní postup, známá omezení licence a kontrola `/api/catalog`: [CATALOG_REVIEW.md](docs/CATALOG_REVIEW.md).
 
 Souhlas s analytikou je v plovoucím panelu dole na obrazovce. Volby Odmítnout/Přijmout analytiku jsou stejně výrazné, panel je position: fixed mimo rozložení stránky, respektuje safe-area a lze jej zavřít i bez udělení souhlasu. Odkaz Nastavení soukromí je v patičce. Volba v localStorage, náhodné visitId v sessionStorage; žádné analytické cookies ani externí skripty. Marketing má nadále vlastní nepovinný checkbox. Odvolání okamžitě zastaví měření, odstranění přiřazených serverových dat musí být potvrzené; při selhání zůstává viditelná chyba a retry i po reloadu. Původní funkční přístupová cookie se nemaže. Ochranu před opožděnými událostmi zajišťuje migrace 202610110006_analytics_revocation.sql (v aktuálním Preview již aplikovaná podle potvrzení správce; znovu ji nespouštějte); postup a omezení měření viz docs/ANALYTICS.md. Test lišty: `BROWSER_PATH=/usr/bin/chromium node tests/browser/privacy.mjs` (fixtures, bez reálného doručení).
 
@@ -83,4 +75,11 @@ Dávkové schválení dalších fondů: použijte malou kopii priority-five.batc
 
 `npm run test:browser` nyní zahrnuje srovnávač, lištu soukromí, Preview administraci i skutečnou atribuci a přesnost SPY/VTI nad izolovanými fixture. Používá izolované browser API fixture; neodesílá skutečné e-maily ani neprovádí vzdálené zápisy.
 
-TickerInside je hlavní zdroj dostupných licencovaných metadat. Tabulka rozlišuje původ, emitentské ověření a vlastní český popis po polích; atribuce obsahuje odkaz na poskytovatele, konkrétní fondovou stránku, CC BY 4.0 a informaci o úpravách. SPY zachovává 0.0945 % od emitenta; VTI aktuální Morningstar název/index. Provozovatel přijal publikaci první pětice pro demo; toto rozhodnutí není licence emitenta nebo právní audit a známá omezení zůstávají v manifestu. Vzdálený katalog nebyl tímto vývojem změněn. Jednoduchý poslední krok a importní příkazy jsou v docs/CATALOG_REVIEW.md; nejsou potřeba další programové změny ani nová migrace.
+TickerInside je hlavní zdroj dostupných licencovaných metadat. Tabulka rozlišuje původ, emitentské ověření a vlastní český popis po polích; atribuce obsahuje odkaz na poskytovatele, konkrétní fondovou stránku, CC BY 4.0 a informaci o úpravách. SPY zachovává 0.0945 % od emitenta; VTI aktuální Morningstar název/index. Provozovatel přijal publikaci první pětice pro demo; toto rozhodnutí není licence emitenta nebo právní audit a známá omezení zůstávají v manifestu. Vzdálený katalog se touto změnou nemění; správce už potvrdil zveřejnění pětice. Jednoduchý poslední krok a importní příkazy jsou v docs/CATALOG_REVIEW.md; nejsou potřeba další programové změny ani nová migrace.
+
+
+## Kalkulačka vývoje investice
+
+Po výběru fondů zvolte Historický vývoj (1/3/5 let) nebo Hypotetický scénář. Vlastní roční předpoklad není předvyplněný a přijímá i záporná čísla. Tlačítko převzetí historického CAGR vyžaduje explicitní kliknutí a varuje, že nejde o predikci. Historické korunové hodnoty jsou pouze model bez historického USD/CZK kurzu. Roční náklady mají menší samostatnou sekci.
+
+Serverový `/api/performance` načítá pouze licencované vypočtené r1/r3/r5 pro pět fondů z TickerInside, s kontrolou as_of a jednodenní server/CDN keší. Žádné raw historie, nové klíče, dependencies nebo Supabase migrace. Slider nevytváří další API požadavky. Výpadek/null má pravdivý stav bez pevného procenta; vlastní scénář funguje dál. [Metodika, licence, dostupnost všech pěti a Preview test](docs/PERFORMANCE.md). `test:browser` zahrnuje také nové režimy, záporné výnosy, zdrojové odkazy a no-data/outage. Funkční scénářové nastavení je lokální; e-mail dál zachovává vybrané fondy a částku.
