@@ -1,6 +1,6 @@
-import { body, guard, handler } from '../server/http.ts'
-import { HttpError } from '../server/application.ts'
-import { adminCookie, confirmPreviewAccess, logoutPreview, previewAuthenticated, previewConfig, requestPreviewAccess } from '../server/preview-admin.ts'
+import { body, guard, handler } from '../server/http.js'
+import { HttpError } from '../server/application.js'
+import { adminCookie, confirmPreviewAccess, logoutPreview, previewAuthenticated, previewConfig, requestPreviewAccess } from '../server/preview-admin.js'
 export default handler(async(req,res)=>{
  previewConfig()
  if(req.method==='GET')return {authenticated:await previewAuthenticated(req)}

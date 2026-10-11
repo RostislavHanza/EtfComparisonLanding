@@ -147,3 +147,13 @@ Odstranění před odevzdáním: odstraňte `src/PreviewAdmin.tsx`, `src/preview
 Skutečné doručení přihlašovacího e-mailu a import na Vercelu nebyly v Codexu provedeny. Testy používají lokální PostgreSQL a mock SMTP/API; první skutečné ověření proveďte výše uvedeným postupem.
 
 Lokální ověření dočasného UI (API nahrazena fixtures; nejde o test vzdálených služeb): po `npm run build` a spuštění `npm run preview` spusťte `BROWSER_PATH=/usr/bin/chromium node tests/browser/preview-admin.mjs`. Stávající srovnávač ověřuje `npm run test:browser`.
+
+## Kontrola balení Vercel Functions
+
+Runtime Node.js 24 vychází z `package.json` (`engines.node`). Serverová konfigurace používá `NodeNext`; všechny lokální importy v `api/`, `server/` a serverových závislostech `shared/` mají příponu `.js`. TypeScript resolver je při vývoji mapuje na zdrojové `.ts`, ale emitovaný ESM musí odkazovat na soubory dostupné v produkčním balíčku. Nepřidávejte `includeFiles` pro kopírování zdrojových TS jako náhradu za správné importy.
+
+- `npm run check:server`: skutečná kompilace a načtení/vykonání všech devíti API handlerů běžným Node.js s vypnutou podporou TS. Součást `npm run build`, tedy i Vercel buildCommand.
+- `npm run check:vercel`: lokální oficiální builder `@vercel/node` vytvoří devět Lambda artefaktů pro Node.js 24 a kontrola je spustí v samostatných adresářích. Závislosti již musí být instalované; instalace a projektový build jsou v této diagnostice vynechány, aby se kontrolovalo pouze balení funkcí. Regresní zkouška dočasně změní import v testovacím artefaktu na neexistující `http.ts` a ověří detekci `ERR_MODULE_NOT_FOUND`.
+- Kontroly nečtou skutečné účty do testovacích požadavků, nepoužívají SMTP/Supabase a zakazují externí fetch. Funkční dotazy používají pouze bezpečné metody/validace a nepřihlášený GET administrace.
+
+Po Git push vyčkejte na nový automatický Preview deployment a ověřte, že odpovídá novému commitu. Otevřete `/api/preview-admin`: při `APP_ENV=preview` bez přihlášení má vrátit HTTP 200 a `{"authenticated":false}`. V Runtime Logs nesmí být `ERR_MODULE_NOT_FOUND`. Potom otevřete `/?admin=etf-sync`; teprve nyní případně vyžádejte přihlašovací e-mail a proveďte ruční import podle předchozího postupu. Samotná HTTP kontrola nepotvrzuje doručení e-mailu ani úspěšný import.

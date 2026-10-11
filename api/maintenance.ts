@@ -1,7 +1,7 @@
-import { requireAdmin } from '../server/admin.ts'
+import { requireAdmin } from '../server/admin.js'
 import { createClient } from '@supabase/supabase-js'
-import { handler } from '../server/http.ts'
-import { HttpError } from '../server/application.ts'
+import { handler } from '../server/http.js'
+import { HttpError } from '../server/application.js'
 export default handler(async req => {
  if(req.method !== 'GET') throw new HttpError(405,'Nepovolená metoda.')
  requireAdmin(req)

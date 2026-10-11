@@ -1,4 +1,4 @@
-import { InputError, object } from '../shared/validation.ts'
+import { InputError, object } from '../shared/validation.js'
 export const ETF_SYNC_TICKERS = ['SPY','VOO','IVV','VTI','ITOT','SCHB','SPYD','VYM','SCHD','IWM','IJH','IJR','MDY','DIA','RSP','VTV','VUG','VT','VEA','VWO'] as const
 export interface EtfCandidate {
  ticker:string; name:string; exchange:'NYSE Arca'; expenseRatioPercent:number;

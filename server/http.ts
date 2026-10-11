@@ -1,8 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { SupabaseRepository } from './repository.ts'
-import { Application, HttpError, publicError } from './application.ts'
-import { SmtpMailer,readSmtpConfig } from './mail.ts'
-import type { AppConfig } from './application.ts'
+import { SupabaseRepository } from './repository.js'
+import { Application, HttpError, publicError } from './application.js'
+import { SmtpMailer,readSmtpConfig } from './mail.js'
+import type { AppConfig } from './application.js'
 export function readAppConfig(env:NodeJS.ProcessEnv):AppConfig {
  const base=env.APP_BASE_URL,secret=env.RATE_LIMIT_SECRET,environment=env.APP_ENV
  if(!base||!secret||secret.length<32||!['development','preview','production'].includes(environment??''))throw new HttpError(503,'Služba zatím není nakonfigurovaná.')
