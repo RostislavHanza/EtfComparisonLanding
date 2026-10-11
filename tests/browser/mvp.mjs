@@ -32,7 +32,7 @@ try{
   await p.locator('#catalog-search').fill('');for(const n of [2,3,4])await p.locator('.real-etf-selection input').nth(n).check()
   assert.equal(await p.locator('.real-etf-selection input:checked').count(),5);assert.equal(await p.locator('.real-etf-selection input').nth(5).isDisabled(),true)
   assert.equal(await p.locator('.comparison-table thead th').count(),6)
-  await p.locator('#investment').fill('250000');assert.equal(await p.locator('.cost-value').first().innerText(),'75,00 Kč')
+  await p.locator('#investment').fill('250000');assert.equal(await p.locator('.comparison-table tr').filter({has:p.getByRole('rowheader',{name:'Náklady za rok',exact:true})}).locator('td').first().locator('span').last().innerText(),'75,00 Kč')
   await p.locator('#investment').fill('-1');assert.equal(await p.locator('.comparison-next button').isDisabled(),true)
   await p.locator('#investment').fill('250000')
   assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`overflow at ${width}`)

@@ -1,3 +1,4 @@
+import { weeklyGrid } from '../shared/history.js'
 import { PERFORMANCE_TICKERS } from '../shared/performance.js'
 import type { FundPerformance,PerformanceCatalog } from '../shared/performance.js'
 import { object } from '../shared/validation.js'
@@ -8,8 +9,10 @@ export function normalizePerformance(input:unknown,ticker:string,retrievedAt=new
  if(typeof d.as_of!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(d.as_of)||!Number.isFinite(Date.parse(d.as_of))||new Date(d.as_of).toISOString().slice(0,10)!==d.as_of||Date.parse(d.as_of)>Date.now())throw new Error('invalid_price_date')
  if(!Number.isFinite(Date.parse(retrievedAt))||Date.parse(retrievedAt)>Date.now())throw new Error('invalid_retrieval_date')
  const value=(key:string)=>{const v=d[key];if(v===null||v===undefined)return null;if(typeof v!=='number'||!Number.isFinite(v)||v< -100||v>1_000_000)throw new Error('invalid_return');return v}
- // Only derived cumulative figures leave the server. Never forward weekly, prices, holdings or provider HTML.
- return{ticker,r1:value('r1'),r3:value('r3'),r5:value('r5'),asOf:d.as_of,retrievedAt,sourceUrl:`https://tickerinside.com/api/v1/fund/${ticker.toLowerCase()}.json`,attributionUrl:`https://tickerinside.com/etf/${ticker.toLowerCase()}/`,license:'CC BY 4.0',currency:'USD'}
+ // Licensed weekly return fractions, not raw market prices. Invalid history cannot invalidate valid cumulative figures.
+ let weeklyReturns:ReturnType<typeof weeklyGrid>=[],historyUnavailable=false
+ try{weeklyReturns=weeklyGrid(d.weekly,d.weeks_end,d.as_of)}catch{historyUnavailable=true}
+ return{ticker,r1:value('r1'),r3:value('r3'),r5:value('r5'),asOf:d.as_of,retrievedAt,sourceUrl:`https://tickerinside.com/api/v1/fund/${ticker.toLowerCase()}.json`,attributionUrl:`https://tickerinside.com/etf/${ticker.toLowerCase()}/`,license:'CC BY 4.0',currency:'USD',weeklyReturns,historyUnavailable}
 }
 export async function fetchPerformance(ticker:string,fetcher:typeof fetch=fetch,timeoutMs=5000){
  if(!PERFORMANCE_TICKERS.includes(ticker as typeof PERFORMANCE_TICKERS[number]))throw new Error('unknown_ticker')
