@@ -40,6 +40,9 @@
     },
     "api/etf-sync.ts": {
       "maxDuration": 60
+    },
+    "api/preview-admin.ts": {
+      "maxDuration": 60
     }
   }
 }

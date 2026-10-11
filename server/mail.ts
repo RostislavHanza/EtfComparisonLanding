@@ -40,6 +40,16 @@ export class SmtpMailer implements Mailer {
  private transport:MailTransport
  constructor(private config:SmtpConfig,transport?:MailTransport){this.transport=transport??nodemailer.createTransport(smtpOptions(config))}
  async verify(){return this.transport.verify()}
+ async sendAdmin(link:string){
+  const text=`Přihlášení ke správě Preview ETF\n\n${link}\n\nNa stránce klikněte na „Potvrdit přihlášení“. Odkaz je jednorázový a platí 10 minut. Session platí 30 minut. Pokud jste o přihlášení nežádali, zprávu ignorujte.`
+  return this.deliver(this.config.user,{subject:"Přihlášení ke správě Preview ETF",text,html:`<html lang="cs"><body><h1>Správa Preview ETF</h1><p>Otevřete odkaz a potvrďte přihlášení tlačítkem. Samotné otevření odkazu vás nepřihlásí.</p><p><a href="${escape(link)}">Otevřít přihlášení</a></p><p>Odkaz platí 10 minut a lze jej použít jednou. Přihlášení platí 30 minut. Pokud jste o přihlášení nežádali, zprávu ignorujte.</p></body></html>`})
+ }
+ private async deliver(email:string,message:SendMailOptions){
+  const info=await this.transport.sendMail({from:this.config.from,to:[email],...message})
+  const accepted=info.accepted?.some(value=>typeof value==='string'?value.toLowerCase()===email.toLowerCase():Boolean(value&&typeof value==='object'&&'address' in value&&String(value.address).toLowerCase()===email.toLowerCase()))
+  if(!accepted||info.rejected?.length||!info.messageId)throw new Error('smtp_recipient_not_accepted')
+  return info.messageId
+ }
  async send(email:string,link:string,id:string){
   const info=await this.transport.sendMail({from:this.config.from,to:[email],...comparisonMessage(link),messageId:`<etf-${id}@${this.config.from.address.split('@')[1]}>`})
   const accepted=info.accepted?.some(value=>typeof value==='string'?value.toLowerCase()===email.toLowerCase():Boolean(value&&typeof value==='object'&&'address' in value&&String(value.address).toLowerCase()===email.toLowerCase()))

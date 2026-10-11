@@ -67,3 +67,7 @@ Ve veřejném katalogu je možné automaticky měnit pouze nákladovost (a její
 published, verified_at, data_as_of, název, burza, index, dividendy a popis v hlavní tabulce zůstávají zachované. Proto jsou nutné další kontroly ručně doplněných polí; celkové lidské ověření po 14 dnech dál vyřadí fond z nových srovnání. Týdenní stažení API neprodlužuje lidské ověření. Přístupový srovnávač zachovává vlastní snapshot.
 
 IVV/ITOT/IWM v současné databázi jsou podle uživatele nepublikované předběžné záznamy: synchronizace je nepublikuje ani nemění. Kandidáty a úplné ověřené záznamy musí operátor zkontrolovat a připravit validovaný ruční import. Teprve po schválení lze povolit aktualizaci nákladovosti. Tento proces zatím sám nenaplní veřejný katalog 15–20 úplnými ETF.
+
+### Ruční spuštění v Preview přes prohlížeč
+
+Dočasná stránka `?admin=etf-sync` umožňuje vlastníkovi schránky `SMTP_USER` po jednorázovém potvrzení přihlašovacího odkazu spustit stejný import. Vyžaduje samostatnou migraci `202610110005_preview_admin.sql`; přesný postup je v `docs/SETUP.md`. Zabezpečení, licence, kontrola dat, denní limit, zámek a zákaz automatického publikování zůstávají zachovány. UI reportuje kandidáty, nikoli počet schválených nebo zveřejněných fondů.
