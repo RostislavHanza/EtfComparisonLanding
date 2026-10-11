@@ -4,7 +4,7 @@
 
 ## Jak web funguje
 
-Redakční úvod → hledání ETF podle tickeru/názvu → výběr 2–5 a částka → editovatelné modely všech fondů → historický graf ETF → podrobná tabulka → e-mail → unikátní odkaz → potvrzení a obnovený interaktivní přehled. E-mail přichází až po sestavení srovnání. Veřejné porovnání poskytuje hodnotu; uložený návratový odkaz motivuje ke kontaktu. Výběr i částka se uloží v Supabase a po otevření lze změny znovu uložit.
+Redakční úvod → hledání ETF podle tickeru/názvu → výběr 2–5 a částka → editovatelné řádky se ziskem všech fondů → historický graf ETF → podrobná tabulka → e-mail → unikátní odkaz → potvrzení a obnovený interaktivní přehled. E-mail přichází až po sestavení srovnání. Veřejné porovnání poskytuje hodnotu; uložený návratový odkaz motivuje ke kontaktu. Výběr i částka se uloží v Supabase a po otevření lze změny znovu uložit.
 
 Kalkulace je částka × expense ratio / 100 (100 000 Kč × 0,03 % = 30 Kč/rok). Nezahrnuje brokera, konverze, daně nebo změny hodnoty investice a nepředpovídá výnosy. Nové historické r1/r3/r5 jsou kumulativní, vlastní scénář používá složené úročení; oba ignorují historický USD/CZK kurz. Historické total returns se nesnižují znovu o expense ratio. Podrobnosti a skutečné výnosy: [PERFORMANCE.md](docs/PERFORMANCE.md). PRIIPs/KID a omezená dostupnost amerických ETF pro retail v EU jsou viditelné před formulářem; obsah není doporučení.
 
@@ -78,9 +78,9 @@ Dávkové schválení dalších fondů: použijte malou kopii priority-five.batc
 TickerInside je hlavní zdroj dostupných licencovaných metadat. Tabulka rozlišuje původ, emitentské ověření a vlastní český popis po polích; atribuce obsahuje odkaz na poskytovatele, konkrétní fondovou stránku, CC BY 4.0 a informaci o úpravách. SPY zachovává 0.0945 % od emitenta; VTI aktuální Morningstar název/index. Provozovatel přijal publikaci první pětice pro demo; toto rozhodnutí není licence emitenta nebo právní audit a známá omezení zůstávají v manifestu. Vzdálený katalog se touto změnou nemění; správce už potvrdil zveřejnění pětice. Jednoduchý poslední krok a importní příkazy jsou v docs/CATALOG_REVIEW.md; nejsou potřeba další programové změny ani nová migrace.
 
 
-## Kalkulačka vývoje investice
+## Odhadovaný výnos a historický vývoj ETF
 
-Výběr ETF a částka → karty s vlastním okamžitě editovatelným procentem → skutečný historický graf ETF → detailní tabulka → e-mail. Žádné oddělené režimy nebo velký graf nákladů. Automatická sazba je CAGR vybraných 1/3/5 let, viditelně zaokrouhlená na dvě desetinná místa. Ruční sazby jednotlivých ETF se nemění při změně částky/horizontu/reference ani návratu z formuláře; odkaz Obnovit podle historie je vrátí. Modelové sazby jsou po průběžných nákladech, expense ratio se znovu neodečítá.
+Výběr ETF → částka a horizont → řádky s vlastním okamžitě editovatelným procentem a pruhy zisku/ztráty → skutečný historický graf ETF → detailní tabulka → e-mail. Žádné oddělené režimy, velké výsledkové karty nebo dominantní graf nákladů. Automatická sazba je CAGR vybraných 1/3/5 let, viditelně zaokrouhlená na dvě desetinná místa. Ruční sazby jednotlivých ETF se nemění při změně částky/horizontu ani návratu z formuláře. Jediný přepínač 1/3/5 let nad historickým grafem záměrně obnoví sazby všech fondů podle nového CAGR a zároveň změní historii; horizont zachová. Obnovit podle historie vrátí pouze sazbu daného fondu. Hlavní částka je zisk = budoucí modelová hodnota minus vklad, nikoli celková hodnota. Pruhy všech fondů mají společnou lineární stupnici a nulu (zelená zisk, červená ztráta). Modelové sazby jsou po průběžných nákladech, expense ratio se znovu neodečítá.
 
 Graf **Historický vývoj ETF** používá licencované vypočtené weekly total returns, nikoli indexové řady nebo raw price feed. Zdroj nabízí 156 týdnů: 52 pro 1 rok, 156 pro přibližně 3 roky; pětiletý souhrnný výnos nevytváří pětiletou křivku. Normalizace = 100, tooltip a klávesnicový slider, skutečné kalendářní týdenní hranice a příslušná atribuce. Null se nenahrazuje nulou, neplatné vstupy nemají falešný výsledek. Podrobnosti: [PERFORMANCE.md](docs/PERFORMANCE.md).
 
