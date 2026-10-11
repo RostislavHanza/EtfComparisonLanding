@@ -1,5 +1,5 @@
 export const MAX_AMOUNT_CZK = 10_000_000
-export interface SourceEvidence { field: string; url: string; verified_at: string; as_of: string; evidence: string }
+export interface SourceEvidence { field: string; url: string; verified_at: string; as_of: string; evidence: string; role?:string;provider?:string;license?:string;date_basis?:string;retrieved_at?:string }
 export interface EtfRecord {
   ticker: string; name: string; exchange: 'NYSE Arca'; index: string; expenseRatioPercent: number;
   dividends: string; description: string; verifiedAt: string; dataAsOf: string; sources: SourceEvidence[];

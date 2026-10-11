@@ -99,3 +99,4 @@
 .concept-bar .mobile-switch select { min-width: 0; width: 100%; }
 
 .concept-bar.palette-original { --accent: #284c39; }
+.data-attribution{font-size:.85rem;line-height:1.65;margin:0 0 20px;color:#526358}.data-attribution a,.field-sources a{color:#284c39;text-decoration:underline;overflow-wrap:anywhere}.field-sources summary{cursor:pointer;min-height:44px;padding:8px 0;font-weight:600;line-height:1.5}.field-sources ul{list-style:none;margin:8px 0;padding:0}.field-sources li{font-size:.8rem;line-height:1.6;margin-bottom:12px}.field-sources small{display:block;color:#526358}.field-sources:focus-within{outline-color:#526f40}

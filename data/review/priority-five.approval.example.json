@@ -16,8 +16,10 @@
       "confirmedSourceIds": [],
       "sourceDateOverrides": {},
       "sourceIdsToReview": [
+        "api-spy",
         "spy-pdf",
-        "spy-page"
+        "spy-page",
+        "project-descriptions"
       ]
     },
     {
@@ -27,8 +29,9 @@
       "confirmedSourceIds": [],
       "sourceDateOverrides": {},
       "sourceIdsToReview": [
+        "api-voo",
         "voo-pdf",
-        "api-voo"
+        "project-descriptions"
       ]
     },
     {
@@ -38,8 +41,9 @@
       "confirmedSourceIds": [],
       "sourceDateOverrides": {},
       "sourceIdsToReview": [
+        "api-ivv",
         "ivv-pdf",
-        "api-ivv"
+        "project-descriptions"
       ]
     },
     {
@@ -49,9 +53,10 @@
       "confirmedSourceIds": [],
       "sourceDateOverrides": {},
       "sourceIdsToReview": [
+        "api-vti",
         "vti-page",
         "vti-pdf",
-        "api-vti"
+        "project-descriptions"
       ]
     },
     {
@@ -61,8 +66,9 @@
       "confirmedSourceIds": [],
       "sourceDateOverrides": {},
       "sourceIdsToReview": [
+        "api-iwm",
         "iwm-pdf",
-        "api-iwm"
+        "project-descriptions"
       ]
     }
   ]
