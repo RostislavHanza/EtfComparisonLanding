@@ -1,4 +1,4 @@
-import { MAX_AMOUNT_CZK } from './model.ts'
+import { MAX_AMOUNT_CZK } from './model.js'
 export class InputError extends Error {}
 export function object(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new InputError('Neplatný požadavek.')

@@ -1,7 +1,7 @@
 import { timingSafeEqual } from 'node:crypto'
 import type { VercelRequest } from '@vercel/node'
-import { header } from './http.ts'
-import { HttpError } from './application.ts'
+import { header } from './http.js'
+import { HttpError } from './application.js'
 export function requireAdmin(req:VercelRequest){
  const secret=process.env.CRON_SECRET
  if(!secret||secret.length<32)throw new HttpError(503,'Administrátorský přístup není nakonfigurovaný.')

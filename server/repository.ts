@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
-import type { EtfRecord, SavedComparison } from '../shared/model.ts'
-import type { EventName } from '../shared/validation.ts'
+import type { EtfRecord, SavedComparison } from '../shared/model.js'
+import type { EventName } from '../shared/validation.js'
 export interface LeadRecord { id: string; email: string; tickers: string[]; amountCzk: number; tokenHash: string; marketingConsent: boolean; attribution: {visitId: string; campaign: string} | null }
 export interface Repository {
   catalog(): Promise<EtfRecord[]>; limit(key: string, count: number, seconds: number): Promise<boolean>;

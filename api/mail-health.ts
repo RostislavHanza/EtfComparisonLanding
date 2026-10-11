@@ -1,8 +1,8 @@
-import { handler } from '../server/http.ts'
-import { requireAdmin } from '../server/admin.ts'
-import { HttpError } from '../server/application.ts'
-import { readSmtpConfig,SmtpMailer,MailConfigurationError } from '../server/mail.ts'
-import { logMailFailure } from '../server/logging.ts'
+import { handler } from '../server/http.js'
+import { requireAdmin } from '../server/admin.js'
+import { HttpError } from '../server/application.js'
+import { readSmtpConfig,SmtpMailer,MailConfigurationError } from '../server/mail.js'
+import { logMailFailure } from '../server/logging.js'
 export default handler(async req=>{
  if(req.method!=='GET')throw new HttpError(405,'Nepovolená metoda.')
  requireAdmin(req)

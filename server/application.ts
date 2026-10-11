@@ -1,9 +1,9 @@
 import { createHash, createHmac, randomBytes, randomUUID } from 'node:crypto'
-import { comparisonInput, leadInput, tokenInput, uuid, InputError, events, attribution, object } from '../shared/validation.ts'
-import type { Repository } from './repository.ts'
-import { DatabaseError } from './repository.ts'
-import { logMailFailure } from './logging.ts'
-import type { Mailer } from './mail.ts'
+import { comparisonInput, leadInput, tokenInput, uuid, InputError, events, attribution, object } from '../shared/validation.js'
+import type { Repository } from './repository.js'
+import { DatabaseError } from './repository.js'
+import { logMailFailure } from './logging.js'
+import type { Mailer } from './mail.js'
 export class HttpError extends Error { constructor(public status: number, message: string) { super(message) } }
 export const hash = (value:string) => createHash('sha256').update(value).digest('hex')
 export const newToken = () => randomBytes(32).toString('base64url')

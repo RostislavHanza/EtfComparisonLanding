@@ -1,10 +1,10 @@
 import { createHash, createHmac, randomBytes } from 'node:crypto'
 import { createClient } from '@supabase/supabase-js'
 import type { VercelRequest } from '@vercel/node'
-import { HttpError } from './application.ts'
-import { header, ip, readAppConfig } from './http.ts'
-import { SmtpMailer, readSmtpConfig } from './mail.ts'
-import { logMailFailure } from './logging.ts'
+import { HttpError } from './application.js'
+import { header, ip, readAppConfig } from './http.js'
+import { SmtpMailer, readSmtpConfig } from './mail.js'
+import { logMailFailure } from './logging.js'
 export const adminHash=(value:string)=>createHash('sha256').update(value).digest('hex')
 export const adminCookie=(value:string)=>`__Host-etf_preview_admin=${value}; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age=${value?1800:0}`
 export function previewConfig(){

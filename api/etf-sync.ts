@@ -1,9 +1,9 @@
-import { guard, handler } from '../server/http.ts'
-import { requireAdmin } from '../server/admin.ts'
-import { HttpError } from '../server/application.ts'
-import { synchronizeEtfs } from '../server/tickerinside.ts'
-import { syncStore } from '../server/etf-sync-store.ts'
-import { previewAuthenticated } from '../server/preview-admin.ts'
+import { guard, handler } from '../server/http.js'
+import { requireAdmin } from '../server/admin.js'
+import { HttpError } from '../server/application.js'
+import { synchronizeEtfs } from '../server/tickerinside.js'
+import { syncStore } from '../server/etf-sync-store.js'
+import { previewAuthenticated } from '../server/preview-admin.js'
 export default handler(async req=>{
  if(req.method==='POST'){
   guard(req,['POST'])

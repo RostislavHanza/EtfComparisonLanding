@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 import { randomUUID } from 'node:crypto'
-import { HttpError } from './application.ts'
-import type { SyncStore, SyncResult, EtfCandidate, SyncFailure } from './tickerinside.ts'
+import { HttpError } from './application.js'
+import type { SyncStore, SyncResult, EtfCandidate, SyncFailure } from './tickerinside.js'
 export function syncStore():SyncStore {
  const url=process.env.SUPABASE_URL,key=process.env.SUPABASE_SECRET_KEY||process.env.SUPABASE_SERVICE_ROLE_KEY
  if(!url||!key)throw new HttpError(503,'Synchronizace není nakonfigurovaná.')

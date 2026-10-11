@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noEmit": false,
+    "allowImportingTsExtensions": false,
+    "rootDir": ".",
+    "outDir": ".cache/server-runtime"
+  },
+  "include": [
+    "api/**/*.ts",
+    "server/**/*.ts",
+    "shared/**/*.ts"
+  ]
+}

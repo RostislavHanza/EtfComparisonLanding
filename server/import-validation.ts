@@ -1,4 +1,4 @@
-import { object, InputError } from '../shared/validation.ts'
+import { object, InputError } from '../shared/validation.js'
 const fields=['name','exchange','index','expenseRatioPercent','dividends','description']
 const hosts=['nyse.com','ssga.com','investor.vanguard.com','fund-docs.vanguard.com','ishares.com','tickerinside.com','sec.gov']
 function text(value:unknown,label:string){if(typeof value!=='string'||!value.trim()||value.length>4000)throw new InputError(`Chybí ${label}.`);return value.trim()}
