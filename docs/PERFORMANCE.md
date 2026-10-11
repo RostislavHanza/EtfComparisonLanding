@@ -1,10 +1,28 @@
-# Historický a hypotetický vývoj investice
+# Model investice a skutečný historický vývoj ETF
 
-## Skutečně ověřené odpovědi
+## Pořadí a ovládání
 
-GET https://tickerinside.com/api/v1/fund/{ticker}.json (ticker malými písmeny), dokumentace https://tickerinside.com/api/. V této úloze byly skutečně načteny všechny odpovědi; redukované hodnoty, URL, čas stažení a hash celé odpovědi jsou v `data/review/performance-observations.json`. Raw odpovědi jsou pouze v ignorované pracovní cache, nikoli ve veřejném bundle.
+Výběr 2–5 ETF → částka (číslo/slider), horizont a referenční období → karty všech vybraných fondů → historický graf → podrobná tabulka → původní e-mailový průchod. Žádné přepínání Historie/Scénář, checkbox nebo tlačítko pro povolení editace. Dominantní graf nákladů odstraněn; expense ratio je v kartě i tabulce a orientační roční náklad zůstal v tabulce.
 
-| ETF | r1: 1 rok | r3: 3 roky | r5: 5 let | as_of cen |
+Každý fond má rovnou editovatelné procento. Automatický předpoklad je CAGR skutečného kumulativního r1/r3/r5:
+
+`((1 + cumulativeReturn / 100) ** (1 / referenceYears) - 1) * 100`
+
+Vstup se předvyplní zaokrouhleným tempem na dvě desetinná místa; právě tato viditelná sazba je modelový vstup. Model = `investment * (1 + annualAssumption / 100) ** horizonYears`, zisk = model − vklad. Horizont (1/3/5/10/15/20 let) a referenční období (1/3/5 let) jsou odlišné parametry. Výchozí období 5 let a horizont 10 let nejsou předpověď.
+
+Ručně upravená sazba každého fondu přetrvá změnu částky, horizontu, referenčního období i cestu do e-mailového formuláře a zpět. Automatická sazba se při změně reference změní; ruční se změní až odkazem Obnovit podle historie. Vyprázdnění vstupu je také ruční volba. Bez rN je vstup prázdný, žádné 0 % nebo pevný fallback; vlastní sazba funguje i při výpadku historie. Povolené rozmezí −100 až 100 %, neplatné/blank výsledky se nevydávají za poslední platný model. Modelové sazby/horizont jsou lokální stav této návštěvy; e-mailová DB nadále uchovává původní ETF výběr a částku, nikoli nové parametry. Nová navigace/reload osobního odkazu je znovu předvyplní podle historie.
+
+## Výkonnost a náklady
+
+Podklad je dividendově upravená tržní výkonnost ETF, nikoli hrubá indexová řada nebo garantovaný NAV výnos. Průběžné náklady už ovlivňují hodnotu fondu, a tedy jeho tržní výkonnost; neodečítáme expense ratio podruhé. Ruční sazba je předpoklad **po průběžných nákladech ETF**. Broker, daně a měnové změny zahrnuty nejsou. Model v Kč pouze aplikuje procento USD podkladu na nominální vklad, není to historicky dosažený korunový výnos. Původní výpočet amount × expense ratio / 100 je jen tabulkový doplněk, nikoli faktura.
+
+Viditelné upozornění: „Výchozí předpoklad vychází z historické výkonnosti ETF. Jde o modelový scénář, nikoliv předpověď. Minulé výnosy nezaručují budoucí výsledky.“ Podrobnosti jsou v rozbalovací metodice, atribuce zůstává viditelná.
+
+## Skutečný zdroj a dostupná období
+
+Dokumentované https://tickerinside.com/api/v1/fund/{ticker}.json, reference https://tickerinside.com/api/. Evidence skutečně načtených redukovaných odpovědí, URL, časů a hashů v `data/review/performance-observations.json`. Pro všech pět jsou r1/r3/r5 kumulativní procenta:
+
+| ETF | 1 rok | 3 roky | 5 let | Datum cen |
 | --- | --- | --- | --- | --- |
 | SPY | 20.5 % | 87.1 % | 86.7 % | 2026-10-09 |
 | VOO | 20.5 % | 87.5 % | 87.2 % | 2026-10-09 |
@@ -12,41 +30,36 @@ GET https://tickerinside.com/api/v1/fund/{ticker}.json (ticker malými písmeny)
 | VTI | 20.0 % | 85.8 % | 77.4 % | 2026-10-09 |
 | IWM | 18.5 % | 69.4 % | 31.8 % | 2026-10-09 |
 
-Jsou to **kumulativní total returns**, nikoli roční výnosy. Dokumentace výslovně říká, že výnosy používají dividendově upravené ceny; as_of je datum podkladových cen, nikoli holdings. Všech pět také poskytlo neprázdné weekly. Tuto řadu nepoužíváme, neukládáme do katalogu ani nezveřejňujeme. Hodnoty v tabulce dokumentují jedno skutečné načtení, nejsou pevný runtime fallback nebo záruka budoucí dostupnosti.
+Všechny poskytují také **156 weekly total returns, jako desetinné zlomky, nejstarší první**, ve společném týdenním rastru s `weeks_end=as_of`. −0.0239 znamená −2.39 %, nikoli −0.0239 %. Tuto vypočtenou licencovanou řadu lze použít; není to raw historický cenový feed. Žádné nové načtení nebylo předstíráno: použity skutečné odpovědi uložené při předchozím kroku v témže datovém snímku. Runtime je obnovuje existující keší.
 
-## Licence a atribuce
+Graf pro 1 rok bere posledních 52 týdenních změn; pro 3 roky celých 156. Pro reference 5 let se může použít r5 při výpočtu CAGR, ale graf má jen dostupných 156 týdnů, ne vymyšlených pět let. UI to výslovně uvádí. Při plné dostupnosti jde o základ k 13. 10. 2023 a poslední týden k 9. 10. 2026; 157 bodů obsahuje normalizační základ a 156 skutečných výnosových intervalů. Zdrojové r3 se může od součinu zaokrouhlených týdenních výnosů mírně lišit.
 
-Aktuálně načtená API dokumentace zahrnuje vypočtené údaje aktuálních snapshotů pod deklarovanou CC BY 4.0. Každá použitá odpověď uvádí tuto licenci. Úplné /legal/ (revize 9. 10. 2026), /terms/ a /api/ již nezávisle ověřil provozovatel, viz `priority-five.evidence.json`; to není nové tvrzení o právním auditu tohoto kódu. Tento režim pokrývá vlastní práci TickerInside, nikoli automaticky práva třetích stran. Historie holdings a ETF flows mají jiná pravidla a nepoužíváme je.
+### ETF, nikoli indexy
 
-Rozlišujeme vypočtené kumulativní výnosy r1/r3/r5 od redistribuce původního cenového feedu. Dokumentace výslovně říká, že poskytovatel není licencovaný k redistribuci price feedu. Proto neposíláme weekly, raw ceny, last_close, holdings, obrázky nebo historii do prohlížeče; graf vlastního scénáře je náš matematický výpočet, nikoli rekonstruovaná historická cenová řada. Rozšíření na raw historii by potřebovalo samostatně ověřené oprávnění.
+Dokumentované fund API neposkytuje samostatné indexové časové řady S&P 500, Russell 2000 nebo Morningstar US Total Market Index. `/index.json` je seznam souborů/fondů, nikoli cenová historie indexu. V dostupných podkladech nebyl doložen společný bezplatný indexový zdroj s právem k veřejné redistribuci všech tří indexových řad. Nepoužíváme domnělé indexové endpointy, placené služby nebo tabulkové souhrnné indexové výnosy jako časové řady.
 
-UI uvádí konkrétní fund JSON, fondovou stránku TickerInside, CC BY 4.0, datum cen a informaci, že korunové hodnoty jsou vlastní výpočet. Providerovo cite_html se nevkládá jako HTML. Žádný nový právní schvalovací workflow ani placená služba nevznikly.
+Transparentní alternativa je **Historický vývoj ETF** s vlastní křivkou každého vybraného ETF. SPY/VOO/IVV mohou být podobné, jsou to odlišné ETF series a nepředstírají tři samostatné indexy. VTI historie může zahrnovat jiný benchmark před nynějším Morningstar; není to zpětná historie jediného současného indexu.
 
-## Server a kešování
+### Normalizace, datum a mezery
 
-Nový veřejný GET `/api/performance` vrací pouze pět normalizovaných výnosových záznamů a seznam unavailable. Pevný seznam SPY/VOO/IVV/VTI/IWM; query nebo klientský URL vstup nerozhoduje o upstream cíli. Metody mimo GET (včetně TRACE/POST) odmítá stejný Vercel handler/guard. Server ověřuje ticker, ETF/NYSE Arca, CC BY 4.0, konečné číslo v rozsahu od −100 % a platné nepředbíhající as_of. Null nebo chybějící výnos zůstává null; malformovaná čísla se nevydávají za nulu.
+Hodnota začíná na 100, pak se násobí `value *= (1 + weeklyReturnFraction)`. Nejde o interpolaci mezi souhrnnými r1/r3/r5 ani graf budoucího scénáře. Čáry spojují pouze skutečné týdenní body; žádné denní hodnoty se nevytvářejí. Baseline 100 je matematická normalizace, nikoli zdrojová cena.
 
-Pět zdrojů se načítá sekvenčně, každý má pětisekundový timeout. User-Agent odkazuje na projekt. Vercel Function má maxDuration 60 s. Úspěšná odpověď má public max-age=300, s-maxage=86400; příslušný běžící server má jednodenní paměťovou keš a společný in-flight požadavek. Browser má pětiminutovou keš; celý balík načítá jednou, ne při pohybu slideru, přepnutí ETF/období nebo změně scénáře.
+Dokumentace říká týdny sobota–pátek a poslední interval zakončený as_of. Kalendářní konce týdnů jsou deterministicky přiřazené podle tohoto dokumentovaného rastru; někdy je skutečný obchodní závěr ve čtvrtek kvůli svátku. Tooltip proto říká **Týden končící**, nikoli „cena zobchodovaná přesně v tento den“. Poslední částečný týden zachovává skutečný as_of. Graf neobsahuje raw obchodní datum/cenu, kterou API neposkytlo.
 
-Při dílčí chybě server uchová poslední platný záznam, pokud jej tato instance má, s původními daty/retrievedAt a stale=true; UI varuje, že obnovení selhalo. Částečný výsledek má pětiminutovou keš. Při úplném výpadku bez předchozího snapshotu vrací bezpečnou 503 a na instanci pět minut potlačuje opakované pokusy. Hypotetický režim i původní srovnávač dále fungují. Keš není trvalé úložiště: cold start nebo jiný CDN region může znovu načíst zdroj; nejde o globálně garantovanou jedinou denní dávku. Nepoužívá se žádné bulk history API.
+Null se nenahrazuje nulou a přes mezeru se výnos nenásobí. Používá se společný souvislý úsek po poslední chybějící hodnotě; délka/skutečné hranice jsou v UI. Pokud společný úsek chybí, křivka se nezobrazí a text vysvětlí dostupnost. Neúplná/špatná weekly nemůže zničit jinak validní rN/model: normalizátor vrátí prázdnou historii s historyUnavailable.
 
-Nebyla změněna Supabase ani její migrace/katalog/synchronizace, SMTP konfigurace nebo souhlasy. Nové env proměnné a API klíče nejsou potřebné. Serverové importy mají `.js` a nové API zahrnují NodeNext i oficiální Vercel artifact kontroly.
+## Licence a keš
 
-## Výpočty a UI
+API dokumentace výslovně popisuje current fund JSON s vypočtenými weekly returns pod CC BY 4.0. Nezávislé ověření /legal/ (revize 9. 10. 2026), /terms/ a /api/ od provozovatele zůstává evidované v priority-five.evidence.json. Povolení k vlastní vypočtené práci TickerInside není automatická licence k původnímu third-party price feedu. Proto se **nepublikují raw ceny, last_close, holdings, historie holdings/flows ani indexové časové řady**. Graf použitím weekly neobchází zákaz redistribuce price feedu přejmenováním: konkrétní vypočtené weekly pole je přímo součástí deklarovaného licencovaného snapshotu. Zdrojový odkaz, fondová stránka, CC BY a označení normalizace zůstávají viditelné. Nové právní schvalování se nevytváří.
 
-Investovaná částka je společná s existujícím srovnáním, zůstává uložená v dosavadním e-mailovém procesu. ETF historického podkladu se vybírá z právě porovnávaných fondů.
+GET `/api/performance` stále používá pevný seznam pětice, ověřuje identitu/NYSE Arca/licenci/datum a má pětisekundové timeouty, single-flight, server/CDN keš jeden den a kratší keš při partial/outage. Nově vrací ověřené `weeklyReturns` s weekEnd/returnFraction. Nikdy provider HTML, raw ceny nebo holdings. Klient používá `?schema=2`, aby neměl předchozí CDN formát bez řady; parametry nemění upstream URL. Slider/karty/ref/horizont nic nově nestahují. Keš není globální trvalé úložiště; cold start/region může znovu načítat. Stale zachovává původní datum a má viditelnou informaci.
 
-- **Jak by se investice vyvíjela v minulosti:** `investment * (1 + cumulativeReturn / 100)`, období 1/3/5 let, změna, modelová konečná hodnota a zisk/ztráta. Null: Data nejsou dostupná. Bez falešné interpolované historické křivky.
-- **Hypotetický vývoj:** vlastní roční výnos −100 až 100 %, horizont 1–30 celých let, `(1 + annualReturn / 100) ** years`. Roční předpoklad začíná prázdný, není přítomen pevný fallback výnos. Graf obsahuje rok 0 a hodnoty po celých letech, přístupné také jako text.
-- **Volitelné převzetí:** až po explicitním kliknutí použít `((1 + cumulative / 100) ** (1 / years) - 1) * 100`. Zobrazí se upozornění na mechanické opakování historického tempa, NE predikci. Bez výnosových dat tlačítko nejde použít.
-- **Roční průběžné náklady:** menší samostatná sekce, dosavadní `amount * expenseRatio / 100`, náklady promítané do hodnoty fondu, nikoli faktura. Z dividendově upravených total returns ani NAV je znovu neodečítáme.
+Žádné nové env, dependencies, Supabase změny/migrace ani SMTP zásahy. Vercel NodeNext importy a kontroly všech deseti endpointů zůstávají.
 
-Výnosy podkladového USD trhu aplikované na nominální vklad v Kč ignorují historické změny USD/CZK. Nejde o skutečně dosažený korunový výnos, prognózu nebo investiční doporučení. Nezohledňují daně a brokera. UI říká „Minulé výnosy nezaručují budoucí výsledky.“ PRIIPs/KID a investiční rizika zůstávají. Nová volba režimu/horizontu/ročního předpokladu je lokální pracovní nastavení; dosavadní uložený výběr ETF a částka se zachovávají, scénářové parametry se nově do DB neukládají.
+## Praktický Preview test
 
-## Ověření na Preview
+Vyberte 2–5 fondů. Všechna procenta jsou okamžitě editovatelná. Přepište SPY na 6 a VOO na −10; změňte částku/horizont/reference: ruční procenta se nemění. Obnovte SPY: použije aktuální CAGR z právě vybrané reference. Zkontrolujte chybějící historii a možnost vlastního vstupu.
 
-Po automatickém deploymentu commitu otevřete `/api/performance`: očekávejte pět fondů s r1/r3/r5, asOf, konkrétním sourceUrl a licencí, žádné weekly nebo raw ceny. Zkontrolujte skutečné aktuální asOf, nikoli očekávání neměnné tabulky výše.
+Pod kartami očekávejte historický ETF graf s legendou, skutečným rozsahem a normalizací 100. Posouvejte prst/myš nebo klávesnicí slider Prohlédnout historický týden: tooltip ukáže týden a hodnoty všech křivek. Změna vybraných fondů/ref aktualizuje řady; 5 let ukazuje pravdivý 156týdenní limit. Detailní tabulka, zdroje, nákladovost a následný e-mailový krok zůstávají pod grafem. Síťový panel má jediné načtení balíku performance, žádné fetch na změnu částky.
 
-Na landing page vyberte ETF a posuňte částku: historické hodnoty se přepočítají bez nové API žádosti. Porovnejte SPY 3 roky (při doložených 87.1 % a vkladu 100 000 Kč výsledek 187 100 Kč); neúčtuje se znovu 0.0945 %. Přepněte na vlastní scénář, zadejte −10 % a 3 roky: 72 900 Kč. Tlačítko převzetí historického tempa musí vyplnit CAGR, nikoli kumulativní r3/r5. V DevTools zkontrolujte počet volání `/api/performance`, zdrojové datum, odkazy, mobilní přetékání a vlastní scénář při blokovaném performance API.
-
-Browser testy používají izolované odpovědi, testovací e-maily se neodesílají. Push není potvrzení deploymentu; živý Preview a skutečné SMTP doručení je nutné odlišit od místních kontrol.
+Browser testy mají izolované skutečné redukované odpovědi, bez DB zápisů a skutečných e-mailů. Push není potvrzení živého Preview deploymentu.

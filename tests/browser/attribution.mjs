@@ -4,7 +4,7 @@ import { chromium } from 'playwright'
 import assert from 'node:assert/strict'
 const funds=JSON.parse(await readFile('data/priority-five.approved.json','utf8')).records
 const observed=JSON.parse(await readFile('data/review/performance-observations.json','utf8')).funds
-const performance=observed.map(r=>({...r,asOf:r.as_of,attributionUrl:`https://tickerinside.com/etf/${r.ticker.toLowerCase()}/`,currency:'USD'}))
+const performance=observed.map(r=>({...r,asOf:r.as_of,attributionUrl:`https://tickerinside.com/etf/${r.ticker.toLowerCase()}/`,currency:'USD',weeklyReturns:r.weekly.map((value,i)=>({weekEnd:new Date(Date.parse(r.weeks_end)-(155-i)*7*86400000).toISOString().slice(0,10),returnFraction:value}))}))
 const browser=await chromium.launch({executablePath:process.env.BROWSER_PATH||undefined,args:['--no-sandbox']})
 const base=process.env.TEST_BASE_URL??'http://127.0.0.1:4173'
 try{

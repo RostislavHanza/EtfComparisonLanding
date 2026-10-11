@@ -53,11 +53,11 @@ test('public Vercel endpoint exposes only derived figures with bounded caching a
  t.mock.method(globalThis,'fetch',async(input:string|URL|Request)=>{
   const url=String(input);urls.push(url)
   const row=observations.funds.find((r:{sourceUrl:string})=>r.sourceUrl===url)
-  assert.ok(row);return new Response(JSON.stringify({...row,weekly:[1,2],holdings:['DO NOT FORWARD'],last_close:123}))
+  assert.ok(row);return new Response(JSON.stringify({...row,holdings:['DO NOT FORWARD'],last_close:123}))
  })
  const response={setHeader(key:string,value:string){headers[key]=value},status(code:number){status=code;return this},json(value:unknown){body=value}}
  await endpoint({method:'POST',headers:{}} as unknown as Parameters<typeof endpoint>[0],response as unknown as Parameters<typeof endpoint>[1]);assert.equal(status,405);assert.equal(urls.length,0)
  await endpoint({method:'GET',headers:{},query:{ticker:'attacker'}} as unknown as Parameters<typeof endpoint>[0],response as unknown as Parameters<typeof endpoint>[1])
  assert.equal(status,200);assert.equal(urls.length,5);assert.equal(headers['Cache-Control'],'public, max-age=300, s-maxage=86400')
- const text=JSON.stringify(body);assert.equal(text.includes('DO NOT FORWARD'),false);assert.equal(text.includes('weekly'),false);assert.equal(text.includes('last_close'),false)
+ const text=JSON.stringify(body);assert.equal(text.includes('DO NOT FORWARD'),false);assert.equal(text.includes('"weekly":'),false);assert.equal(text.includes('last_close'),false)
 })
