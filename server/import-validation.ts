@@ -1,6 +1,6 @@
 import { object, InputError } from '../shared/validation.ts'
 const fields=['name','exchange','index','expenseRatioPercent','dividends','description']
-const hosts=['nyse.com','ssga.com','investor.vanguard.com','fund-docs.vanguard.com','ishares.com']
+const hosts=['nyse.com','ssga.com','investor.vanguard.com','fund-docs.vanguard.com','ishares.com','tickerinside.com','sec.gov']
 function text(value:unknown,label:string){if(typeof value!=='string'||!value.trim()||value.length>4000)throw new InputError(`Chybí ${label}.`);return value.trim()}
 function date(value:unknown,label:string){const v=text(value,label);if(!Number.isFinite(Date.parse(v))||Date.parse(v)>Date.now())throw new InputError(`Neplatné datum ${label}.`);return v}
 function approvedUrl(value:unknown){const u=new URL(text(value,'URL'));if(u.protocol!=='https:'||u.username||u.password||!hosts.some(h=>u.hostname===h||u.hostname.endsWith('.'+h)))throw new InputError('Zdroj není na schválené HTTPS doméně.');return u.toString()}

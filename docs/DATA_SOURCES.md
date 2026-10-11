@@ -1,4 +1,4 @@
-# Zdroje a ruční ověřování ETF
+# Zdroje ETF, ověřování a synchronizace
 
 ## Schválené primární zdroje
 
@@ -11,7 +11,7 @@
 
 Oficiální dokumenty Vanguard na `fund-docs.vanguard.com` jsou povolené jako doplňkový primární dokument emitenta. Schválení domény není oprávnění automaticky kopírovat její obsah. Zkontrolovat podmínky používání a případnou licenci pro konkrétní zveřejnění; uchovat odkaz na podmínky a záznam rozhodnutí. Neopisovat celé licencované tabulky nebo dokumenty.
 
-Přístup z cloudového prostředí byl při předchozí kontrole blokován proxy HTTP 403. Konkrétní data, dostupnost veřejných API, exportů a právní podmínky zde nebyly nezávisle ověřeny. Neprohlašujeme, že tyto služby mají veřejné API, ani že je scraping povolený. Nedokumentované interní endpointy a obcházení blokací se nepoužívají.
+Předchozí ověřování emitentů blokovala proxy HTTP 403; to je historická informace, nikoli současný důkaz nedostupnosti. Nově je ověřené dokumentované TickerInside API a jeho podmínky (viz níže). Scraping produktových stránek, interní endpointy ani importy holdings/cen nepoužíváme.
 
 `data/etf-candidates.csv` obsahuje 20 kandidátů ke kontrole, nikoli ověřený katalog. Fondy jiných emitentů vyžadují schválení jejich primárního zdroje; lze začít 17 kandidáty ze tří uvedených emitentů. Ani burza kandidátů není pouhou přítomností v seznamu potvrzená. Produkční migrace neobsahuje žádná smyšlená ani demonstrační ETF.
 
@@ -38,6 +38,32 @@ Datum nesmí být budoucí, ověření nesmí být starší než 14 dní. Jeden 
 
 ## Budoucí automatizace
 
-Pro MVP není implementován automatický import ani Cron pro ETF data. Denní Vercel Cron slouží pouze úklidu osobních údajů. Aktuální údaje (index, nákladovost, dividendová politika) kontrolovat týdně a při oznámené změně. Denní režim má smysl až pro dynamické údaje jako NAV, které nyní nesbíráme.
+Původní MVP automatický import výslovně odložilo. Nyní je implementovaná synchronizace dostupných polí TickerInside, s kandidátní vrstvou a výslovně schválenými aktualizacemi nákladovosti. Denní retenční Cron zůstává; týdenní ETF Cron je připraven pouze pro budoucí Production. Aktuální údaje (index, nákladovost, dividendová politika) kontrolovat týdně a při oznámené změně. Denní režim má smysl až pro dynamické údaje jako NAV, které nyní nesbíráme.
 
 Automatizaci doplnit až pro dokumentované API nebo export s povolením zpracování a zveřejnění. Adaptér bude ukládat návrh změn, ověřovat identitu/typy/rozsahy/datum a neočekávané změny vyžadovat ruční schválení. Cron bude autentizovaný, idempotentní, s limity a auditním výsledkem; při chybě nikdy neoznačí stará data za právě ověřená a nepřepíše je neúplnou dávkou.
+
+## TickerInside: ověřený hlavní automatický zdroj
+
+Oficiální dokumentace: https://tickerinside.com/api/. Dokumentovaný endpoint `GET https://tickerinside.com/api/v1/fund/{ticker}.json` používá ticker malými písmeny. Nepotřebuje API klíč. Skutečné odpovědi pro všech 20 kandidátů a jejich omezení jsou v [TICKERINSIDE_AUDIT.md](TICKERINSIDE_AUDIT.md).
+
+Automaticky získáváme ticker, název, burzu, nákladovost v procentech, typ jejího zdroje, případné datum a URL SEC filing a atribuci. Hodnota 0.03 znamená 0,03 %, nikoli 3 %; null nikdy není nula. `as_of` je datum cen a `holdings_as_of` datum holdings, nikoli datum nákladovosti. Používáme jen `expense_ratio_as_of` pro nákladovost; chybějící datum ponecháme null v kandidátní vrstvě. `checkedAt` je náš čas technické kontroly API, nikoli nové lidské ověření fondu.
+
+API index, dividendovou politiku a požadovaný popis pro těchto 20 fondů neposkytuje. Ty se doplňují a schvalují ručně z primárních zdrojů uvedených výše. Dividendový výnos ani kategorie fondu je nenahrazují. SCHB/SCHD/RSP stále potřebují schválení dalších primárních emitentských zdrojů. Validátor dovoluje TickerInside a SEC jako doplňkové zdroje, ale zachovává požadavek samostatného NYSE důkazu burzy a ostatní pravidla ruční publikace.
+
+### Licence a atribuce
+
+Ověřeny https://tickerinside.com/terms/ a https://tickerinside.com/legal/, znění revidované 9. října 2026, a API sekce terms/cite. Vlastní práce TickerInside a aktuální snapshoty jsou CC BY 4.0 s povolením komerčního použití a uchování aktuálních souborů; poskytovatel doporučuje nejvýše jedno načtení souboru za nightly build a identifikující User-Agent. Náš adaptér používá dva souběžné požadavky a nejvýše jednu synchronizační dávku za UTC den, běžně jednu týdně.
+
+Při veřejném použití zobrazujeme odkaz TickerInside na stránku konkrétního fondu, označení CC BY 4.0, odkaz na licenci a informaci o adaptaci dat. Nikdy nevkládáme providerovo cite_html jako HTML. Licence poskytovatele se nevztahuje na cizí práva k holdings/cenám; tato data vůbec neuchováváme. History/flows mají odlišné podmínky, a jejich endpointy nepoužíváme. Market_data bez datovaného SEC podkladu neaktualizuje veřejnou nákladovost. Před rozšířením použití znovu zkontrolovat podmínky; API nezaručuje správnost dat.
+
+### Bezpečné uložení a aktualizace
+
+Nová migrace `202610110004_etf_sync.sql` přidává tabulky etf_sync_candidates, etf_sync_runs, etf_sync_lease a opt-in sloupec etfs.tickerinside_sync_enabled (výchozí false). Neobsahuje seed a nemění původní migrace. Nové tabulky i RPC jsou nepřístupné anon/authenticated.
+
+Validní odpovědi upsertujeme podle tickeru do kandidátů, oddělených od katalogu. Chybné odpovědi zanechají poslední platný snapshot. Chyby mají pevné kódy bez secrets. Každý běh má audit a dvouminutový lease; souběžný běh se odmítne, další běh v témže UTC dni nenačítá API. Opakované dokončení je idempotentní. Přerušený běh se označí jako failed při další zahajovací kontrole po expiraci lease. Schválené pole se nikdy nemaže při chybě jednoho fondu.
+
+Ve veřejném katalogu je možné automaticky měnit pouze nákladovost (a její zdrojové doklady), a to u již publikovaného fondu se schváleným usage_review, úplnými doklady a výslovným tickerinside_sync_enabled=true. Název musí odpovídat, fond musí být čerstvě lidsky ověřený, zdroj musí být SEC filing s datem alespoň tak novým jako dosavadní podklad nákladovosti. API nákladovost je po případné úlevě, nikoli automaticky gross; tuto metodiku musí schvalovatel přijmout před opt-in. Zdroj SEC citovaný API není tímto během nezávisle znovu čten.
+
+published, verified_at, data_as_of, název, burza, index, dividendy a popis v hlavní tabulce zůstávají zachované. Proto jsou nutné další kontroly ručně doplněných polí; celkové lidské ověření po 14 dnech dál vyřadí fond z nových srovnání. Týdenní stažení API neprodlužuje lidské ověření. Přístupový srovnávač zachovává vlastní snapshot.
+
+IVV/ITOT/IWM v současné databázi jsou podle uživatele nepublikované předběžné záznamy: synchronizace je nepublikuje ani nemění. Kandidáty a úplné ověřené záznamy musí operátor zkontrolovat a připravit validovaný ruční import. Teprve po schválení lze povolit aktualizaci nákladovosti. Tento proces zatím sám nenaplní veřejný katalog 15–20 úplnými ETF.

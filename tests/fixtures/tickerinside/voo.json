@@ -1,0 +1,15 @@
+{
+  "ticker": "VOO",
+  "name": "Vanguard S&P 500 ETF",
+  "page_url": "https://tickerinside.com/etf/voo/",
+  "cite_as": "TickerInside, Vanguard S&P 500 ETF (VOO), holdings from the issuer's file of 2026-08-31, https://tickerinside.com/etf/voo/, CC BY 4.0",
+  "expense_ratio": 0.03,
+  "expense_ratio_source": "sec_filing",
+  "expense_ratio_as_of": "2026-04-28",
+  "expense_ratio_filing_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640526000181/",
+  "license": "CC BY 4.0",
+  "identifiers": {
+    "exchange": "NYSE Arca",
+    "asset_type": "etf"
+  }
+}

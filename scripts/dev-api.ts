@@ -10,6 +10,7 @@ const routes = {
  '/api/access':(await import('../api/access.ts')).default,
  '/api/events':(await import('../api/events.ts')).default,
  '/api/mail-health':(await import('../api/mail-health.ts')).default,
+ '/api/etf-sync':(await import('../api/etf-sync.ts')).default,
  '/api/maintenance':(await import('../api/maintenance.ts')).default,
 }
 createServer(async (incoming,outgoing) => {
