@@ -30,7 +30,7 @@
           "url": "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-sp-500-etf-trust-spy",
           "verified_at": null,
           "as_of": "2026-10-11",
-          "evidence": "Emitentský podklad uvádí NYSE Arca. Samostatný důkaz na nyse.com dosud chybí.",
+          "evidence": "Ticker SPY; emitentský podklad výslovně uvádí Exchange NYSE Arca. SSGA Listing Information k 11. 10. 2026.",
           "retrievedAt": "2026-10-11T17:04:23Z",
           "evidenceId": "spy-page",
           "verificationStatus": "awaiting_human_review"
@@ -85,7 +85,6 @@
       },
       "reviewStatus": "pending_not_importable",
       "blockers": [
-        "Nezávislý doklad listingu NYSE Arca na nyse.com.",
         "Lidská kontrola jednotlivých polí, skutečný kontrolor a správná data platnosti.",
         "Doložené rozhodnutí o právech k publikaci všech použitých zdrojů.",
         "API používá starší název SPDR bez State Street a market_data nákladovost bez data; nepovolovat automatickou nákladovost."
@@ -118,7 +117,7 @@
           "url": "https://fund-docs.vanguard.com/F0968.pdf",
           "verified_at": null,
           "as_of": "2026-06-30",
-          "evidence": "Emitentský podklad uvádí NYSE Arca. Samostatný důkaz na nyse.com dosud chybí.",
+          "evidence": "Ticker VOO; emitentský podklad výslovně uvádí Exchange NYSE Arca. Oficiální factsheet, strana 1, Exchange / Quick facts.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "voo-pdf",
           "verificationStatus": "awaiting_human_review"
@@ -183,7 +182,6 @@
       },
       "reviewStatus": "pending_not_importable",
       "blockers": [
-        "Nezávislý doklad listingu NYSE Arca na nyse.com.",
         "Lidská kontrola jednotlivých polí, skutečný kontrolor a správná data platnosti.",
         "Doložené rozhodnutí o právech k publikaci všech použitých zdrojů."
       ]
@@ -215,7 +213,7 @@
           "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",
           "verified_at": null,
           "as_of": "2026-06-30",
-          "evidence": "Emitentský podklad uvádí NYSE Arca. Samostatný důkaz na nyse.com dosud chybí.",
+          "evidence": "Ticker IVV; emitentský podklad výslovně uvádí Exchange NYSE Arca. Oficiální factsheet, strana 1, Exchange / Quick facts.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "ivv-pdf",
           "verificationStatus": "awaiting_human_review"
@@ -280,7 +278,6 @@
       },
       "reviewStatus": "pending_not_importable",
       "blockers": [
-        "Nezávislý doklad listingu NYSE Arca na nyse.com.",
         "Lidská kontrola jednotlivých polí, skutečný kontrolor a správná data platnosti.",
         "Doložené rozhodnutí o právech k publikaci všech použitých zdrojů."
       ]
@@ -312,7 +309,7 @@
           "url": "https://fund-docs.vanguard.com/F0970.pdf",
           "verified_at": null,
           "as_of": "2026-06-30",
-          "evidence": "Emitentský podklad uvádí NYSE Arca. Samostatný důkaz na nyse.com dosud chybí.",
+          "evidence": "Ticker VTI; emitentský podklad výslovně uvádí Exchange NYSE Arca. Oficiální factsheet, strana 1, Exchange / Quick facts.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "vti-pdf",
           "verificationStatus": "awaiting_human_review"
@@ -377,7 +374,6 @@
       },
       "reviewStatus": "pending_not_importable",
       "blockers": [
-        "Nezávislý doklad listingu NYSE Arca na nyse.com.",
         "Lidská kontrola jednotlivých polí, skutečný kontrolor a správná data platnosti.",
         "Doložené rozhodnutí o právech k publikaci všech použitých zdrojů.",
         "Lidsky potvrdit aktuální název/index k datu přehledu a schválit rozdíl proti TickerInside; červnový factsheet nový název nedokládá."
@@ -410,7 +406,7 @@
           "url": "https://www.ishares.com/us/literature/fact-sheet/iwm-ishares-russell-2000-etf-fund-fact-sheet-en-us.pdf",
           "verified_at": null,
           "as_of": "2026-06-30",
-          "evidence": "Emitentský podklad uvádí NYSE Arca. Samostatný důkaz na nyse.com dosud chybí.",
+          "evidence": "Ticker IWM; emitentský podklad výslovně uvádí Exchange NYSE Arca. Oficiální factsheet, strana 1, Exchange / Quick facts.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "iwm-pdf",
           "verificationStatus": "awaiting_human_review"
@@ -475,7 +471,6 @@
       },
       "reviewStatus": "pending_not_importable",
       "blockers": [
-        "Nezávislý doklad listingu NYSE Arca na nyse.com.",
         "Lidská kontrola jednotlivých polí, skutečný kontrolor a správná data platnosti.",
         "Doložené rozhodnutí o právech k publikaci všech použitých zdrojů."
       ]

@@ -3,7 +3,12 @@ const fields=['name','exchange','index','expenseRatioPercent','dividends','descr
 const hosts=['nyse.com','ssga.com','investor.vanguard.com','fund-docs.vanguard.com','ishares.com','tickerinside.com','sec.gov']
 function text(value:unknown,label:string){if(typeof value!=='string'||!value.trim()||value.length>4000)throw new InputError(`Chybí ${label}.`);return value.trim()}
 function date(value:unknown,label:string){const v=text(value,label);if(!Number.isFinite(Date.parse(v))||Date.parse(v)>Date.now())throw new InputError(`Neplatné datum ${label}.`);return v}
-function approvedUrl(value:unknown){const u=new URL(text(value,'URL'));if(u.protocol!=='https:'||u.username||u.password||!hosts.some(h=>u.hostname===h||u.hostname.endsWith('.'+h)))throw new InputError('Zdroj není na schválené HTTPS doméně.');return u.toString()}
+const issuers:Record<string,string[]>={}
+for(const ticker of ['SPY','SPYD','MDY','DIA'])issuers[ticker]=['ssga.com']
+for(const ticker of ['VOO','VTI','VYM','VTV','VUG','VT','VEA','VWO'])issuers[ticker]=['investor.vanguard.com','fund-docs.vanguard.com']
+for(const ticker of ['IVV','ITOT','IWM','IJH','IJR'])issuers[ticker]=['ishares.com']
+const onHost=(hostname:string,host:string)=>hostname===host||hostname.endsWith('.'+host)
+function approvedUrl(value:unknown,policy=false){const u=new URL(text(value,'URL'));if(u.protocol!=='https:'||u.username||u.password||![...hosts,...(policy?['blackrock.com','ice.com']:[])].some(h=>u.hostname===h||u.hostname.endsWith('.'+h)))throw new InputError('Zdroj není na schválené HTTPS doméně.');return u.toString()}
 export function validateImport(input:unknown){
  const root=object(input)
  if(!Array.isArray(root.records)||root.records.length===0||root.records.length>100)throw new InputError('Import vyžaduje 1–100 ověřených záznamů.')
@@ -24,10 +29,15 @@ export function validateImport(input:unknown){
    return{field,url:approvedUrl(v.url),verified_at:checked,as_of:asof,evidence:text(v.evidence,'doklad kontroly')}
   })
   if(!fields.every(f=>sources.some(s=>s.field===f)))throw new InputError('Každé publikované pole musí mít primární zdroj.')
-  if(!sources.some(s=>s.field==='exchange'&&new URL(s.url).hostname.endsWith('nyse.com')))throw new InputError('Burzu ověřte na nyse.com.')
+  if(!sources.some(s=>{
+   if(s.field!=='exchange')return false
+   const hostname=new URL(s.url).hostname
+   if(onHost(hostname,'nyse.com'))return true
+   return (issuers[ticker]??[]).some(host=>onHost(hostname,host))&&/NYSE\s+Arca/i.test(s.evidence)&&s.evidence.split(/[^A-Za-z0-9.-]+/).includes(ticker)
+  }))throw new InputError('Burzu doložte na NYSE nebo u příslušného emitenta s výslovným tickerem a NYSE Arca.')
   const review=object(r.usageReview)
   if(review.approved!==true)throw new InputError('Podmínky použití nejsou schválené.')
-  const usage={approved:true,reviewedAt:date(review.reviewedAt,'práv použití'),reviewer:text(review.reviewer,'kontrolor práv'),basis:text(review.basis,'oprávnění k použití'),policyUrl:approvedUrl(review.policyUrl)}
+  const usage={approved:true,reviewedAt:date(review.reviewedAt,'práv použití'),reviewer:text(review.reviewer,'kontrolor práv'),basis:text(review.basis,'oprávnění k použití'),policyUrl:approvedUrl(review.policyUrl,true)}
   return{ticker,name:text(r.name,'název'),exchange:r.exchange,tracked_index:text(r.index,'index'),expense_ratio_percent:r.expenseRatioPercent,dividends:text(r.dividends,'dividendy'),description:text(r.description,'charakteristika'),verified_at:verifiedAt,data_as_of:asOf.slice(0,10),sources,verified_by:text(r.verifiedBy,'kontrolor dat'),usage_review:usage,published:true}
  })
 }

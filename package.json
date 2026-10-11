@@ -11,11 +11,12 @@
     "test": "tsx --test tests/*.test.ts",
     "import:etfs": "tsx scripts/import-etfs.ts",
     "dev:api": "tsx scripts/dev-api.ts",
-    "test:browser": "node tests/browser/mvp.mjs",
+    "test:browser": "node tests/browser/mvp.mjs && node tests/browser/privacy.mjs && node tests/browser/preview-admin.mjs",
     "lint": "eslint .",
     "check:server": "tsc -p tsconfig.server.json && node --no-experimental-strip-types scripts/check-server-runtime.mjs",
     "check:vercel": "node scripts/check-vercel-runtime.mjs",
-    "review:etfs": "tsx scripts/check-etf-review.ts"
+    "review:etfs": "tsx scripts/check-etf-review.ts",
+    "prepare:etfs": "tsx scripts/prepare-etf-import.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.3",

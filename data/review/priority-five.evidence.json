@@ -292,5 +292,87 @@
       "url": "https://www.ice.com/privacy-security-center/terms-of-use",
       "finding": "Oficiální odkaz z NYSE; HTTPS proxy blokuje otevření (403 tunel). Licenční kontrola nedokončena."
     }
+  ],
+  "technicalRecheck": [
+    {
+      "id": "spy-page",
+      "url": "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-sp-500-etf-trust-spy",
+      "httpStatus": 200,
+      "sha256": "79798de42ad9e4536e958ae578520d5d44ea264e46daa26d33b94908ed6f6813",
+      "retrievedAt": "2026-10-11T18:44:09.204001+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    },
+    {
+      "id": "voo-page",
+      "url": "https://investor.vanguard.com/investment-products/etfs/profile/voo",
+      "httpStatus": 200,
+      "sha256": "a0afc4058f2c58c01be592c8fb07235f4976234df17fa6906570a102c8a7ef95",
+      "retrievedAt": "2026-10-11T18:44:09.271535+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    },
+    {
+      "id": "vti-page",
+      "url": "https://investor.vanguard.com/investment-products/etfs/profile/vti",
+      "httpStatus": 200,
+      "sha256": "2bc29ea80528813b7fe03883b1a7aed4b9920969cd9eb96cbd4c978fb0a756bf",
+      "retrievedAt": "2026-10-11T18:44:09.185214+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    },
+    {
+      "id": "ivv-page",
+      "url": "https://www.ishares.com/us/products/239726/ishares-core-sp-500-etf",
+      "httpStatus": 200,
+      "sha256": "e104aef8b806c964a517020c454d9ab49925e6e93e5f4fc0cbe83453053c5bed",
+      "retrievedAt": "2026-10-11T18:44:09.690762+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    },
+    {
+      "id": "iwm-page",
+      "url": "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf",
+      "httpStatus": 200,
+      "sha256": "fa3b9d031e77163aca880c48fc4364057c9359666a89fe65600f4e95c8989c53",
+      "retrievedAt": "2026-10-11T18:44:09.474519+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    },
+    {
+      "id": "spy-pdf",
+      "url": "https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf",
+      "httpStatus": 200,
+      "sha256": "920347cf84e218ebb3fc1a962de24a0f2deb694e94b7415711ac5b7531ce9d58",
+      "retrievedAt": "2026-10-11T18:44:09.584130+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    },
+    {
+      "id": "voo-pdf",
+      "url": "https://fund-docs.vanguard.com/F0968.pdf",
+      "httpStatus": 200,
+      "sha256": "e61ed989f327c2742ee91ba9267ce30907a7e6c1b067f4d1688d228e28d79bd4",
+      "retrievedAt": "2026-10-11T18:44:09.743110+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    },
+    {
+      "id": "vti-pdf",
+      "url": "https://fund-docs.vanguard.com/F0970.pdf",
+      "httpStatus": 200,
+      "sha256": "aa02df64705fcbf14056bcf1a9a320a852e9670b171acd2e3591289435f1ddfd",
+      "retrievedAt": "2026-10-11T18:44:09.780810+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    },
+    {
+      "id": "ivv-pdf",
+      "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",
+      "httpStatus": 200,
+      "sha256": "d3b9d8ac355f1dcfd7a436cd576876b70ba5fd1851661655d80c8805442373b0",
+      "retrievedAt": "2026-10-11T18:44:09.682423+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    },
+    {
+      "id": "iwm-pdf",
+      "url": "https://www.ishares.com/us/literature/fact-sheet/iwm-ishares-russell-2000-etf-fund-fact-sheet-en-us.pdf",
+      "httpStatus": 200,
+      "sha256": "26556f04cebedb5e1a875dbd85c3220036b9a90a6ef89c4d8459402249e585dd",
+      "retrievedAt": "2026-10-11T18:44:09.740539+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    }
   ]
 }
