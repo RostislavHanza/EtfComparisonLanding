@@ -17,7 +17,7 @@ test('research drafts cannot publish any priority fund or fabricate human approv
 })
 test('each proposal source has actually retrieved evidence; known primary/API discrepancies remain explicit',()=>{
  const urls=new Set(evidence.sources.filter((source:{httpStatus:number})=>source.httpStatus===200).map((source:{url:string})=>source.url))
- for(const row of pending.records)for(const source of row.sources)assert.ok(urls.has(source.url),`Missing retrieved evidence for ${source.url}`)
+ for(const row of pending.records)for(const source of row.sources){if(source.provider==='project'){assert.equal(source.role,'authored');assert.equal(source.field,'description')}else assert.ok(urls.has(source.url),`Missing retrieved evidence for ${source.url}`)}
  assert.equal(pending.records.find((r:{ticker:string})=>r.ticker==='SPY').expenseRatioPercent,0.0945)
  assert.equal(evidence.tickerInsideObservations.SPY.expense_ratio,0.09)
  assert.equal(pending.records.find((r:{ticker:string})=>r.ticker==='VTI').index,'Morningstar US Total Market Index')

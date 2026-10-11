@@ -1,8 +1,22 @@
 import { object, InputError } from '../shared/validation.js'
 import { validateImport } from './import-validation.js'
+import { createHash } from 'node:crypto'
+export const catalogDraftDigest=(draft:unknown)=>createHash('sha256').update(JSON.stringify(draft)).digest('hex')
 // Produces a file only from explicit operator attestation; never guesses approval or dates.
 export function prepareApprovedCatalog(draft:unknown,approval:unknown){
- const input=object(draft),review=object(approval)
+ const input=object(draft)
+ let review=object(approval)
+ if(Array.isArray(review.approvedTickers)){
+  if(review.confirmAllListedSources!==true||review.reviewedDraftSha256!==catalogDraftDigest(input))throw new InputError('Potvrďte všechny uvedené podklady a přesnou verzi návrhu.')
+  if(!Array.isArray(input.records)||new Set(review.approvedTickers).size!==review.approvedTickers.length)throw new InputError('Neplatné nebo duplicitní schválení.')
+  const chosen=review.approvedTickers,usage=object(review.usageReview),candidates=input.records.map(object)
+  review={...review,usageReview:{...usage,reviewer:review.reviewer,reviewedAt:review.verifiedAt},records:chosen.map(ticker=>{
+   const row=candidates.find(row=>row.ticker===ticker)
+   if(!row||typeof row.snapshotObservedAt!=='string'||!Array.isArray(row.sources))throw new InputError('Neznámý ticker nebo nedoložený datový snímek.')
+   if(!Number.isFinite(Date.parse(row.snapshotObservedAt))||!(Date.parse(row.snapshotObservedAt)<=Date.parse(String(review.verifiedAt))))throw new InputError('Kontrola musí následovat po doloženém pozorování snímku.')
+   return {ticker,approved:true,dataAsOf:row.snapshotObservedAt.slice(0,10),confirmedSourceIds:row.sources.map(object).map(s=>s.evidenceId)}
+  })}
+ }
  if(!Array.isArray(input.records)||!Array.isArray(review.records))throw new InputError('Chybí návrhy nebo schválení fondů.')
  const decisions=new Map<string,Record<string,unknown>>()
  for(const item of review.records){const row=object(item);if(typeof row.ticker!=='string'||decisions.has(row.ticker))throw new InputError('Neplatné nebo duplicitní schválení.');decisions.set(row.ticker,row)}

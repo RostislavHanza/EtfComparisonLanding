@@ -15,6 +15,7 @@ export function validateImport(input:unknown){
  const seen=new Set<string>()
  return root.records.map(item=>{
   const r=object(item),ticker=text(r.ticker,'ticker')
+  if(r.methodology!==undefined&&r.methodology!=='tickerinside-primary-v1')throw new InputError('Neznámá datová metodika.')
   if(!/^[A-Z0-9.-]{1,10}$/.test(ticker)||seen.has(ticker))throw new InputError('Neplatný nebo duplicitní ticker.');seen.add(ticker)
   if(r.exchange!=='NYSE Arca')throw new InputError('Fond není ověřený na NYSE Arca.')
   if(typeof r.expenseRatioPercent!=='number'||!Number.isFinite(r.expenseRatioPercent)||r.expenseRatioPercent<0||r.expenseRatioPercent>10)throw new InputError('Neplatná nákladovost.')
@@ -23,12 +24,32 @@ export function validateImport(input:unknown){
   if(!Array.isArray(r.sources))throw new InputError('Chybí zdroje po jednotlivých polích.')
   const sources=r.sources.map(s=>{
    const v=object(s),field=text(v.field,'pole zdroje')
-   if(!fields.includes(field))throw new InputError('Neznámé pole zdroje.')
+   if(![...fields,'ticker'].includes(field))throw new InputError('Neznámé pole zdroje.')
    const checked=date(v.verified_at,'zdroje'),asof=date(v.as_of,'údaje')
    if(Date.parse(checked)<Date.parse(verifiedAt)||Date.parse(asof)>Date.parse(checked))throw new InputError('Nesouhlasí data ověření zdroje.')
-   return{field,url:approvedUrl(v.url),verified_at:checked,as_of:asof,evidence:text(v.evidence,'doklad kontroly')}
+   const retrieved=v.retrievedAt?date(v.retrievedAt,'stažení'):undefined
+   if(retrieved&&Date.parse(retrieved)>Date.parse(checked))throw new InputError('Kontrola předchází získání podkladu.')
+   const role=v.role,provider=v.provider
+   if(role!==undefined&&!['origin','verification','authored'].includes(String(role)))throw new InputError('Neplatná role zdroje.')
+   if(provider!==undefined&&!['tickerinside','issuer','project','sec'].includes(String(provider)))throw new InputError('Neplatný původ údaje.')
+   const authored=provider==='project'&&role==='authored'&&field==='description'
+   const url=authored?text(v.url,'URL vlastního textu'):approvedUrl(v.url)
+   if(authored){const own=new URL(url);if(own.protocol!=='https:'||own.hostname!=='github.com'||own.username||own.password||own.search||own.hash||!/^\/RostislavHanza\/EtfComparisonLanding\/blob\/design-exploration\/data\/review\/[A-Za-z0-9._-]+\.json$/.test(own.pathname))throw new InputError('Neznámý podklad vlastního popisu.')}
+   if(provider==='tickerinside'&&(url!==`https://tickerinside.com/api/v1/fund/${ticker.toLowerCase()}.json`||v.license!=='CC BY 4.0'))throw new InputError('Chybí konkrétní licencovaný API zdroj.')
+   if(v.date_basis!==undefined&&!['observed_state','provider_filing_date'].includes(String(v.date_basis)))throw new InputError('Neplatný význam data.')
+   return{field,url,verified_at:checked,as_of:asof,evidence:text(v.evidence,'doklad kontroly'),...(role?{role:String(role)}:{}),...(provider?{provider:String(provider)}:{}),...(v.license?{license:text(v.license,'licence')}:{}),...(v.date_basis?{date_basis:String(v.date_basis)}:{}),...(retrieved?{retrieved_at:retrieved}: {})}
   })
   if(!fields.every(f=>sources.some(s=>s.field===f)))throw new InputError('Každé publikované pole musí mít primární zdroj.')
+  if(r.methodology==='tickerinside-primary-v1'){
+   if(![...fields,'ticker'].every(f=>sources.some(s=>s.field===f&&(s.role==='origin'||s.role==='authored'))))throw new InputError('Každý údaj musí mít odlišený původ, nejen ověřovací odkaz.')
+   for(const s of sources){
+    if(!s.role||!s.provider)throw new InputError('Chybí původ nebo role zdroje.')
+    if(s.provider==='tickerinside'&&!['ticker','name','exchange','expenseRatioPercent'].includes(s.field))throw new InputError('TickerInside neposkytuje toto pole.')
+    if(s.provider==='issuer'&&!(issuers[ticker]??[]).some(host=>onHost(new URL(s.url).hostname,host)))throw new InputError('Neodpovídá emitent fondu.')
+    if(s.provider==='project'&&(s.role!=='authored'||s.field!=='description'))throw new InputError('Projekt nemůže být původem finančního údaje.')
+    if(s.role==='authored'&&(s.provider!=='project'||s.field!=='description'))throw new InputError('Vlastní autorství není zdroj finančního parametru.')
+   }
+  }
   if(!sources.some(s=>{
    if(s.field!=='exchange')return false
    const hostname=new URL(s.url).hostname

@@ -165,3 +165,7 @@ Pro nový projekt aplikujte migraci `202610110006_analytics_revocation.sql` po p
 Po automatickém Preview deploymentu otestujte anonymní návštěvu v čistém prohlížeči (bez měření), Odmítnout, reload, formulář bez analytiky, Nastavení soukromí → Přijmout analytiku, interakci a Odmítnout. V Supabase ověřte odstranění událostí daného visitId, zachované srovnání/session a revokované UUID. Test mazání při výpadku: v DevTools blokujte /api/events, odvolejte souhlas a ověřte chybu/retry, nulové nové měření i po reloadu; po odblokování musí retry uspět. Skutečné e-maily při tomto diagnostickém scénáři neodesílejte. Funkční e-mailový průchod je samostatný ruční test pouze na SMTP_USER.
 
 Katalog vyplňte dávkovým schvalovacím souborem a prepare:etfs/dry run/explicitním importem dle docs/CATALOG_REVIEW.md. Lišta sama pending fondy nezveřejňuje. `npm run check:vercel` musí nadále projít pro všech devět funkcí.
+
+## Zveřejnění pětice podle nové datové metodiky
+
+Použijte malý priority-five.batch-approval.example.json a přesný postup v CATALOG_REVIEW.md. Sources JSON zachová skutečný původ, verification, autorství, licenci a význam dat bez nové migrace. prepare:etfs a import:etfs dry run nic vzdáleně nezapisují. Teprve skutečně vyplněné schválení se všemi podklady umožní explicitní --apply; toto zadání vzdálený zápis nepovoluje. Dosud aplikované migrace znovu nespouštějte a nové environment variables nejsou potřeba.

@@ -18,7 +18,7 @@ test('operator batch preparation requires explicit per-fund and source approvals
  const approval=fixture(),prepared=prepareApprovedCatalog(draft,approval);assert.equal(prepared.records.length,5);assert.ok(prepared.records.every(row=>!('reviewStatus' in row)&&!('blockers' in row)));assert.equal(draft.records[0].reviewStatus,'pending_not_importable')
  const missing=fixture();missing.records[0].confirmedSourceIds=[];assert.throws(()=>prepareApprovedCatalog(draft,missing),/Nepotvrzený/)
  const denied=fixture();denied.usageReview.approved=false;assert.throws(()=>prepareApprovedCatalog(draft,denied),/schválené/)
- const undated=fixture();undated.records.find((r:{ticker:string})=>r.ticker==='VTI').sourceDateOverrides={};assert.throws(()=>prepareApprovedCatalog(draft,undated),/datum|údaje/)
+ const undated=fixture();undated.verifiedAt=null;assert.throws(()=>prepareApprovedCatalog(draft,undated),/ověření/)
 })
 test('issuer exchange evidence must match the known fund issuer and explicitly identify ticker and NYSE Arca',()=>{
  const records=prepareApprovedCatalog(draft,fixture()).records

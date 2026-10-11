@@ -4,6 +4,7 @@
 
 | Zdroj | Co ověřit | Způsob pro MVP |
 | --- | --- | --- |
+| https://tickerinside.com/api/ | Ticker, název, identifiers.exchange, expense_ratio a poplatkové datum | Hlavní licencovaný zdroj aktuálního fund JSON; emitent pro kontrolu a chybějící fakta |
 | https://www.nyse.com/ | Ticker, právní název a listing na NYSE Arca | Oficiální listing nebo dokument s identitou a burzou |
 | https://www.ssga.com/ | Fondy State Street/SPDR, index, expense ratio, dividendy | Produktová stránka, factsheet a prospekt |
 | https://investor.vanguard.com/ | Fondy Vanguard, index, expense ratio, dividendy | Produktová stránka a oficiální dokumenty |
@@ -11,7 +12,7 @@
 
 Oficiální dokumenty Vanguard na `fund-docs.vanguard.com` jsou povolené jako doplňkový primární dokument emitenta. Schválení domény není oprávnění automaticky kopírovat její obsah. Zkontrolovat podmínky používání a případnou licenci pro konkrétní zveřejnění; uchovat odkaz na podmínky a záznam rozhodnutí. Neopisovat celé licencované tabulky nebo dokumenty.
 
-Předchozí ověřování emitentů blokovala proxy HTTP 403; to je historická informace, nikoli současný důkaz nedostupnosti. Nově je ověřené dokumentované TickerInside API a jeho podmínky (viz níže). Scraping produktových stránek, interní endpointy ani importy holdings/cen nepoužíváme.
+Předchozí ověřování emitentů blokovala proxy HTTP 403; to je historická informace, nikoli současný důkaz nedostupnosti. Aktuálně je přečtené dokumentované TickerInside API a jeho licenční sekce (viz níže); úplný odkazovaný právní dokument nyní vrací 403. Scraping produktových stránek, interní endpointy ani importy holdings/cen nepoužíváme.
 
 `data/etf-candidates.csv` obsahuje 20 kandidátů ke kontrole, nikoli ověřený katalog. Fondy jiných emitentů vyžadují schválení jejich primárního zdroje; lze začít 17 kandidáty ze tří uvedených emitentů. Ani burza kandidátů není pouhou přítomností v seznamu potvrzená. Produkční migrace neobsahuje žádná smyšlená ani demonstrační ETF.
 
@@ -48,11 +49,11 @@ Oficiální dokumentace: https://tickerinside.com/api/. Dokumentovaný endpoint 
 
 Automaticky získáváme ticker, název, burzu, nákladovost v procentech, typ jejího zdroje, případné datum a URL SEC filing a atribuci. Hodnota 0.03 znamená 0,03 %, nikoli 3 %; null nikdy není nula. `as_of` je datum cen a `holdings_as_of` datum holdings, nikoli datum nákladovosti. Používáme jen `expense_ratio_as_of` pro nákladovost; chybějící datum ponecháme null v kandidátní vrstvě. `checkedAt` je náš čas technické kontroly API, nikoli nové lidské ověření fondu.
 
-API index, dividendovou politiku a požadovaný popis pro těchto 20 fondů neposkytuje. Ty se doplňují a schvalují ručně z primárních zdrojů uvedených výše. Dividendový výnos ani kategorie fondu je nenahrazují. SCHB/SCHD/RSP stále potřebují schválení dalších primárních emitentských zdrojů. Validátor dovoluje TickerInside a SEC jako doplňkové zdroje, ale přijímá důkaz NYSE nebo jednoznačný doklad příslušného emitenta a ostatní pravidla ruční publikace.
+API index, dividendovou politiku a požadovaný popis pro těchto 20 fondů neposkytuje. Index a dividendová politika se doplňují a schvalují jako jednotlivé ověřené emitentské fakty; český popis je vlastní stručný text projektu. Dividendový výnos ani kategorie fondu je nenahrazují. SCHB/SCHD/RSP stále potřebují schválení dalších primárních emitentských zdrojů. TickerInside je nyní původ poskytovaných metadat, SEC případný podklad; validátor ale přijímá důkaz NYSE nebo jednoznačný doklad příslušného emitenta a ostatní pravidla ruční publikace.
 
 ### Licence a atribuce
 
-Ověřeny https://tickerinside.com/terms/ a https://tickerinside.com/legal/, znění revidované 9. října 2026, a API sekce terms/cite. Vlastní práce TickerInside a aktuální snapshoty jsou CC BY 4.0 s povolením komerčního použití a uchování aktuálních souborů; poskytovatel doporučuje nejvýše jedno načtení souboru za nightly build a identifikující User-Agent. Náš adaptér používá dva souběžné požadavky a nejvýše jednu synchronizační dávku za UTC den, běžně jednu týdně.
+Aktuální kontrola načetla https://tickerinside.com/api/ a https://tickerinside.com/api/index.md i všech pět prioritních JSON. Dokumentace uvádí aktuální fund soubory pod CC BY 4.0, trvalou licenci již publikovaných vlastních příspěvků, uchování aktuálních kopií, atribuci na stránku fondu a nejvýše jedno načtení za nightly build. Identifikující User-Agent je doporučen a adaptér ho používá; dvě souběžná načtení a nejvýše jedna dávka za UTC den, běžně týdně. Dokumentace pro identifiers.exchange výslovně uvádí Nasdaq Trader directory jako upstream; neprezentujeme jej jako údaj získaný přímo od NYSE ani jako sublicenci celé cizí databáze. Rozsah pro MVP: ticker/name/identifiers.exchange/expense_ratio a data poplatku; nikoli FIGI/ISIN/CUSIP, holdings, ceny, history nebo flows. API označuje celé odpovědi license=CC BY 4.0; tato deklarace není nezávislé oprávnění k cizím chráněným dokumentům. Historické záznamy kontrol práv nepředstavují novou kontrolu aktuálního textu: nyní /terms/ i skutečně odkazované /legal/ vracejí 403, úplný právní dokument tedy nebyl znovu přečten. Správce musí před finálním souhlasem tuto mezeru uzavřít.
 
 Při veřejném použití zobrazujeme odkaz TickerInside na stránku konkrétního fondu, označení CC BY 4.0, odkaz na licenci a informaci o adaptaci dat. Nikdy nevkládáme providerovo cite_html jako HTML. Licence poskytovatele se nevztahuje na cizí práva k holdings/cenám; tato data vůbec neuchováváme. History/flows mají odlišné podmínky, a jejich endpointy nepoužíváme. Market_data bez datovaného SEC podkladu neaktualizuje veřejnou nákladovost. Před rozšířením použití znovu zkontrolovat podmínky; API nezaručuje správnost dat.
 
@@ -77,3 +78,12 @@ Dočasná stránka `?admin=etf-sync` umožňuje vlastníkovi schránky `SMTP_USE
 SPY/VOO/IVV/VTI/IWM mají připravené věcné parametry a původní české popisy v `data/review/priority-five.pending.json`; evidence skutečně načtených primárních dokumentů a API je v `data/review/priority-five.evidence.json`. Všechny jsou pending, lidská data ověření zůstávají null a usageReview.approved=false. Import je záměrně odmítne. Podrobnosti, zdrojové rozpory (SPY 0.0945 % proti API 0.09 %, přejmenování VTI na Morningstar), přijatelný emitentský důkaz burzy a zbývající práva a přesný postup schválení/importu jsou v [CATALOG_REVIEW.md](CATALOG_REVIEW.md). `npm run review:etfs -- data/review/priority-five.pending.json` vytvoří pouze lokální kontrolní výpis bez DB zápisu.
 
 Emitentská alternativa listingu je nyní implementována pro fondy SSGA, Vanguard (včetně fund-docs) a iShares uvedené v mapě validátoru. TickerInside není samostatným publikačním důkazem burzy. BlackRock/ICE jsou povolené pouze pro policyUrl právní kontroly, nikoli automaticky jako finanční datové zdroje. HTTP dostupnost nebo zařazení domény do allowlistu není schválení licence.
+
+
+## Metodika tickerinside-primary-v1
+
+Nová pětice eviduje sedm polí včetně tickeru. Každý zdroj má role=origin/verification/authored a provider=tickerinside/issuer/project/sec. Origin znamená skutečný původ hodnoty; verification je kontrolní dokument, nikoli tvrzení, že jeho licence poskytla právo k převzatému API údaji. Authored je povolené jen pro původní popis v tomto repozitáři. TickerInside origin musí mít konkrétní fund endpoint, CC BY 4.0 a patřit k poli, které skutečně poskytuje. Každé pole musí mít původ, samotný verification nestačí. Staré schválené importy/snapshoty i synchronizační doklady zůstávají kompatibilní.
+
+Sources JSON navíc uchovává retrieved_at a date_basis: provider_filing_date pro datované API náklady, observed_state pro skutečně pozorovaná metadata bez historického data. as_of u observed_state znamená den pozorovaného stavu, nikoli nedoložené datum účinnosti. API as_of cen se nepoužívá pro metadata. Lidské verified_at vyplní až skutečný dávkový souhlas. Práva se stále kontrolují samostatně v usageReview; ověřování faktů není reprodukce celého díla a link není blanket licence.
+
+Malý batch manifest nahrazuje ruční přepisování zdrojových ID, dat a opakovaných kontrolorů jedním výslovným potvrzením přesného návrhu (SHA-256), vybranými tickery, skutečným kontrolorem/časem a doloženým usageReview. Pokročilý per-fund manifest dál funguje. Podrobný postup a zbylé právní otázky: CATALOG_REVIEW.md. Databázová migrace není potřebná: doplňující evidence zůstává v existujícím sources JSONB.

@@ -1,7 +1,7 @@
 {
   "status": "pending_human_review_not_for_apply",
   "researchRecordedAt": "2026-10-11T17:10:02Z",
-  "notice": "Záměrně neprojde publikačním validátorem. Prázdné údaje nenahrazujte automaticky datem stažení nebo AI jménem.",
+  "notice": "TickerInside je původ licencovaných dostupných metadat; issuer verification je oddělené. Pending není schválení publikace. Lidské verifiedAt a usageReview se automaticky nevyplňují.",
   "records": [
     {
       "ticker": "SPY",
@@ -16,6 +16,20 @@
       "verifiedBy": null,
       "sources": [
         {
+          "field": "ticker",
+          "url": "https://tickerinside.com/api/v1/fund/spy.json",
+          "role": "origin",
+          "provider": "tickerinside",
+          "license": "CC BY 4.0",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "date_basis": "observed_state",
+          "evidence": "TickerInside JSON: ticker = SPY. Základní metadata bez holdings/cen/FIGI. Datum pozorovaného stavu není historické datum změny ani datum cen.",
+          "retrievedAt": "2026-10-11T19:32:03.670399+00:00",
+          "evidenceId": "api-spy",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
           "field": "name",
           "url": "https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf",
           "verified_at": null,
@@ -23,7 +37,21 @@
           "evidence": "Factsheet, strana 1, název a ticker SPY.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "spy-pdf",
-          "verificationStatus": "awaiting_human_review"
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "name",
+          "url": "https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Factsheet, strana 1, název a ticker SPY.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "spy-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "origin",
+          "provider": "issuer"
         },
         {
           "field": "exchange",
@@ -33,6 +61,22 @@
           "evidence": "Ticker SPY; emitentský podklad výslovně uvádí Exchange NYSE Arca. SSGA Listing Information k 11. 10. 2026.",
           "retrievedAt": "2026-10-11T17:04:23Z",
           "evidenceId": "spy-page",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "exchange",
+          "url": "https://tickerinside.com/api/v1/fund/spy.json",
+          "role": "origin",
+          "provider": "tickerinside",
+          "license": "CC BY 4.0",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "date_basis": "observed_state",
+          "evidence": "TickerInside JSON: identifiers.exchange = NYSE Arca. Základní metadata bez holdings/cen/FIGI. Datum pozorovaného stavu není historické datum změny ani datum cen.",
+          "retrievedAt": "2026-10-11T19:32:03.670399+00:00",
+          "evidenceId": "api-spy",
           "verificationStatus": "awaiting_human_review"
         },
         {
@@ -43,7 +87,21 @@
           "evidence": "Investment approach / FUND DESCRIPTION: S&P 500 Index.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "spy-pdf",
-          "verificationStatus": "awaiting_human_review"
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "index",
+          "url": "https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Investment approach / FUND DESCRIPTION: S&P 500 Index.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "spy-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "origin",
+          "provider": "issuer"
         },
         {
           "field": "expenseRatioPercent",
@@ -53,7 +111,21 @@
           "evidence": "SPY factsheet, strana 1: Gross Expense Ratio (%) 0.0945; Net Expense Ratio (%) 0.0945. Aktuální produktová stránka potvrzuje gross 0.0945 %.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "spy-pdf",
-          "verificationStatus": "awaiting_human_review"
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "expenseRatioPercent",
+          "url": "https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "SPY factsheet, strana 1: Gross Expense Ratio (%) 0.0945; Net Expense Ratio (%) 0.0945. Aktuální produktová stránka potvrzuje gross 0.0945 %.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "spy-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "origin",
+          "provider": "issuer"
         },
         {
           "field": "dividends",
@@ -63,7 +135,21 @@
           "evidence": "Produktová stránka, Fund Information as of Oct 11 2026, Distribution Frequency: Quarterly.",
           "retrievedAt": "2026-10-11T17:04:23Z",
           "evidenceId": "spy-page",
-          "verificationStatus": "awaiting_human_review"
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "dividends",
+          "url": "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-sp-500-etf-trust-spy",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "evidence": "Produktová stránka, Fund Information as of Oct 11 2026, Distribution Frequency: Quarterly.",
+          "retrievedAt": "2026-10-11T17:04:23Z",
+          "evidenceId": "spy-page",
+          "verificationStatus": "awaiting_human_review",
+          "role": "origin",
+          "provider": "issuer"
         },
         {
           "field": "description",
@@ -73,7 +159,34 @@
           "evidence": "Originální český popis vytvořený pro tento návrh z doloženého cíle a strategie fondu; nejde o překlad marketingového odstavce ani investiční doporučení.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "spy-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "description",
+          "url": "https://github.com/RostislavHanza/EtfComparisonLanding/blob/design-exploration/data/review/priority-five.pending.json",
+          "role": "authored",
+          "provider": "project",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "date_basis": "observed_state",
+          "evidence": "Původní krátký český text projektu; nikoli překlad nebo kopie marketingového odstavce. Věcný podklad je odděleně uveden jako verification.",
+          "retrievedAt": "2026-10-11T19:32:03.670399+00:00",
+          "evidenceId": "project-descriptions",
           "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "ticker",
+          "url": "https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Kontrola tickeru SPY v uvedeném emitentském dokladu; původ tickeru v katalogu je TickerInside.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "spy-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
         }
       ],
       "usageReview": {
@@ -88,7 +201,9 @@
         "Lidská kontrola jednotlivých polí, skutečný kontrolor a správná data platnosti.",
         "Doložené rozhodnutí o právech k publikaci všech použitých zdrojů.",
         "API používá starší název SPDR bez State Street a market_data nákladovost bez data; nepovolovat automatickou nákladovost."
-      ]
+      ],
+      "methodology": "tickerinside-primary-v1",
+      "snapshotObservedAt": "2026-10-11T19:32:03.670399+00:00"
     },
     {
       "ticker": "VOO",
@@ -103,6 +218,20 @@
       "verifiedBy": null,
       "sources": [
         {
+          "field": "ticker",
+          "url": "https://tickerinside.com/api/v1/fund/voo.json",
+          "role": "origin",
+          "provider": "tickerinside",
+          "license": "CC BY 4.0",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "date_basis": "observed_state",
+          "evidence": "TickerInside JSON: ticker = VOO. Základní metadata bez holdings/cen/FIGI. Datum pozorovaného stavu není historické datum změny ani datum cen.",
+          "retrievedAt": "2026-10-11T19:32:03.714515+00:00",
+          "evidenceId": "api-voo",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
           "field": "name",
           "url": "https://fund-docs.vanguard.com/F0968.pdf",
           "verified_at": null,
@@ -110,6 +239,22 @@
           "evidence": "Factsheet, strana 1, název a ticker VOO.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "voo-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "name",
+          "url": "https://tickerinside.com/api/v1/fund/voo.json",
+          "role": "origin",
+          "provider": "tickerinside",
+          "license": "CC BY 4.0",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "date_basis": "observed_state",
+          "evidence": "TickerInside JSON: name = Vanguard S&P 500 ETF. Základní metadata bez holdings/cen/FIGI. Datum pozorovaného stavu není historické datum změny ani datum cen.",
+          "retrievedAt": "2026-10-11T19:32:03.714515+00:00",
+          "evidenceId": "api-voo",
           "verificationStatus": "awaiting_human_review"
         },
         {
@@ -120,6 +265,22 @@
           "evidence": "Ticker VOO; emitentský podklad výslovně uvádí Exchange NYSE Arca. Oficiální factsheet, strana 1, Exchange / Quick facts.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "voo-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "exchange",
+          "url": "https://tickerinside.com/api/v1/fund/voo.json",
+          "role": "origin",
+          "provider": "tickerinside",
+          "license": "CC BY 4.0",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "date_basis": "observed_state",
+          "evidence": "TickerInside JSON: identifiers.exchange = NYSE Arca. Základní metadata bez holdings/cen/FIGI. Datum pozorovaného stavu není historické datum změny ani datum cen.",
+          "retrievedAt": "2026-10-11T19:32:03.714515+00:00",
+          "evidenceId": "api-voo",
           "verificationStatus": "awaiting_human_review"
         },
         {
@@ -130,7 +291,21 @@
           "evidence": "Investment approach / FUND DESCRIPTION: S&P 500 Index.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "voo-pdf",
-          "verificationStatus": "awaiting_human_review"
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "index",
+          "url": "https://fund-docs.vanguard.com/F0968.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Investment approach / FUND DESCRIPTION: S&P 500 Index.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "voo-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "origin",
+          "provider": "issuer"
         },
         {
           "field": "expenseRatioPercent",
@@ -140,6 +315,22 @@
           "evidence": "Factsheet, strana 1, Expense Ratio: 0.03 %. Shodné s aktuální stránkou a TickerInside; datum API podkladu není datum lidské kontroly.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "voo-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "expenseRatioPercent",
+          "url": "https://tickerinside.com/api/v1/fund/voo.json",
+          "role": "origin",
+          "provider": "tickerinside",
+          "license": "CC BY 4.0",
+          "verified_at": null,
+          "as_of": "2026-04-28",
+          "date_basis": "provider_filing_date",
+          "evidence": "TickerInside JSON: expense_ratio = 0.03. Základní metadata bez holdings/cen/FIGI. Datum pozorovaného stavu není historické datum změny ani datum cen.",
+          "retrievedAt": "2026-10-11T19:32:03.714515+00:00",
+          "evidenceId": "api-voo",
           "verificationStatus": "awaiting_human_review"
         },
         {
@@ -150,7 +341,21 @@
           "evidence": "Distribution Frequency / Dividend schedule: Quarterly.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "voo-pdf",
-          "verificationStatus": "awaiting_human_review"
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "dividends",
+          "url": "https://fund-docs.vanguard.com/F0968.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Distribution Frequency / Dividend schedule: Quarterly.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "voo-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "origin",
+          "provider": "issuer"
         },
         {
           "field": "description",
@@ -160,17 +365,34 @@
           "evidence": "Originální český popis vytvořený pro tento návrh z doloženého cíle a strategie fondu; nejde o překlad marketingového odstavce ani investiční doporučení.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "voo-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "description",
+          "url": "https://github.com/RostislavHanza/EtfComparisonLanding/blob/design-exploration/data/review/priority-five.pending.json",
+          "role": "authored",
+          "provider": "project",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "date_basis": "observed_state",
+          "evidence": "Původní krátký český text projektu; nikoli překlad nebo kopie marketingového odstavce. Věcný podklad je odděleně uveden jako verification.",
+          "retrievedAt": "2026-10-11T19:32:03.714515+00:00",
+          "evidenceId": "project-descriptions",
           "verificationStatus": "awaiting_human_review"
         },
         {
-          "field": "expenseRatioPercent",
-          "url": "https://tickerinside.com/api/v1/fund/voo.json",
+          "field": "ticker",
+          "url": "https://fund-docs.vanguard.com/F0968.pdf",
           "verified_at": null,
-          "as_of": "2026-04-28",
-          "evidence": "Doplňkový údaj API. Souhlasí s emitentským údajem. Licence CC BY 4.0, atribuce TickerInside. SEC odkaz nebyl nezávisle přečten.",
-          "retrievedAt": "2026-10-11T17:04:22Z",
-          "evidenceId": "api-voo",
-          "verificationStatus": "api_observation_only"
+          "as_of": "2026-06-30",
+          "evidence": "Kontrola tickeru VOO v uvedeném emitentském dokladu; původ tickeru v katalogu je TickerInside.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "voo-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
         }
       ],
       "usageReview": {
@@ -184,7 +406,9 @@
       "blockers": [
         "Lidská kontrola jednotlivých polí, skutečný kontrolor a správná data platnosti.",
         "Doložené rozhodnutí o právech k publikaci všech použitých zdrojů."
-      ]
+      ],
+      "methodology": "tickerinside-primary-v1",
+      "snapshotObservedAt": "2026-10-11T19:32:03.714515+00:00"
     },
     {
       "ticker": "IVV",
@@ -199,6 +423,20 @@
       "verifiedBy": null,
       "sources": [
         {
+          "field": "ticker",
+          "url": "https://tickerinside.com/api/v1/fund/ivv.json",
+          "role": "origin",
+          "provider": "tickerinside",
+          "license": "CC BY 4.0",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "date_basis": "observed_state",
+          "evidence": "TickerInside JSON: ticker = IVV. Základní metadata bez holdings/cen/FIGI. Datum pozorovaného stavu není historické datum změny ani datum cen.",
+          "retrievedAt": "2026-10-11T19:32:03.756189+00:00",
+          "evidenceId": "api-ivv",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
           "field": "name",
           "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",
           "verified_at": null,
@@ -206,6 +444,22 @@
           "evidence": "Factsheet, strana 1, název a ticker IVV.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "ivv-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "name",
+          "url": "https://tickerinside.com/api/v1/fund/ivv.json",
+          "role": "origin",
+          "provider": "tickerinside",
+          "license": "CC BY 4.0",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "date_basis": "observed_state",
+          "evidence": "TickerInside JSON: name = iShares Core S&P 500 ETF. Základní metadata bez holdings/cen/FIGI. Datum pozorovaného stavu není historické datum změny ani datum cen.",
+          "retrievedAt": "2026-10-11T19:32:03.756189+00:00",
+          "evidenceId": "api-ivv",
           "verificationStatus": "awaiting_human_review"
         },
         {
@@ -216,6 +470,22 @@
           "evidence": "Ticker IVV; emitentský podklad výslovně uvádí Exchange NYSE Arca. Oficiální factsheet, strana 1, Exchange / Quick facts.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "ivv-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "exchange",
+          "url": "https://tickerinside.com/api/v1/fund/ivv.json",
+          "role": "origin",
+          "provider": "tickerinside",
+          "license": "CC BY 4.0",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "date_basis": "observed_state",
+          "evidence": "TickerInside JSON: identifiers.exchange = NYSE Arca. Základní metadata bez holdings/cen/FIGI. Datum pozorovaného stavu není historické datum změny ani datum cen.",
+          "retrievedAt": "2026-10-11T19:32:03.756189+00:00",
+          "evidenceId": "api-ivv",
           "verificationStatus": "awaiting_human_review"
         },
         {
@@ -226,7 +496,21 @@
           "evidence": "Investment approach / FUND DESCRIPTION: S&P 500 Index.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "ivv-pdf",
-          "verificationStatus": "awaiting_human_review"
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "index",
+          "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Investment approach / FUND DESCRIPTION: S&P 500 Index.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "ivv-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "origin",
+          "provider": "issuer"
         },
         {
           "field": "expenseRatioPercent",
@@ -236,6 +520,22 @@
           "evidence": "Factsheet, strana 1, Expense Ratio: 0.03 %. Shodné s aktuální stránkou a TickerInside; datum API podkladu není datum lidské kontroly.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "ivv-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "expenseRatioPercent",
+          "url": "https://tickerinside.com/api/v1/fund/ivv.json",
+          "role": "origin",
+          "provider": "tickerinside",
+          "license": "CC BY 4.0",
+          "verified_at": null,
+          "as_of": "2026-07-27",
+          "date_basis": "provider_filing_date",
+          "evidence": "TickerInside JSON: expense_ratio = 0.03. Základní metadata bez holdings/cen/FIGI. Datum pozorovaného stavu není historické datum změny ani datum cen.",
+          "retrievedAt": "2026-10-11T19:32:03.756189+00:00",
+          "evidenceId": "api-ivv",
           "verificationStatus": "awaiting_human_review"
         },
         {
@@ -246,7 +546,21 @@
           "evidence": "Distribution Frequency / Dividend schedule: Quarterly.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "ivv-pdf",
-          "verificationStatus": "awaiting_human_review"
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "dividends",
+          "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Distribution Frequency / Dividend schedule: Quarterly.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "ivv-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "origin",
+          "provider": "issuer"
         },
         {
           "field": "description",
@@ -256,17 +570,34 @@
           "evidence": "Originální český popis vytvořený pro tento návrh z doloženého cíle a strategie fondu; nejde o překlad marketingového odstavce ani investiční doporučení.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "ivv-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "description",
+          "url": "https://github.com/RostislavHanza/EtfComparisonLanding/blob/design-exploration/data/review/priority-five.pending.json",
+          "role": "authored",
+          "provider": "project",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "date_basis": "observed_state",
+          "evidence": "Původní krátký český text projektu; nikoli překlad nebo kopie marketingového odstavce. Věcný podklad je odděleně uveden jako verification.",
+          "retrievedAt": "2026-10-11T19:32:03.756189+00:00",
+          "evidenceId": "project-descriptions",
           "verificationStatus": "awaiting_human_review"
         },
         {
-          "field": "expenseRatioPercent",
-          "url": "https://tickerinside.com/api/v1/fund/ivv.json",
+          "field": "ticker",
+          "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",
           "verified_at": null,
-          "as_of": "2026-07-27",
-          "evidence": "Doplňkový údaj API. Souhlasí s emitentským údajem. Licence CC BY 4.0, atribuce TickerInside. SEC odkaz nebyl nezávisle přečten.",
-          "retrievedAt": "2026-10-11T17:04:22Z",
-          "evidenceId": "api-ivv",
-          "verificationStatus": "api_observation_only"
+          "as_of": "2026-06-30",
+          "evidence": "Kontrola tickeru IVV v uvedeném emitentském dokladu; původ tickeru v katalogu je TickerInside.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "ivv-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
         }
       ],
       "usageReview": {
@@ -280,7 +611,9 @@
       "blockers": [
         "Lidská kontrola jednotlivých polí, skutečný kontrolor a správná data platnosti.",
         "Doložené rozhodnutí o právech k publikaci všech použitých zdrojů."
-      ]
+      ],
+      "methodology": "tickerinside-primary-v1",
+      "snapshotObservedAt": "2026-10-11T19:32:03.756189+00:00"
     },
     {
       "ticker": "VTI",
@@ -295,14 +628,44 @@
       "verifiedBy": null,
       "sources": [
         {
+          "field": "ticker",
+          "url": "https://tickerinside.com/api/v1/fund/vti.json",
+          "role": "origin",
+          "provider": "tickerinside",
+          "license": "CC BY 4.0",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "date_basis": "observed_state",
+          "evidence": "TickerInside JSON: ticker = VTI. Základní metadata bez holdings/cen/FIGI. Datum pozorovaného stavu není historické datum změny ani datum cen.",
+          "retrievedAt": "2026-10-11T19:32:03.769535+00:00",
+          "evidenceId": "api-vti",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
           "field": "name",
           "url": "https://investor.vanguard.com/investment-products/etfs/profile/vti",
           "verified_at": null,
-          "as_of": null,
-          "evidence": "Aktuální veřejná profilová stránka, fundFullName: Vanguard Morningstar Total Stock Market ETF. Červnový factsheet uvádí starší název a očekávanou změnu v červenci 2026.",
+          "as_of": "2026-10-11",
+          "evidence": "Aktuální veřejná profilová stránka, fundFullName: Vanguard Morningstar Total Stock Market ETF. Červnový factsheet uvádí starší název a očekávanou změnu v červenci 2026. Datum znamená skutečně pozorovaný stav dokumentu, nikoli historické datum účinnosti změny.",
           "retrievedAt": "2026-10-11T17:04:22Z",
           "evidenceId": "vti-page",
-          "verificationStatus": "awaiting_human_review"
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer",
+          "date_basis": "observed_state"
+        },
+        {
+          "field": "name",
+          "url": "https://investor.vanguard.com/investment-products/etfs/profile/vti",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "evidence": "Aktuální veřejná profilová stránka, fundFullName: Vanguard Morningstar Total Stock Market ETF. Červnový factsheet uvádí starší název a očekávanou změnu v červenci 2026. Datum je datum doloženého pozorovaného aktuálního stavu; nejde o historické datum přejmenování.",
+          "retrievedAt": "2026-10-11T17:04:22Z",
+          "evidenceId": "vti-page",
+          "verificationStatus": "awaiting_human_review",
+          "role": "origin",
+          "provider": "issuer",
+          "date_basis": "observed_state"
         },
         {
           "field": "exchange",
@@ -312,17 +675,49 @@
           "evidence": "Ticker VTI; emitentský podklad výslovně uvádí Exchange NYSE Arca. Oficiální factsheet, strana 1, Exchange / Quick facts.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "vti-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "exchange",
+          "url": "https://tickerinside.com/api/v1/fund/vti.json",
+          "role": "origin",
+          "provider": "tickerinside",
+          "license": "CC BY 4.0",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "date_basis": "observed_state",
+          "evidence": "TickerInside JSON: identifiers.exchange = NYSE Arca. Základní metadata bez holdings/cen/FIGI. Datum pozorovaného stavu není historické datum změny ani datum cen.",
+          "retrievedAt": "2026-10-11T19:32:03.769535+00:00",
+          "evidenceId": "api-vti",
           "verificationStatus": "awaiting_human_review"
         },
         {
           "field": "index",
           "url": "https://investor.vanguard.com/investment-products/etfs/profile/vti",
           "verified_at": null,
-          "as_of": null,
-          "evidence": "Aktuální veřejná profilová stránka, objective a benchmarkShortName: Morningstar US Total Market Index. Starší factsheet uvádí CRSP; účinné datum přejmenování zatím nedoloženo.",
+          "as_of": "2026-10-11",
+          "evidence": "Aktuální veřejná profilová stránka, objective a benchmarkShortName: Morningstar US Total Market Index. Starší factsheet uvádí CRSP; účinné datum přejmenování zatím nedoloženo. Datum znamená skutečně pozorovaný stav dokumentu, nikoli historické datum účinnosti změny.",
           "retrievedAt": "2026-10-11T17:04:22Z",
           "evidenceId": "vti-page",
-          "verificationStatus": "awaiting_human_review"
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer",
+          "date_basis": "observed_state"
+        },
+        {
+          "field": "index",
+          "url": "https://investor.vanguard.com/investment-products/etfs/profile/vti",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "evidence": "Aktuální veřejná profilová stránka, objective a benchmarkShortName: Morningstar US Total Market Index. Starší factsheet uvádí CRSP; účinné datum přejmenování zatím nedoloženo. Datum je datum doloženého pozorovaného aktuálního stavu; nejde o historické datum přejmenování.",
+          "retrievedAt": "2026-10-11T17:04:22Z",
+          "evidenceId": "vti-page",
+          "verificationStatus": "awaiting_human_review",
+          "role": "origin",
+          "provider": "issuer",
+          "date_basis": "observed_state"
         },
         {
           "field": "expenseRatioPercent",
@@ -332,6 +727,22 @@
           "evidence": "Factsheet, strana 1, Expense Ratio: 0.03 %. Shodné s aktuální stránkou a TickerInside; datum API podkladu není datum lidské kontroly.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "vti-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "expenseRatioPercent",
+          "url": "https://tickerinside.com/api/v1/fund/vti.json",
+          "role": "origin",
+          "provider": "tickerinside",
+          "license": "CC BY 4.0",
+          "verified_at": null,
+          "as_of": "2026-04-28",
+          "date_basis": "provider_filing_date",
+          "evidence": "TickerInside JSON: expense_ratio = 0.03. Základní metadata bez holdings/cen/FIGI. Datum pozorovaného stavu není historické datum změny ani datum cen.",
+          "retrievedAt": "2026-10-11T19:32:03.769535+00:00",
+          "evidenceId": "api-vti",
           "verificationStatus": "awaiting_human_review"
         },
         {
@@ -342,27 +753,60 @@
           "evidence": "Distribution Frequency / Dividend schedule: Quarterly.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "vti-pdf",
-          "verificationStatus": "awaiting_human_review"
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "dividends",
+          "url": "https://fund-docs.vanguard.com/F0970.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Distribution Frequency / Dividend schedule: Quarterly.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "vti-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "origin",
+          "provider": "issuer"
         },
         {
           "field": "description",
           "url": "https://investor.vanguard.com/investment-products/etfs/profile/vti",
           "verified_at": null,
-          "as_of": null,
-          "evidence": "Originální český popis vytvořený pro tento návrh z doloženého cíle a strategie fondu; nejde o překlad marketingového odstavce ani investiční doporučení.",
+          "as_of": "2026-10-11",
+          "evidence": "Originální český popis vytvořený pro tento návrh z doloženého cíle a strategie fondu; nejde o překlad marketingového odstavce ani investiční doporučení. Datum znamená skutečně pozorovaný stav dokumentu, nikoli historické datum účinnosti změny.",
           "retrievedAt": "2026-10-11T17:04:22Z",
           "evidenceId": "vti-page",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer",
+          "date_basis": "observed_state"
+        },
+        {
+          "field": "description",
+          "url": "https://github.com/RostislavHanza/EtfComparisonLanding/blob/design-exploration/data/review/priority-five.pending.json",
+          "role": "authored",
+          "provider": "project",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "date_basis": "observed_state",
+          "evidence": "Původní krátký český text projektu; nikoli překlad nebo kopie marketingového odstavce. Věcný podklad je odděleně uveden jako verification.",
+          "retrievedAt": "2026-10-11T19:32:03.769535+00:00",
+          "evidenceId": "project-descriptions",
           "verificationStatus": "awaiting_human_review"
         },
         {
-          "field": "expenseRatioPercent",
-          "url": "https://tickerinside.com/api/v1/fund/vti.json",
+          "field": "ticker",
+          "url": "https://investor.vanguard.com/investment-products/etfs/profile/vti",
           "verified_at": null,
-          "as_of": "2026-04-28",
-          "evidence": "Doplňkový údaj API. Souhlasí s emitentským údajem. Licence CC BY 4.0, atribuce TickerInside. SEC odkaz nebyl nezávisle přečten.",
+          "as_of": "2026-10-11",
+          "evidence": "Kontrola tickeru VTI v uvedeném emitentském dokladu; původ tickeru v katalogu je TickerInside. Datum znamená skutečně pozorovaný stav dokumentu, nikoli historické datum účinnosti změny.",
           "retrievedAt": "2026-10-11T17:04:22Z",
-          "evidenceId": "api-vti",
-          "verificationStatus": "api_observation_only"
+          "evidenceId": "vti-page",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer",
+          "date_basis": "observed_state"
         }
       ],
       "usageReview": {
@@ -377,7 +821,9 @@
         "Lidská kontrola jednotlivých polí, skutečný kontrolor a správná data platnosti.",
         "Doložené rozhodnutí o právech k publikaci všech použitých zdrojů.",
         "Lidsky potvrdit aktuální název/index k datu přehledu a schválit rozdíl proti TickerInside; červnový factsheet nový název nedokládá."
-      ]
+      ],
+      "methodology": "tickerinside-primary-v1",
+      "snapshotObservedAt": "2026-10-11T19:32:03.769535+00:00"
     },
     {
       "ticker": "IWM",
@@ -392,6 +838,20 @@
       "verifiedBy": null,
       "sources": [
         {
+          "field": "ticker",
+          "url": "https://tickerinside.com/api/v1/fund/iwm.json",
+          "role": "origin",
+          "provider": "tickerinside",
+          "license": "CC BY 4.0",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "date_basis": "observed_state",
+          "evidence": "TickerInside JSON: ticker = IWM. Základní metadata bez holdings/cen/FIGI. Datum pozorovaného stavu není historické datum změny ani datum cen.",
+          "retrievedAt": "2026-10-11T19:32:03.789935+00:00",
+          "evidenceId": "api-iwm",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
           "field": "name",
           "url": "https://www.ishares.com/us/literature/fact-sheet/iwm-ishares-russell-2000-etf-fund-fact-sheet-en-us.pdf",
           "verified_at": null,
@@ -399,6 +859,22 @@
           "evidence": "Factsheet, strana 1, název a ticker IWM.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "iwm-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "name",
+          "url": "https://tickerinside.com/api/v1/fund/iwm.json",
+          "role": "origin",
+          "provider": "tickerinside",
+          "license": "CC BY 4.0",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "date_basis": "observed_state",
+          "evidence": "TickerInside JSON: name = iShares Russell 2000 ETF. Základní metadata bez holdings/cen/FIGI. Datum pozorovaného stavu není historické datum změny ani datum cen.",
+          "retrievedAt": "2026-10-11T19:32:03.789935+00:00",
+          "evidenceId": "api-iwm",
           "verificationStatus": "awaiting_human_review"
         },
         {
@@ -409,6 +885,22 @@
           "evidence": "Ticker IWM; emitentský podklad výslovně uvádí Exchange NYSE Arca. Oficiální factsheet, strana 1, Exchange / Quick facts.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "iwm-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "exchange",
+          "url": "https://tickerinside.com/api/v1/fund/iwm.json",
+          "role": "origin",
+          "provider": "tickerinside",
+          "license": "CC BY 4.0",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "date_basis": "observed_state",
+          "evidence": "TickerInside JSON: identifiers.exchange = NYSE Arca. Základní metadata bez holdings/cen/FIGI. Datum pozorovaného stavu není historické datum změny ani datum cen.",
+          "retrievedAt": "2026-10-11T19:32:03.789935+00:00",
+          "evidenceId": "api-iwm",
           "verificationStatus": "awaiting_human_review"
         },
         {
@@ -419,7 +911,21 @@
           "evidence": "Investment approach / FUND DESCRIPTION: Russell 2000 Index.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "iwm-pdf",
-          "verificationStatus": "awaiting_human_review"
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "index",
+          "url": "https://www.ishares.com/us/literature/fact-sheet/iwm-ishares-russell-2000-etf-fund-fact-sheet-en-us.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Investment approach / FUND DESCRIPTION: Russell 2000 Index.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "iwm-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "origin",
+          "provider": "issuer"
         },
         {
           "field": "expenseRatioPercent",
@@ -429,6 +935,22 @@
           "evidence": "Factsheet, strana 1, Expense Ratio: 0.19 %. Shodné s aktuální stránkou a TickerInside; datum API podkladu není datum lidské kontroly.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "iwm-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "expenseRatioPercent",
+          "url": "https://tickerinside.com/api/v1/fund/iwm.json",
+          "role": "origin",
+          "provider": "tickerinside",
+          "license": "CC BY 4.0",
+          "verified_at": null,
+          "as_of": "2026-07-27",
+          "date_basis": "provider_filing_date",
+          "evidence": "TickerInside JSON: expense_ratio = 0.19. Základní metadata bez holdings/cen/FIGI. Datum pozorovaného stavu není historické datum změny ani datum cen.",
+          "retrievedAt": "2026-10-11T19:32:03.789935+00:00",
+          "evidenceId": "api-iwm",
           "verificationStatus": "awaiting_human_review"
         },
         {
@@ -439,7 +961,21 @@
           "evidence": "Distribution Frequency / Dividend schedule: Quarterly.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "iwm-pdf",
-          "verificationStatus": "awaiting_human_review"
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "dividends",
+          "url": "https://www.ishares.com/us/literature/fact-sheet/iwm-ishares-russell-2000-etf-fund-fact-sheet-en-us.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Distribution Frequency / Dividend schedule: Quarterly.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "iwm-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "origin",
+          "provider": "issuer"
         },
         {
           "field": "description",
@@ -449,17 +985,34 @@
           "evidence": "Originální český popis vytvořený pro tento návrh z doloženého cíle a strategie fondu; nejde o překlad marketingového odstavce ani investiční doporučení.",
           "retrievedAt": "2026-10-11T17:05:40Z",
           "evidenceId": "iwm-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
+        },
+        {
+          "field": "description",
+          "url": "https://github.com/RostislavHanza/EtfComparisonLanding/blob/design-exploration/data/review/priority-five.pending.json",
+          "role": "authored",
+          "provider": "project",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "date_basis": "observed_state",
+          "evidence": "Původní krátký český text projektu; nikoli překlad nebo kopie marketingového odstavce. Věcný podklad je odděleně uveden jako verification.",
+          "retrievedAt": "2026-10-11T19:32:03.789935+00:00",
+          "evidenceId": "project-descriptions",
           "verificationStatus": "awaiting_human_review"
         },
         {
-          "field": "expenseRatioPercent",
-          "url": "https://tickerinside.com/api/v1/fund/iwm.json",
+          "field": "ticker",
+          "url": "https://www.ishares.com/us/literature/fact-sheet/iwm-ishares-russell-2000-etf-fund-fact-sheet-en-us.pdf",
           "verified_at": null,
-          "as_of": "2026-07-27",
-          "evidence": "Doplňkový údaj API. Souhlasí s emitentským údajem. Licence CC BY 4.0, atribuce TickerInside. SEC odkaz nebyl nezávisle přečten.",
-          "retrievedAt": "2026-10-11T17:04:22Z",
-          "evidenceId": "api-iwm",
-          "verificationStatus": "api_observation_only"
+          "as_of": "2026-06-30",
+          "evidence": "Kontrola tickeru IWM v uvedeném emitentském dokladu; původ tickeru v katalogu je TickerInside.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "iwm-pdf",
+          "verificationStatus": "awaiting_human_review",
+          "role": "verification",
+          "provider": "issuer"
         }
       ],
       "usageReview": {
@@ -473,7 +1026,9 @@
       "blockers": [
         "Lidská kontrola jednotlivých polí, skutečný kontrolor a správná data platnosti.",
         "Doložené rozhodnutí o právech k publikaci všech použitých zdrojů."
-      ]
+      ],
+      "methodology": "tickerinside-primary-v1",
+      "snapshotObservedAt": "2026-10-11T19:32:03.789935+00:00"
     }
   ]
 }
