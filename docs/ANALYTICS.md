@@ -1,6 +1,6 @@
 # Souhlas a konverzní měření
 
-Lišta Nastavení soukromí je součástí redakční stránky v běžném toku nad hlavním obsahem. Nepoužívá modální blokaci ani překryv. První návštěva má nezvolenou volbu a žádné měření. Odmítnout a Přijmout analytiku mají stejný vzhled a dostupnost z klávesnice. Nastavení lze kdykoliv znovu otevřít, souhlas není podmínkou sestavení ani doručení/otevření/úprav srovnání. Archivní designová dema neprovádějí analytiku.
+Lišta je plovoucí position: fixed panel dole vpravo, na mobilu přes dostupnou šířku s odsazením a safe-area. Renderuje se do body přes React portal, nezabírá místo v rozložení a nemá modalitu/backdrop ani blokaci ostatního webu. Zavření křížkem není souhlas a neukládá rozhodnutí; při další návštěvě bez rozhodnutí se panel znovu ukáže. Odkaz Nastavení soukromí je v patičce. Při otevření odkazem se fokus přesune do panelu a po zavření se vrátí bez skoku stránky; při automatickém zobrazení se fokus nekrade. První návštěva má nezvolenou volbu a žádné měření. Odmítnout a Přijmout analytiku mají stejný vzhled a dostupnost z klávesnice. Nastavení lze kdykoliv znovu otevřít, souhlas není podmínkou sestavení ani doručení/otevření/úprav srovnání. Archivní designová dema neprovádějí analytiku.
 
 ## Úložiště a souhlasy
 
@@ -14,7 +14,7 @@ Lišta Nastavení soukromí je součástí redakční stránky v běžném toku 
 
 Frontend ihned vypne další track/attribution, počká na již odeslané klientské události a zavolá stávající POST /api/events s withdraw=true. Serverové withdraw_analytics smaže funnel_events přiřazené návštěvě a vynuluje comparisons.attribution. Srovnání, marketingový souhlas, kontaktní žádost a přístupové session se nemažou. Chyba se zobrazí a retry je trvalý přes reload; nové přijetí nelze použít k přeskočení nezdařeného odstranění.
 
-Nová migrace 202610110006_analytics_revocation.sql doplňuje RLS chráněnou tabulku revokovaných UUID a triggery: opožděná událost nebo nová žádost se starým visitId po odvolání nepřidá analytiku zpět. Sdílený transakční lock na návštěvu koordinuje zápis a odvolání; první vyčištění attribution respektuje pořadí row locků používané read/redeem, druhé zachytí souběžnou novou žádost. Ostatní funkce srovnávače zůstávají stejné. Revokační doklady se drží 90 dní, poté je odstraní stávající denní purge nebo další odvolání. Migrace připravena, vzdáleně nespouštěna.
+Nová migrace 202610110006_analytics_revocation.sql doplňuje RLS chráněnou tabulku revokovaných UUID a triggery: opožděná událost nebo nová žádost se starým visitId po odvolání nepřidá analytiku zpět. Sdílený transakční lock na návštěvu koordinuje zápis a odvolání; první vyčištění attribution respektuje pořadí row locků používané read/redeem, druhé zachytí souběžnou novou žádost. Ostatní funkce srovnávače zůstávají stejné. Revokační doklady se drží 90 dní, poté je odstraní stávající denní purge nebo další odvolání. Migrace 006 byla podle aktuálního potvrzení správce v Preview aplikována; tato úloha ji vzdáleně nespouští ani nemění.
 
 Odvolání se vztahuje na známou aktuální návštěvu; browser bez jejího identifikátoru nemůže rekonstruovat historické návštěvy. Pro širší žádost o odstranění použijte kontakt správce. Serverové události potvrzení/otevření se řídí původním souhlasem uloženým u žádosti, i při otevření na jiném zařízení; po odvolání této návštěvy již nepokračují.
 

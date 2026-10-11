@@ -1,5 +1,50 @@
 # První veřejný katalog: podklady ke schválení
 
+## Nejkratší cesta k první veřejné pětici
+
+**20 kandidátů není 20 publikovaných ETF.** Synchronizace aktualizuje `etf_sync_candidates`; nevytváří schválení, nepřepíná published a nedoplňuje index/dividendy/popis. `/api/catalog` čte `public.etfs` s published=true a verified_at nejvýše 14 dní starým. S 0 publikovanými řádky je prázdný výsledek správný. Ani opakované Otestovat synchronizaci ETF toto nevyřeší.
+
+Použijte existující návrh a schvalovací šablonu, nepřepisujte jednotlivé fondy do databáze. V kořeni projektu nejprve vytvořte **lokální kopii** (příkaz původní existující kopii nepřepíše):
+
+```sh
+node --input-type=commonjs -e "const fs=require('node:fs');fs.mkdirSync('.cache',{recursive:true});fs.copyFileSync('data/review/priority-five.approval.example.json','.cache/approval.json',fs.constants.COPYFILE_EXCL)"
+```
+
+Otevřete `.cache/approval.json` v editoru. Následující doplní skutečný správce po kontrole, nikoli AI:
+
+| Místo v kopii JSON | Co přesně potvrdit / doplnit |
+| --- | --- |
+| reviewer, verifiedAt | Jméno skutečného kontrolora a ISO čas dokončení kontroly se zónou. Čas stažení API není lidská kontrola. |
+| usageReview | approved=true jen při doloženém oprávnění k použití všech vybraných údajů; skutečný reviewer, reviewedAt, konkrétní basis a policyUrl. Pro jednotlivé emitenty lze dát vlastní usageReview přímo do records. |
+| records: každý ticker | approved=true pouze pro zkontrolovaný fond; ostatní zůstávají false. dataAsOf je doložené datum datového snímku fondu, nikoli automaticky dnešek nebo datum ceny API. Pole mají navíc vlastní as_of ve zdrojích. |
+| confirmedSourceIds | Ze sourceIdsToReview přenést pouze identifikátory dokumentů, které jste skutečně otevřeli a zkontrolovali. Příprava vyžaduje potvrzení všech použitých dokumentů vybraného fondu. |
+| sourceDateOverrides | U neznámého data, zejména vti-page, doplnit skutečně doložené datum pro konkrétní evidenceId. Potvrzení aktuálního pozorovaného stavu není historické datum změny CRSP → Morningstar. Pokud datum nelze doložit, VTI nechat neschválené. |
+
+Konkrétní kontrola první pětice: SPY přesně **0.0945 %** podle emitenta; VTI **Vanguard Morningstar Total Stock Market ETF / Morningstar US Total Market Index** podle aktuálního profilu. VOO/IVV/VTI 0.03 %, IWM 0.19 % jsou v připravených emitentských podkladech; při lidské kontrole znovu ověřit aktuální hodnoty. U každého fondu potvrdit ticker + NYSE Arca a čtvrtletní distribuci v uvedeném primárním dokladu, i správnost původního českého popisu. Konkrétní URL a rozpory jsou níže a v evidence JSON.
+
+Právní kontrola stále není hotová: SSGA footer požaduje písemný souhlas pro reprodukci obsahu; pro naše omezené faktické údaje není oprávnění doložené. Vanguard podmínky pro vybraná metadata nejsou kompletně prověřené. BlackRock terms nebylo možné přečíst přes zdejší proxy. Správce musí otevřít příslušné podmínky, zajistit povolení nebo doložené posouzení vztahující se právě na použitá metadata a zaznamenat podklad do basis/policyUrl. Samotná veřejná dostupnost stránky ani vlastní český popis licenci ostatních údajů nenahrazují. TickerInside CC BY 4.0 nepokrývá cizí emitentské dokumenty. Bez doloženého podkladu ponechte usageReview.approved=false.
+
+Po skutečné kontrole spusťte tyto **dva nezapisující** příkazy:
+
+```sh
+npm run prepare:etfs -- data/review/priority-five.pending.json .cache/approval.json .cache/approved-etfs.json
+npm run import:etfs -- .cache/approved-etfs.json
+```
+
+První připraví pouze výslovně schválené fondy a ověří celou dávku. Druhý je dry run. Existující výstupní soubor se nepřepisuje; při další přípravě zvolte nový název. Není nutné schválit všech pět najednou, ale pro funkční porovnání jsou nutné alespoň dva.
+
+Teprve po úspěšné validaci, kontrole cílového projektu a záloze dotčených řádků spusťte správce s existujícími serverovými proměnnými:
+
+```sh
+npm run import:etfs -- .cache/approved-etfs.json --apply
+```
+
+Import používá SUPABASE_URL a SUPABASE_SECRET_KEY (nebo SUPABASE_SERVICE_ROLE_KEY), nikoli veřejný frontendový klíč. Hodnoty nikdy nepatří do JSON ani příkazu/Gitu. Pro tento projekt musí URL odpovídat `https://kdkxoykuhqwodimawcrs.supabase.co`. Upsert podle tickeru bezpečně aktualizuje IVV/IWM; neschválené fondy mimo dávku, například ITOT, ponechá. published=true vzniká až z plně validní schválené dávky. SPY/VTI automatický opt-in ponechte vypnutý kvůli rozdílům proti API.
+
+Po importu otevřete Preview `/api/catalog` a běžnou stránku: ověřte tickery, datum kontroly a 2–5 fondů v kalkulačce. Znovunačtení katalogu nevyžaduje změny frontendu ani další synchronizaci. Pokud API zůstává prázdné, zkontrolujte cílový projekt, published a čerstvost verified_at; nepřepínejte published hromadně bez validátoru.
+
+**Rozdělení práce:** správce potvrzuje skutečné zdroje/datum a oprávnění k publikaci. Asistent může po dodání výslovného schválení připravit a validovat dávku a zkontrolovat importní výsledek; vzdálený zápis potřebuje samostatné zadání. V této úloze není žádný právní souhlas domýšlen, není vytvořena schválená dávka a neprobíhá vzdálený import. Nová migrace pro publikaci není potřeba.
+
 ## Stav
 
 V předchozím commitu byly skutečně načteny odpovědi TickerInside, aktuální stránky emitentů a všech pět oficiálních PDF factsheetů. V této úloze bylo opakovaně načteno všech pět profilů a pět factsheetů (HTTP 200); technicalRecheck odděleně zaznamenává dostupnost a hash, nikoli nové lidské schválení. PDF i stránky SPY/VOO/VTI mají stejný hash jako původní evidence. Evidence je v `data/review/priority-five.evidence.json`: konkrétní URL, SHA-256 staženého souboru, datum evidence a minimální projekce API bez holdings/cen. Celé dokumenty nejsou znovu distribuovány. Jde o výzkumnou kontrolu asistenta, **nikoli schválení člověkem**. Stav úspěšné vzdálené synchronizace 20 kandidátů/0 chyb pochází z potvrzení uživatele; tato úloha do Supabase nevstupovala.
