@@ -1,0 +1,24 @@
+{
+  "reviewer": "admin",
+  "verifiedAt": "2026-10-11T20:19:38.179Z",
+  "reviewedDraftSha256": "82c918545892daa6466f743eb0ebec46ec01f8c4557aefc329c05b6f95e016df",
+  "approvedTickers": [
+    "SPY",
+    "VOO",
+    "IVV",
+    "VTI",
+    "IWM"
+  ],
+  "confirmAllListedSources": true,
+  "usageReview": {
+    "approved": true,
+    "approvalType": "operator-publication-decision",
+    "issuerPermissionClaimed": false,
+    "basis": "Výslovné rozhodnutí provozovatele v zadání navazujícím na commit 4532ad22ae0fc554628be60adfc37e928689013b: publikace všech pěti ETF pro technické demo pod označením admin; omezené jednotlivé faktické údaje, TickerInside fund JSON pod deklarovanou CC BY 4.0, transparentní původ a atribuce, doplnění a kontrola jednotlivých faktů z emitentských podkladů a vlastní české popisy. Rozhodnutí není právní stanovisko ani licence či písemný souhlas emitentů. Technická kontrola již stažených podkladů a hashů proběhla při přípravě této dávky; recorded verifiedAt označuje tento skutečný krok, nikoli novou lidskou návštěvu zdrojových stránek. Licenční evidence byla následně upřesněna podle nezávislého ověření provozovatele: /legal/ (revize 9. 10. 2026), /terms/ a /api/ potvrzují CC BY 4.0 pro vlastní práci TickerInside v aktuálních fund snapshotech včetně komerčního použití s atribucí. Licence neznamená automatické oprávnění k právům třetích stran.",
+    "policyUrl": "https://tickerinside.com/legal/",
+    "limitations": [
+      "CC BY 4.0 se vztahuje na vlastní práci TickerInside v aktuálních API snapshotech; automaticky nepokrývá práva třetích stran. Historie holdings a ETF flows mají odlišná pravidla a nejsou součástí tohoto použití.",
+      "Emitenti neposkytli doloženou licenci ani písemné povolení. Provozovatel přijal model omezených jednotlivých faktických doplnění pro demo, nikoli reprodukci dokumentů, marketingu, obrázků, holdings nebo časových řad."
+    ]
+  }
+}

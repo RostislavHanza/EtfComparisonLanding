@@ -27,7 +27,9 @@ export function prepareApprovedCatalog(draft:unknown,approval:unknown){
   const overrides=object(decision.sourceDateOverrides??{})
   const sources=row.sources.map(object).map(source=>{
    if(!confirmed.includes(source.evidenceId))throw new InputError(`Nepotvrzený podklad ${String(source.evidenceId)}.`)
-   return {...source,as_of:overrides[String(source.evidenceId)]??source.as_of,verified_at:review.verifiedAt}
+   const checked:Record<string,unknown>={...source,as_of:overrides[String(source.evidenceId)]??source.as_of,verified_at:review.verifiedAt}
+   delete checked.verificationStatus // Pending-only label; dates and source evidence remain intact.
+   return checked
   })
   const record:Record<string,unknown>&{sources:Record<string,unknown>[]}={...row,verifiedAt:review.verifiedAt,verifiedBy:review.reviewer,dataAsOf:decision.dataAsOf,usageReview:decision.usageReview??review.usageReview,sources}
   delete record.reviewStatus;delete record.blockers // Draft-only notes remain in the unchanged source file.

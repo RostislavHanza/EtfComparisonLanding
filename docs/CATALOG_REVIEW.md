@@ -1,24 +1,28 @@
-# První veřejná pětice – jedno dávkové schválení
+# První veřejná pětice: připravená dávka pro demo
 
-## Proč je katalog prázdný
+## Stav a rozhodnutí provozovatele
 
-20 kandidátů v etf_sync_candidates není publikovaný katalog. API čte public.etfs s published=true a verified_at nejvýše 14 dní starým. Synchronizace sama nezveřejňuje nové fondy. Aktuální vzdálený stav pochází z potvrzení správce, nikoli z přímého přístupu této úlohy.
+Provozovatel v zadání navazujícím na commit 4532ad22ae0fc554628be60adfc37e928689013b výslovně přijal model omezených faktických údajů, transparentní atribuce a vlastních českých popisů a rozhodl o publikaci SPY, VOO, IVV, VTI a IWM pro technické demo. Označení schvalovatele je **admin**, nikoli vymyšlené osobní jméno. Toto rozhodnutí neopakujeme jako požadavek na další právní audit.
 
-Pět finálních věcných návrhů je v `data/review/priority-five.pending.json`, evidence v `priority-five.evidence.json`. Nula fondů má nyní skutečné lidské schválení: verifiedAt/verifiedBy jsou null a usageReview.approved=false. Pending nelze importovat. Vybranou část návrhu lze po skutečném potvrzení připravit a importovat bez dalšího programování; pro porovnání potřebujete alespoň dva fondy.
+- `data/review/priority-five.demo-approval.json`: skutečně zaznamenané rozhodnutí, výběr všech pěti, admin, čas provedené technické kontroly a hash přesného návrhu.
+- `data/priority-five.approved.json`: finální validní importní JSON, **dosud nebyl zapsán do Supabase**.
+- Původní pending/evidence zůstávají jako nezměněné podklady; jejich null/false nejsou aktuální stav finální dávky.
 
-## Co správce kontroluje
+Čas verifiedAt v manifestu je skutečný čas kontroly uložených podkladů a přípravy dávky, ne vymyšlený čas právního auditu nebo nové osobní návštěvy webu správcem. Label admin zaznamenává provozovatele, pod jehož rozhodnutím byla kontrola provedena. Zdrojové retrievedAt/as_of zůstávají původní; pozorovaný stav není historické datum účinnosti. Při této přípravě byly znovu zkontrolovány již stažené API odpovědi, všech deset emitentských podkladů proti evidovaným hashům, listing/distribuce a opravy SPY/VTI; nové stažení nebylo vydáváno za novou lidskou kontrolu.
 
-| Fond | Aktuální název / index | Nákladovost | Původ doplněných údajů a konkrétní zbývající kontrola |
-| --- | --- | --- | --- |
-| SPY | State Street SPDR S&P 500 ETF Trust / S&P 500 Index | 0.0945 % | Název, přesná sazba, index a Quarterly od emitenta; API má starší název a 0.09 %. Posoudit právo na omezený přehled faktů, nikoli reprodukci dokumentu. |
-| VOO | Vanguard S&P 500 ETF / S&P 500 Index | 0.03 % | Název/sazba z API, index a Quarterly z Vanguard. Posoudit použití těchto faktů a kontrolních podkladů. |
-| IVV | iShares Core S&P 500 ETF / S&P 500 Index | 0.03 % | Název/sazba z API, index a Quarterly z iShares. Posoudit faktické doplnění a BlackRock podmínky. |
-| VTI | Vanguard Morningstar Total Stock Market ETF / Morningstar US Total Market Index | 0.03 % | Název/index z aktuálního profilu, Quarterly z Vanguard, sazba API. Datum pozorovaného stavu není historické datum přejmenování; June factsheet má ještě CRSP. |
-| IWM | iShares Russell 2000 ETF / Russell 2000 Index | 0.19 % | Název/sazba z API, index a Quarterly z iShares. Posoudit faktické doplnění a BlackRock podmínky. |
+## Zkontrolované údaje a původ
 
-Ticker a NYSE Arca pocházejí u všech pěti z TickerInside; listing/ticker jsou navíc kontrolované emitentským dokladem. Každé pole má oddělený origin, verification nebo authored. Český popis je vlastní text projektu, věcně ověřovaný proti emitentovi. Nepřebíráme reklamu, obrázky, grafy, holdings, ceny, indexové série ani kompletní dokumenty do veřejného katalogu.
+| ETF | Název | Index | Nákladovost | Distribuce / burza |
+| --- | --- | --- | --- | --- |
+| SPY | State Street SPDR S&P 500 ETF Trust | S&P 500 Index | 0.0945 % | Quarterly / NYSE Arca |
+| VOO | Vanguard S&P 500 ETF | S&P 500 Index | 0.03 % | Quarterly / NYSE Arca |
+| IVV | iShares Core S&P 500 ETF | S&P 500 Index | 0.03 % | Quarterly / NYSE Arca |
+| VTI | Vanguard Morningstar Total Stock Market ETF | Morningstar US Total Market Index | 0.03 % | Quarterly / NYSE Arca |
+| IWM | iShares Russell 2000 ETF | Russell 2000 Index | 0.19 % | Quarterly / NYSE Arca |
 
-**Konkrétní primární kontrolní odkazy:**
+Ticker a burza pocházejí z TickerInside, listing je navíc doložen oficiálním emitentem. Název/nákladovost VOO/IVV/IWM a sazba VTI jsou z API. SPY přesná sazba a aktuální název, aktuální název/index VTI a všechny indexy/distribuce používají konkrétní emitentské faktické podklady. České popisy jsou původní. V JSON je pro každé pole origin/verification/authored, provider, datum a URL. SPY API 0.09 % nenahrazuje přesnější 0.0945 %, starý název/index VTI se nevrací do katalogu.
+
+Primární podklady:
 
 - SPY: https://www.ssga.com/us/en/individual/etfs/state-street-spdr-sp-500-etf-trust-spy a https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf
 - VOO: https://investor.vanguard.com/investment-products/etfs/profile/voo a https://fund-docs.vanguard.com/F0968.pdf
@@ -26,54 +30,48 @@ Ticker a NYSE Arca pocházejí u všech pěti z TickerInside; listing/ticker jso
 - VTI: https://investor.vanguard.com/investment-products/etfs/profile/vti a https://fund-docs.vanguard.com/F0970.pdf
 - IWM: https://www.ishares.com/us/products/239710/ishares-russell-2000-etf a https://www.ishares.com/us/literature/fact-sheet/iwm-ishares-russell-2000-etf-fund-fact-sheet-en-us.pdf
 
-Všechny tyto profily/PDF byly v této metodické kontrole opět skutečně načteny HTTP 200. Aktuální profil VTI potvrzuje Morningstar, profil SPY 0.0945. Factsheety mají podkladové datum 30. 6. 2026; poplatky API VOO/VTI 28. 4. 2026, IVV/IWM 27. 7. 2026. Pozorovaný aktuální stav, datum dokumentu/filingu, datum stažení a lidská kontrola jsou odlišné údaje. Aktuální název VTI není zpětně datovaný do června. Datum snímku se v batch workflow bere z skutečně zaznamenané snapshotObservedAt; správce výslovně potvrzuje tento snímek, své verifiedAt doplní sám.
+Podklady a datum stažení jsou v priority-five.evidence.json. Červnový VTI factsheet ještě obsahuje CRSP; aktuální profil potvrzuje Morningstar. Datum přejmenování nebylo domyšleno. API datované poplatky VOO/VTI mají 28. 4. 2026, IVV/IWM 27. 7. 2026; pozdější kontrola není nové datum platnosti filingu.
 
-## Licence: vymezení rozhodnutí
+## Přiměřené schválení, nikoli tvrzení o právním povolení
 
-TickerInside je hlavní datový zdroj pro skutečně poskytované základní údaje. Aktuálně přečtené https://tickerinside.com/api/ a https://tickerinside.com/api/index.md výslovně popisují fund JSON, CC BY 4.0, uchovávání aktuálních souborů a atribuci odkazem na fondovou stránku. Všech pět JSON uvádí license=CC BY 4.0. Používáme jen ticker/name/identifiers.exchange/expense_ratio a příslušné poplatkové datum; nikoli jiné identifiers, holdings, history/flows nebo ceny. Historie a flows mají odlišné podmínky. Úplný právní dokument odkazovaný dokumentací https://tickerinside.com/legal/ vrátil 403 a nebyl přečten; dříve uváděný /terms/ se nyní také nepodařilo načíst. Souhrn API není tvrzen jako nezávislé právní stanovisko. Před finálním souhlasem správce zkontroluje dostupný právní dokument pro případ dalších omezení.
+Tři oddělené části:
 
-Licence TickerInside se nevydává za oprávnění k cizím dokumentům. U emitentů posuzujeme použití několika jednotlivých faktů a ověřování správnosti, odděleně od kopírování chráněného obsahu. Nevyvozujeme automaticky ani zákaz všech faktů, ani plošné právo vše kopírovat:
+1. **Technická kontrola:** skutečné hodnoty, emitent, NYSE Arca, původ sedmi polí, datum kontroly a čerstvost. Tyto kontroly validátor zachovává.
+2. **Doklady licence a zdrojů:** aktuální fund JSON, API dokumentace a nezávisle ověřené /legal/ (revize 9. 10. 2026) a /terms/ potvrzují CC BY 4.0 pro vlastní práci TickerInside v aktuálních snapshotech včetně komerčního použití s atribucí; API původ má konkrétní ticker URL/licenci. Atribuce odkazuje na poskytovatele, fond, licenci a úpravy. Emitentská fakta nejsou označována jako licencovaná od TickerInside.
+3. **Rozhodnutí provozovatele:** explicitní dávkový souhlas svázaný s hashem. `usageReview.approved=true` v této dávce znamená přijetí použití a publikace provozovatelem, což upřesňuje `approvalType=operator-publication-decision`. Neznamená absolvovaný právní audit. `issuerPermissionClaimed=false` a limitations se zachovají v existujícím usage_review JSONB.
 
-- SSGA PDF/footer má požadavek písemného souhlasu k reprodukci díla. Použitelnost tohoto omezení pro konkrétní faktické doplnění SPY nebyla právně uzavřena.
-- Vanguard úplné podmínky pro použitá metadata nebyly dostatečně doloženy. Ochrana indexových dat není sama o sobě zákaz uvedení názvu benchmarku, ale konečné posouzení pro tento projekt není hotové.
-- iShares odkazuje na https://www.blackrock.com/corporate/compliance/terms-and-conditions; poslední pokusy blokovala HTTPS proxy. Práva k ratingům se nesměšují s našimi fakty; ratingy nepoužíváme.
+Provozovatel nezávisle otevřel a ověřil https://tickerinside.com/legal/, https://tickerinside.com/terms/ a https://tickerinside.com/api/ a doložil jejich licenční ustanovení v upřesnění zadání. Tato evidence je výslovně označena jako ověření provozovatele, nikoli nové síťové měření této úlohy. Známá omezení zůstávají: licence TickerInside automaticky nepokrývá práva třetích stran. Písemné povolení ani plošná licence emitentů nebyly získány. Provozovatel přijal model několika jednotlivých faktů, ne kopie chráněných dokumentů. SSGA omezuje reprodukci díla; úplné použití metadat Vanguard/BlackRock nebylo právně posouzeno. To se nezaměňuje ani s prokázaným zákazem zveřejnit jednotlivý fakt, ani s povolením emitenta. Nepoužíváme marketing, obrázky, holdings, historii ani indexové časové řady. Rozšíření na chráněný obsah vyžaduje samostatné oprávnění.
 
-**Konkrétní akce správce:** potvrdit oprávnění pro omezená faktická doplnění a původní české popisy na podkladě přečtených podmínek, případného povolení nebo doloženého posouzení. Zapsat konkrétní dokumenty/URL a závěr do usageReview.basis. Pouhé „souhlasím“ nebo odkazy bez podkladu nestačí. Lze schválit jen některé fondy. Alternativa při nejistotě: získat písemné vyjasnění emitenta nebo licencovaný zdroj chybějícího indexu/dividendové politiky; do té doby fond ponechat pending. Pole nevyplňovat smyšlenou náhradou. Faktický původ a API atribuce už nevyžadují ruční přepisování desítek zdrojových položek.
+Na základě nového výslovného rozhodnutí provozovatele není pro tuto omezenou demo dávku požadován další formální audit nebo opakované vyplňování desítek polí. Známá omezení zůstávají zaznamenaná. Automatický import nemůže toto rozhodnutí vytvořit pro další fondy.
 
-## Praktický poslední krok: vyplnit jeden souhlas a spustit dávku
+## Poslední krok: kontrola dávky a explicitní import
 
-V kořeni projektu zkopírujte novou malou šablonu (nepřepisuje existující soubor):
-
-```sh
-node --input-type=commonjs -e "const fs=require('node:fs');fs.mkdirSync('.cache',{recursive:true});fs.copyFileSync('data/review/priority-five.batch-approval.example.json','.cache/approval.json',fs.constants.COPYFILE_EXCL)"
-```
-
-V `.cache/approval.json` doplňte pouze:
-
-- reviewer a verifiedAt: skutečný kontrolor a ISO čas jeho datové i právní kontroly se zónou.
-- approvedTickers: seznam zkontrolovaných fondů, např. VOO/IVV, nebo všech pět. Prázdný seznam nikoho neschvaluje.
-- confirmAllListedSources=true: až po kontrole výše uvedeného souhrnu a všech zdrojů vybrané dávky.
-- usageReview.approved=true: až po doloženém rozhodnutí; basis uvádí konkrétní právní podklad ke všem použitým zdrojům a faktickým doplněním. policyUrl je hlavní platný odkaz (API/licence nebo emitent); ostatní podklady doplňte v basis.
-
-reviewedDraftSha256 nechte ze šablony: váže souhlas na přesné údaje návrhu. Změna dat znamená nový souhrn a nové schválení, ne opravu hashe naslepo. Datum snímku, přiřazení zdrojů, datum skutečné kontroly jednotlivých polí a identita kontrolora práv se přenesou z tohoto výslovného společného potvrzení; neodvozují se jako lidské schválení z API stažení. Pokročilý původní per-source/per-fund manifest je stále podporovaný, pokud potřebujete oddělené schvalovatele/právní podklady.
+Zkontrolujte finální pětici a manifest výše. Nic již není potřeba ručně přepisovat do databáze ani doplňovat jméno/čas. Suchá kontrola v kořeni projektu:
 
 ```sh
-npm run prepare:etfs -- data/review/priority-five.pending.json .cache/approval.json .cache/approved-etfs.json
-npm run import:etfs -- .cache/approved-etfs.json
+npm run import:etfs -- data/priority-five.approved.json
 ```
 
-Oba kroky jsou bez DB zápisu. Příprava odmítne neschválenou/nekompletní dávku, změněný hash, neznámé/duplicitní tickery, chybějící původ/licenci nebo staré/fiktivní datum kontroly. Existující výstup se nepřepisuje; při opakování zvolte nový název. Validátor žádné právní podklady nečte místo člověka. V této úloze nevznikl produkční validní import, protože nebyl dodán skutečný souhlas; validní syntetická dávka existuje pouze uvnitř izolovaných testů.
-
-Zkontrolujte/zazálohujte dotčené řádky a správný cílový projekt: SUPABASE_URL musí být https://kdkxoykuhqwodimawcrs.supabase.co a serverový SUPABASE_SECRET_KEY nebo SUPABASE_SERVICE_ROLE_KEY musí mít oprávnění k zápisu. Tajné hodnoty nepatří do souboru/příkazu/Gitu. Teprve po úspěšném dry run a výslovném rozhodnutí správce:
+Očekávaný výstup: 5 záznamů, pouze dry run, databáze nebyla změněna. Finální zápis je samostatný krok správce po kontrole dávky: serverové SUPABASE_URL musí ukazovat na https://kdkxoykuhqwodimawcrs.supabase.co, SUPABASE_SECRET_KEY nebo SUPABASE_SERVICE_ROLE_KEY musí mít právo zapisovat. Hodnoty nevkládejte do příkazu, JSON ani Gitu. Zkontrolujte správný projekt a zálohujte dotčené existující řádky, pak spusťte:
 
 ```sh
-npm run import:etfs -- .cache/approved-etfs.json --apply
+npm run import:etfs -- data/priority-five.approved.json --apply
 ```
 
-Upsert podle tickeru aktualizuje IVV/IWM bez duplicit a ostatní fondy mimo dávku zachová. published=true vzniká až za plným validátorem. Automatický opt-in SPY/VTI ponechte vypnutý. Po importu obnovte Preview `/api/catalog` a stránku; dva fondy již umožní porovnání, kalkulačku a následný e-mailový krok. Není potřeba nová migrace ani další programování. V této úloze nebyl proveden vzdálený zápis nebo skutečný e-mail.
+Upsert používá onConflict=ticker: IVV/IWM se aktualizují bez duplicit, ITOT a fondy mimo dávku se nemění. published=true se zapisuje až po plné validaci. V tomto vývoji nebyl příkaz --apply spuštěn. **Nová migrace ani nové environment variables nejsou potřeba.** Již aplikované migrace znovu nespouštějte.
 
-## Rozšíření a automatické aktualizace
+Dávka není navždy čerstvá: 14denní limit technického ověření zůstává. Před pozdějším importem nebo týdenní obnovou proveďte skutečnou kontrolu zdrojů a vytvořte novou datovanou dávku; pouze neposouvejte datum bez kontroly. Pro opakovanou přípravu z nezměněného návrhu a skutečně aktualizovaného manifestu slouží existující prepare:etfs s novým výstupním názvem:
 
-Stejný mechanismus lze použít pro další kandidáty: jejich návrh musí mít sedm skutečných původů a chybějící index/dividendy doplněné z doloženého zdroje, vlastní popis a konkrétní schválení. Pro novou dávku připravte odpovídající digest; neupgradujte automaticky 15 neprověřených kandidátů na katalog. SCHB/SCHD/RSP vyžadují kontrolu a explicitní povolení příslušných emitentských zdrojů.
+```sh
+npm run prepare:etfs -- data/review/priority-five.pending.json data/review/priority-five.demo-approval.json .cache/new-reviewed-import.json
+```
 
-Stávající synchronizace mění jen nákladovost u již publikovaného, čerstvě schváleného fondu s explicitním opt-in, přesnou shodou názvu a datovanou SEC nákladovostí. Starší/undatovaná API nákladovost neprojde, lidské verified_at se neobnovuje, statický název/index/dividendy/popis se nepřepisují. VTI/SPY mají jiné názvy než API, SPY navíc market_data bez datované přesné sazby; nelze je touto synchronizací degradovat na starší údaje. Čerstvost lidské kontroly nadále vyžaduje týdenní kontrolu správce.
+Výstup se úmyslně nepřepisuje. Změna návrhu vyžaduje kontrolu nových údajů a aktualizaci schvalovacího hashe. Původní jednoduchá prázdná šablona i detailní manifest zůstávají pro další dávky kompatibilní, nikdo se automaticky neschvaluje.
+
+## Ověření veřejného katalogu po zápisu
+
+Otevřete https://etf-comparison-landing-git-design-exploration-rh-6003.vercel.app/api/catalog. Očekávejte HTTP 200 a funds obsahující SPY/VOO/IVV/VTI/IWM. Nula kandidátů není podmínkou; kandidátní tabulka může dál mít 20 řádků. V public.etfs zkontrolujte pět dotčených tickerů, published=true, verified_by=admin a správné hodnoty. Veřejné API nepředává interní usage_review.
+
+Obnovte landing page, vyhledejte a vyberte 2–5 fondů, ověřte přesnou SPY sazbu, Morningstar VTI, kalkulačku a atribuci/zdroje. E-mailový krok lze pak otestovat ručně přes SMTP_USER; zde nebyl žádný skutečný e-mail poslán ani tento vzdálený stav ověřen.
+
+Synchronizace nadále vytváří kandidáty, nikoli schválení. Aktualizace nákladovosti vyžaduje opt-in, čerstvou kontrolu, shodný název a datovaný dostatečně nový SEC podklad. SPY/VTI mají odlišné API názvy, SPY navíc zaokrouhlenou undatovanou sazbu; ani náhodně zapnutý opt-in je nesmí degradovat. Statická pole se nepřepisují. Dalších 15 fondů vyžaduje vlastní kompletní podklady a výslovný výběr v nové dávce; tato pětice je automaticky neschvaluje.
