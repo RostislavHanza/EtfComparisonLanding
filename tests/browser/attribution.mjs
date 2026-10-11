@@ -3,12 +3,14 @@ import { readFile } from 'node:fs/promises'
 import { chromium } from 'playwright'
 import assert from 'node:assert/strict'
 const funds=JSON.parse(await readFile('data/priority-five.approved.json','utf8')).records
+const observed=JSON.parse(await readFile('data/review/performance-observations.json','utf8')).funds
+const performance=observed.map(r=>({...r,asOf:r.as_of,attributionUrl:`https://tickerinside.com/etf/${r.ticker.toLowerCase()}/`,currency:'USD'}))
 const browser=await chromium.launch({executablePath:process.env.BROWSER_PATH||undefined,args:['--no-sandbox']})
 const base=process.env.TEST_BASE_URL??'http://127.0.0.1:4173'
 try{
  for(const width of [320,1440]){
   const page=await browser.newPage({viewport:{width,height:900}})
-  await page.route('**/api/**',async route=>{assert.ok(route.request().url().endsWith('/api/catalog'));await route.fulfill({json:{funds,privacy:null}})})
+  await page.route('**/api/**',async route=>{const path=new URL(route.request().url()).pathname;assert.ok(['/api/catalog','/api/performance'].includes(path));await route.fulfill({json:path==='/api/catalog'?{funds,privacy:null}:{funds:performance,unavailable:[]}})})
   await page.goto(base);await page.getByRole('button',{name:'Odmítnout',exact:true}).click()
   await page.locator('.comparison-table').waitFor()
   const credit=page.locator('.data-attribution');assert.equal(await credit.getByRole('link',{name:'TickerInside',exact:true}).getAttribute('href'),'https://tickerinside.com/api/')

@@ -4,6 +4,7 @@ import { existsSync } from 'node:fs'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 if(existsSync('.env.local'))process.loadEnvFile('.env.local')
 const routes = {
+ '/api/performance':(await import('../api/performance.ts')).default,
  '/api/catalog':(await import('../api/catalog.ts')).default,
  '/api/comparisons':(await import('../api/comparisons.ts')).default,
  '/api/comparison':(await import('../api/comparison.ts')).default,

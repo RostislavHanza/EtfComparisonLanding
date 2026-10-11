@@ -92,3 +92,8 @@ Malý batch manifest nahrazuje ruční přepisování zdrojových ID, dat a opak
 ### Rozhodnutí provozovatele pro omezené demo
 
 Validátor nevyžaduje právní audit jednotlivých veřejných faktů: vyžaduje doložená data/licence a explicitní rozhodnutí. Nová dávka má `usageReview.approvalType=operator-publication-decision`, `issuerPermissionClaimed=false` a povinná neprázdná limitations. `approved=true` je přijetí použití a publikace provozovatelem, nikoli důkaz udělené licence emitentem. Tyto položky se ukládají do existujícího JSONB, bez migrace; staré schvalovací formáty zůstávají podporované. Domény, původ sedmi polí, výslovný důkaz NYSE Arca, data/freshness, hodnota a duplicity se stále kontrolují. TickerInside deklarace CC BY 4.0 se nepřenáší na emitentská doplnění.
+
+
+## Historická výkonnost pro kalkulačku
+
+Aktuální fund JSON poskytuje r1/r3/r5 jako kumulativní dividendově upravené výnosy, datum cen as_of a volitelnou weekly řadu. Pro pět publikovaných fondů byly všechny tři výnosy skutečně načtené. Používáme pouze vypočtené kumulativní údaje z aktuálního CC BY 4.0 snapshotu; raw cenová historie, weekly a holdings nejsou veřejně redistribuovány. Nezaměňovat CC BY vlastní práce poskytovatele s právy třetích stran nebo licencí k původnímu price feedu. Konkrétní hodnoty, atribuce, keš, datová omezení a výpočty: [PERFORMANCE.md](PERFORMANCE.md), redukovaná evidence `data/review/performance-observations.json`. Nejde o nový právní schvalovací systém. Tato funkcionalita nezasahuje do datových řádků Supabase ani synchronizačních pravidel.

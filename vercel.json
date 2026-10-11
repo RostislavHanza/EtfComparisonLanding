@@ -43,6 +43,9 @@
     },
     "api/preview-admin.ts": {
       "maxDuration": 60
+    },
+    "api/performance.ts": {
+      "maxDuration": 60
     }
   }
 }

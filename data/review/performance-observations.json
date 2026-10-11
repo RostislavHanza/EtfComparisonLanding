@@ -1,0 +1,90 @@
+{
+  "notice": "Skutečně načtené redukované údaje; kumulativní dividendově upravené výnosy, nikoli roční sazby. Bez raw cenové historie, weekly a holdings.",
+  "documentation": {
+    "url": "https://tickerinside.com/api/",
+    "sha256": "5536f4bd9c0e593392e74d2dea9f474823997504a115156d1437c3e6e6d2d125",
+    "licenseScope": "Aktuální snapshoty a vypočtené výnosové údaje CC BY 4.0; raw price feed poskytovatel nesmí redistribuovat. Práva třetích stran nejsou automaticky pokryta. Právní stránka byla nezávisle ověřena provozovatelem viz priority-five.evidence.json, methodologyReview.legalNotice."
+  },
+  "funds": [
+    {
+      "ticker": "SPY",
+      "r1": 20.5,
+      "r3": 87.1,
+      "r5": 86.7,
+      "as_of": "2026-10-09",
+      "license": "CC BY 4.0",
+      "identifiers": {
+        "exchange": "NYSE Arca",
+        "asset_type": "etf"
+      },
+      "sourceUrl": "https://tickerinside.com/api/v1/fund/spy.json",
+      "retrievedAt": "2026-10-11T20:43:15.966915+00:00",
+      "sha256": "9ba70f472e93176d17c1123019f2081923778dc7c69840914f0f5e1ed8a0b458",
+      "weeklyAvailable": true
+    },
+    {
+      "ticker": "VOO",
+      "r1": 20.5,
+      "r3": 87.5,
+      "r5": 87.2,
+      "as_of": "2026-10-09",
+      "license": "CC BY 4.0",
+      "identifiers": {
+        "exchange": "NYSE Arca",
+        "asset_type": "etf"
+      },
+      "sourceUrl": "https://tickerinside.com/api/v1/fund/voo.json",
+      "retrievedAt": "2026-10-11T20:43:16.436240+00:00",
+      "sha256": "a5346f808bddff2c31f9a82a53afd6b3e3e2a56d89dede0acd97c5a12f24ce5b",
+      "weeklyAvailable": true
+    },
+    {
+      "ticker": "IVV",
+      "r1": 20.6,
+      "r3": 87.5,
+      "r5": 87.2,
+      "as_of": "2026-10-09",
+      "license": "CC BY 4.0",
+      "identifiers": {
+        "exchange": "NYSE Arca",
+        "asset_type": "etf"
+      },
+      "sourceUrl": "https://tickerinside.com/api/v1/fund/ivv.json",
+      "retrievedAt": "2026-10-11T20:43:16.677499+00:00",
+      "sha256": "450a832f0ebc4bc0686cfa78946b1ac888ad4e8d204e21cbc6dfe8bd4ec784b7",
+      "weeklyAvailable": true
+    },
+    {
+      "ticker": "VTI",
+      "r1": 20.0,
+      "r3": 85.8,
+      "r5": 77.4,
+      "as_of": "2026-10-09",
+      "license": "CC BY 4.0",
+      "identifiers": {
+        "exchange": "NYSE Arca",
+        "asset_type": "etf"
+      },
+      "sourceUrl": "https://tickerinside.com/api/v1/fund/vti.json",
+      "retrievedAt": "2026-10-11T20:43:16.732596+00:00",
+      "sha256": "883a00bdeea0d58d435626923085f1a2ca6632f5e909851e6773ad39afd2b6ca",
+      "weeklyAvailable": true
+    },
+    {
+      "ticker": "IWM",
+      "r1": 18.5,
+      "r3": 69.4,
+      "r5": 31.8,
+      "as_of": "2026-10-09",
+      "license": "CC BY 4.0",
+      "identifiers": {
+        "exchange": "NYSE Arca",
+        "asset_type": "etf"
+      },
+      "sourceUrl": "https://tickerinside.com/api/v1/fund/iwm.json",
+      "retrievedAt": "2026-10-11T20:43:16.891272+00:00",
+      "sha256": "74a3dc32800d796e907b60a840447a0f67634122b5cbefb3370258ee46fb503a",
+      "weeklyAvailable": true
+    }
+  ]
+}
