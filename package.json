@@ -14,7 +14,8 @@
     "test:browser": "node tests/browser/mvp.mjs",
     "lint": "eslint .",
     "check:server": "tsc -p tsconfig.server.json && node --no-experimental-strip-types scripts/check-server-runtime.mjs",
-    "check:vercel": "node scripts/check-vercel-runtime.mjs"
+    "check:vercel": "node scripts/check-vercel-runtime.mjs",
+    "review:etfs": "tsx scripts/check-etf-review.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.3",

@@ -71,3 +71,7 @@ IVV/ITOT/IWM v současné databázi jsou podle uživatele nepublikované předb�
 ### Ruční spuštění v Preview přes prohlížeč
 
 Dočasná stránka `?admin=etf-sync` umožňuje vlastníkovi schránky `SMTP_USER` po jednorázovém potvrzení přihlašovacího odkazu spustit stejný import. Vyžaduje samostatnou migraci `202610110005_preview_admin.sql`; přesný postup je v `docs/SETUP.md`. Zabezpečení, licence, kontrola dat, denní limit, zámek a zákaz automatického publikování zůstávají zachovány. UI reportuje kandidáty, nikoli počet schválených nebo zveřejněných fondů.
+
+## Prvních pět fondů: skutečně načtené podklady, schválení čeká
+
+SPY/VOO/IVV/VTI/IWM mají připravené věcné parametry a původní české popisy v `data/review/priority-five.pending.json`; evidence skutečně načtených primárních dokumentů a API je v `data/review/priority-five.evidence.json`. Všechny jsou pending, lidská data ověření zůstávají null a usageReview.approved=false. Import je záměrně odmítne. Podrobnosti, zdrojové rozpory (SPY 0.0945 % proti API 0.09 %, přejmenování VTI na Morningstar), chybějící NYSE důkaz, práva a přesný postup schválení/importu jsou v [CATALOG_REVIEW.md](CATALOG_REVIEW.md). `npm run review:etfs -- data/review/priority-five.pending.json` vytvoří pouze lokální kontrolní výpis bez DB zápisu.

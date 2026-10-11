@@ -1,0 +1,484 @@
+{
+  "status": "pending_human_review_not_for_apply",
+  "researchRecordedAt": "2026-10-11T17:10:02Z",
+  "notice": "Záměrně neprojde publikačním validátorem. Prázdné údaje nenahrazujte automaticky datem stažení nebo AI jménem.",
+  "records": [
+    {
+      "ticker": "SPY",
+      "name": "State Street SPDR S&P 500 ETF Trust",
+      "exchange": "NYSE Arca",
+      "index": "S&P 500 Index",
+      "expenseRatioPercent": 0.0945,
+      "dividends": "Vyplácí příjmy investorům; čtvrtletní distribuce (Quarterly).",
+      "description": "Fond State Street sleduje index S&P 500, který představuje velké americké společnosti. Nabízí akciovou expozici a průběžně rozděluje příjmy investorům.",
+      "verifiedAt": null,
+      "dataAsOf": null,
+      "verifiedBy": null,
+      "sources": [
+        {
+          "field": "name",
+          "url": "https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Factsheet, strana 1, název a ticker SPY.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "spy-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "exchange",
+          "url": "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-sp-500-etf-trust-spy",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "evidence": "Emitentský podklad uvádí NYSE Arca. Samostatný důkaz na nyse.com dosud chybí.",
+          "retrievedAt": "2026-10-11T17:04:23Z",
+          "evidenceId": "spy-page",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "index",
+          "url": "https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Investment approach / FUND DESCRIPTION: S&P 500 Index.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "spy-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "expenseRatioPercent",
+          "url": "https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "SPY factsheet, strana 1: Gross Expense Ratio (%) 0.0945; Net Expense Ratio (%) 0.0945. Aktuální produktová stránka potvrzuje gross 0.0945 %.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "spy-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "dividends",
+          "url": "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-sp-500-etf-trust-spy",
+          "verified_at": null,
+          "as_of": "2026-10-11",
+          "evidence": "Produktová stránka, Fund Information as of Oct 11 2026, Distribution Frequency: Quarterly.",
+          "retrievedAt": "2026-10-11T17:04:23Z",
+          "evidenceId": "spy-page",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "description",
+          "url": "https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Originální český popis vytvořený pro tento návrh z doloženého cíle a strategie fondu; nejde o překlad marketingového odstavce ani investiční doporučení.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "spy-pdf",
+          "verificationStatus": "awaiting_human_review"
+        }
+      ],
+      "usageReview": {
+        "approved": false,
+        "reviewedAt": null,
+        "reviewer": null,
+        "basis": null,
+        "policyUrl": null
+      },
+      "reviewStatus": "pending_not_importable",
+      "blockers": [
+        "Nezávislý doklad listingu NYSE Arca na nyse.com.",
+        "Lidská kontrola jednotlivých polí, skutečný kontrolor a správná data platnosti.",
+        "Doložené rozhodnutí o právech k publikaci všech použitých zdrojů.",
+        "API používá starší název SPDR bez State Street a market_data nákladovost bez data; nepovolovat automatickou nákladovost."
+      ]
+    },
+    {
+      "ticker": "VOO",
+      "name": "Vanguard S&P 500 ETF",
+      "exchange": "NYSE Arca",
+      "index": "S&P 500 Index",
+      "expenseRatioPercent": 0.03,
+      "dividends": "Vyplácí příjmy investorům; čtvrtletní distribuce (Quarterly).",
+      "description": "Indexový fond Vanguard sleduje S&P 500 prostřednictvím plné replikace. Zaměřuje se na akcie velkých amerických společností a vyplácí příjmy investorům.",
+      "verifiedAt": null,
+      "dataAsOf": null,
+      "verifiedBy": null,
+      "sources": [
+        {
+          "field": "name",
+          "url": "https://fund-docs.vanguard.com/F0968.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Factsheet, strana 1, název a ticker VOO.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "voo-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "exchange",
+          "url": "https://fund-docs.vanguard.com/F0968.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Emitentský podklad uvádí NYSE Arca. Samostatný důkaz na nyse.com dosud chybí.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "voo-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "index",
+          "url": "https://fund-docs.vanguard.com/F0968.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Investment approach / FUND DESCRIPTION: S&P 500 Index.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "voo-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "expenseRatioPercent",
+          "url": "https://fund-docs.vanguard.com/F0968.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Factsheet, strana 1, Expense Ratio: 0.03 %. Shodné s aktuální stránkou a TickerInside; datum API podkladu není datum lidské kontroly.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "voo-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "dividends",
+          "url": "https://fund-docs.vanguard.com/F0968.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Distribution Frequency / Dividend schedule: Quarterly.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "voo-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "description",
+          "url": "https://fund-docs.vanguard.com/F0968.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Originální český popis vytvořený pro tento návrh z doloženého cíle a strategie fondu; nejde o překlad marketingového odstavce ani investiční doporučení.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "voo-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "expenseRatioPercent",
+          "url": "https://tickerinside.com/api/v1/fund/voo.json",
+          "verified_at": null,
+          "as_of": "2026-04-28",
+          "evidence": "Doplňkový údaj API. Souhlasí s emitentským údajem. Licence CC BY 4.0, atribuce TickerInside. SEC odkaz nebyl nezávisle přečten.",
+          "retrievedAt": "2026-10-11T17:04:22Z",
+          "evidenceId": "api-voo",
+          "verificationStatus": "api_observation_only"
+        }
+      ],
+      "usageReview": {
+        "approved": false,
+        "reviewedAt": null,
+        "reviewer": null,
+        "basis": null,
+        "policyUrl": null
+      },
+      "reviewStatus": "pending_not_importable",
+      "blockers": [
+        "Nezávislý doklad listingu NYSE Arca na nyse.com.",
+        "Lidská kontrola jednotlivých polí, skutečný kontrolor a správná data platnosti.",
+        "Doložené rozhodnutí o právech k publikaci všech použitých zdrojů."
+      ]
+    },
+    {
+      "ticker": "IVV",
+      "name": "iShares Core S&P 500 ETF",
+      "exchange": "NYSE Arca",
+      "index": "S&P 500 Index",
+      "expenseRatioPercent": 0.03,
+      "dividends": "Vyplácí příjmy investorům; čtvrtletní distribuce (Quarterly).",
+      "description": "Fond iShares sleduje index S&P 500 a poskytuje expozici vůči velkým americkým společnostem. Jde o akciový fond s pravidelnými distribucemi příjmů.",
+      "verifiedAt": null,
+      "dataAsOf": null,
+      "verifiedBy": null,
+      "sources": [
+        {
+          "field": "name",
+          "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Factsheet, strana 1, název a ticker IVV.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "ivv-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "exchange",
+          "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Emitentský podklad uvádí NYSE Arca. Samostatný důkaz na nyse.com dosud chybí.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "ivv-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "index",
+          "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Investment approach / FUND DESCRIPTION: S&P 500 Index.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "ivv-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "expenseRatioPercent",
+          "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Factsheet, strana 1, Expense Ratio: 0.03 %. Shodné s aktuální stránkou a TickerInside; datum API podkladu není datum lidské kontroly.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "ivv-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "dividends",
+          "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Distribution Frequency / Dividend schedule: Quarterly.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "ivv-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "description",
+          "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Originální český popis vytvořený pro tento návrh z doloženého cíle a strategie fondu; nejde o překlad marketingového odstavce ani investiční doporučení.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "ivv-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "expenseRatioPercent",
+          "url": "https://tickerinside.com/api/v1/fund/ivv.json",
+          "verified_at": null,
+          "as_of": "2026-07-27",
+          "evidence": "Doplňkový údaj API. Souhlasí s emitentským údajem. Licence CC BY 4.0, atribuce TickerInside. SEC odkaz nebyl nezávisle přečten.",
+          "retrievedAt": "2026-10-11T17:04:22Z",
+          "evidenceId": "api-ivv",
+          "verificationStatus": "api_observation_only"
+        }
+      ],
+      "usageReview": {
+        "approved": false,
+        "reviewedAt": null,
+        "reviewer": null,
+        "basis": null,
+        "policyUrl": null
+      },
+      "reviewStatus": "pending_not_importable",
+      "blockers": [
+        "Nezávislý doklad listingu NYSE Arca na nyse.com.",
+        "Lidská kontrola jednotlivých polí, skutečný kontrolor a správná data platnosti.",
+        "Doložené rozhodnutí o právech k publikaci všech použitých zdrojů."
+      ]
+    },
+    {
+      "ticker": "VTI",
+      "name": "Vanguard Morningstar Total Stock Market ETF",
+      "exchange": "NYSE Arca",
+      "index": "Morningstar US Total Market Index",
+      "expenseRatioPercent": 0.03,
+      "dividends": "Vyplácí příjmy investorům; čtvrtletní distribuce (Quarterly).",
+      "description": "Fond Vanguard pokrývá americký akciový trh napříč velikostmi společností. Index Morningstar US Total Market sleduje pomocí reprezentativního výběru akcií.",
+      "verifiedAt": null,
+      "dataAsOf": null,
+      "verifiedBy": null,
+      "sources": [
+        {
+          "field": "name",
+          "url": "https://investor.vanguard.com/investment-products/etfs/profile/vti",
+          "verified_at": null,
+          "as_of": null,
+          "evidence": "Aktuální veřejná profilová stránka, fundFullName: Vanguard Morningstar Total Stock Market ETF. Červnový factsheet uvádí starší název a očekávanou změnu v červenci 2026.",
+          "retrievedAt": "2026-10-11T17:04:22Z",
+          "evidenceId": "vti-page",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "exchange",
+          "url": "https://fund-docs.vanguard.com/F0970.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Emitentský podklad uvádí NYSE Arca. Samostatný důkaz na nyse.com dosud chybí.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "vti-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "index",
+          "url": "https://investor.vanguard.com/investment-products/etfs/profile/vti",
+          "verified_at": null,
+          "as_of": null,
+          "evidence": "Aktuální veřejná profilová stránka, objective a benchmarkShortName: Morningstar US Total Market Index. Starší factsheet uvádí CRSP; účinné datum přejmenování zatím nedoloženo.",
+          "retrievedAt": "2026-10-11T17:04:22Z",
+          "evidenceId": "vti-page",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "expenseRatioPercent",
+          "url": "https://fund-docs.vanguard.com/F0970.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Factsheet, strana 1, Expense Ratio: 0.03 %. Shodné s aktuální stránkou a TickerInside; datum API podkladu není datum lidské kontroly.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "vti-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "dividends",
+          "url": "https://fund-docs.vanguard.com/F0970.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Distribution Frequency / Dividend schedule: Quarterly.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "vti-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "description",
+          "url": "https://investor.vanguard.com/investment-products/etfs/profile/vti",
+          "verified_at": null,
+          "as_of": null,
+          "evidence": "Originální český popis vytvořený pro tento návrh z doloženého cíle a strategie fondu; nejde o překlad marketingového odstavce ani investiční doporučení.",
+          "retrievedAt": "2026-10-11T17:04:22Z",
+          "evidenceId": "vti-page",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "expenseRatioPercent",
+          "url": "https://tickerinside.com/api/v1/fund/vti.json",
+          "verified_at": null,
+          "as_of": "2026-04-28",
+          "evidence": "Doplňkový údaj API. Souhlasí s emitentským údajem. Licence CC BY 4.0, atribuce TickerInside. SEC odkaz nebyl nezávisle přečten.",
+          "retrievedAt": "2026-10-11T17:04:22Z",
+          "evidenceId": "api-vti",
+          "verificationStatus": "api_observation_only"
+        }
+      ],
+      "usageReview": {
+        "approved": false,
+        "reviewedAt": null,
+        "reviewer": null,
+        "basis": null,
+        "policyUrl": null
+      },
+      "reviewStatus": "pending_not_importable",
+      "blockers": [
+        "Nezávislý doklad listingu NYSE Arca na nyse.com.",
+        "Lidská kontrola jednotlivých polí, skutečný kontrolor a správná data platnosti.",
+        "Doložené rozhodnutí o právech k publikaci všech použitých zdrojů.",
+        "Lidsky potvrdit aktuální název/index k datu přehledu a schválit rozdíl proti TickerInside; červnový factsheet nový název nedokládá."
+      ]
+    },
+    {
+      "ticker": "IWM",
+      "name": "iShares Russell 2000 ETF",
+      "exchange": "NYSE Arca",
+      "index": "Russell 2000 Index",
+      "expenseRatioPercent": 0.19,
+      "dividends": "Vyplácí příjmy investorům; čtvrtletní distribuce (Quarterly).",
+      "description": "Fond iShares sleduje index Russell 2000 a zaměřuje se na menší americké společnosti. Umožňuje porovnat tento segment trhu s fondy velkých společností.",
+      "verifiedAt": null,
+      "dataAsOf": null,
+      "verifiedBy": null,
+      "sources": [
+        {
+          "field": "name",
+          "url": "https://www.ishares.com/us/literature/fact-sheet/iwm-ishares-russell-2000-etf-fund-fact-sheet-en-us.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Factsheet, strana 1, název a ticker IWM.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "iwm-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "exchange",
+          "url": "https://www.ishares.com/us/literature/fact-sheet/iwm-ishares-russell-2000-etf-fund-fact-sheet-en-us.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Emitentský podklad uvádí NYSE Arca. Samostatný důkaz na nyse.com dosud chybí.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "iwm-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "index",
+          "url": "https://www.ishares.com/us/literature/fact-sheet/iwm-ishares-russell-2000-etf-fund-fact-sheet-en-us.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Investment approach / FUND DESCRIPTION: Russell 2000 Index.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "iwm-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "expenseRatioPercent",
+          "url": "https://www.ishares.com/us/literature/fact-sheet/iwm-ishares-russell-2000-etf-fund-fact-sheet-en-us.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Factsheet, strana 1, Expense Ratio: 0.19 %. Shodné s aktuální stránkou a TickerInside; datum API podkladu není datum lidské kontroly.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "iwm-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "dividends",
+          "url": "https://www.ishares.com/us/literature/fact-sheet/iwm-ishares-russell-2000-etf-fund-fact-sheet-en-us.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Distribution Frequency / Dividend schedule: Quarterly.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "iwm-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "description",
+          "url": "https://www.ishares.com/us/literature/fact-sheet/iwm-ishares-russell-2000-etf-fund-fact-sheet-en-us.pdf",
+          "verified_at": null,
+          "as_of": "2026-06-30",
+          "evidence": "Originální český popis vytvořený pro tento návrh z doloženého cíle a strategie fondu; nejde o překlad marketingového odstavce ani investiční doporučení.",
+          "retrievedAt": "2026-10-11T17:05:40Z",
+          "evidenceId": "iwm-pdf",
+          "verificationStatus": "awaiting_human_review"
+        },
+        {
+          "field": "expenseRatioPercent",
+          "url": "https://tickerinside.com/api/v1/fund/iwm.json",
+          "verified_at": null,
+          "as_of": "2026-07-27",
+          "evidence": "Doplňkový údaj API. Souhlasí s emitentským údajem. Licence CC BY 4.0, atribuce TickerInside. SEC odkaz nebyl nezávisle přečten.",
+          "retrievedAt": "2026-10-11T17:04:22Z",
+          "evidenceId": "api-iwm",
+          "verificationStatus": "api_observation_only"
+        }
+      ],
+      "usageReview": {
+        "approved": false,
+        "reviewedAt": null,
+        "reviewer": null,
+        "basis": null,
+        "policyUrl": null
+      },
+      "reviewStatus": "pending_not_importable",
+      "blockers": [
+        "Nezávislý doklad listingu NYSE Arca na nyse.com.",
+        "Lidská kontrola jednotlivých polí, skutečný kontrolor a správná data platnosti.",
+        "Doložené rozhodnutí o právech k publikaci všech použitých zdrojů."
+      ]
+    }
+  ]
+}
