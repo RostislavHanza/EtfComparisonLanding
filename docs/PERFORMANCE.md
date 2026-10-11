@@ -54,7 +54,7 @@ API dokumentace výslovně popisuje current fund JSON s vypočtenými weekly ret
 
 GET `/api/performance?comparison=ID` vyžaduje platnou session daného srovnání a stále používá pevný seznam pětice, ověřuje identitu/NYSE Arca/licenci/datum a má pětisekundové timeouty, single-flight, serverovou upstream keš jeden den, HTTP private/no-store a kratší keš při partial/outage. Nově vrací ověřené `weeklyReturns` s weekEnd/returnFraction. Nikdy provider HTML, raw ceny nebo holdings. Klient používá `?schema=3&comparison=ID`, aby neměl předchozí CDN formát bez řady; parametry nemění upstream URL. Slider/procenta/reference/horizont nic nově nestahují. Keš není globální trvalé úložiště; cold start/region může znovu načítat. Stale zachovává původní datum a má viditelnou informaci.
 
-Výpočty a zdroje se nemění. E-mailová brána nově vyžaduje migraci 007 pro opakovaný odkaz; žádné nové env nebo dependencies. Vercel NodeNext importy a kontroly všech deseti endpointů zůstávají.
+Výpočty a zdroje se nemění. E-mailová brána nově vyžaduje migraci 008 pro opakovaně použitelný odkaz nezávislý na původní session; žádné nové env nebo dependencies. Vercel NodeNext importy a kontroly všech deseti endpointů zůstávají.
 
 ## Praktický Preview test
 

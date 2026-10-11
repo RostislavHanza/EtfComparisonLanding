@@ -9,14 +9,15 @@ import { readAppConfig } from '../server/http.ts'
 const config:AppConfig={baseUrl:'https://example.invalid',secret:'x'.repeat(32),environment:'production',previewRecipients:[],privacy:{controllerName:'TEST ONLY',controllerContact:'test@example.invalid',retentionDays:90}}
 const lead={tickers:['TESTA','TESTB'],amountCzk:100000,email:' Test@Example.invalid ',marketingConsent:false,website:''}
 function repository(){
- let record:LeadRecord|undefined, redeemed=false,sessionHash=''
+ let record:LeadRecord|undefined
+ const sessions=new Set<string>()
  const events:EventName[]=[], statuses:string[]=[]
  const repo:Repository={
   catalog:async()=>[],limit:async()=>true,
   create:async l=>{record=l}, sent:async()=>{statuses.push('sent')},failed:async()=>{statuses.push('failed')},
-  redeem:async(t,s)=>{if(redeemed||t!==record?.tokenHash)return null;redeemed=true;sessionHash=s;return record.id},
-  read:async(s,id)=>s===sessionHash&&id===record?.id?{id,tickers:record.tickers,amountCzk:record.amountCzk,funds:[],createdAt:'test',updatedAt:'test'}:null,
-  update:async(s,id,tickers,amountCzk)=>{if(s!==sessionHash||id!==record?.id)return false;Object.assign(record,{tickers,amountCzk});return true},
+  redeem:async(t,s)=>{if(t!==record?.tokenHash)return null;sessions.add(s);return record.id},
+  read:async(s,id)=>sessions.has(s)&&id===record?.id?{id,tickers:record.tickers,amountCzk:record.amountCzk,funds:[],createdAt:'test',updatedAt:'test'}:null,
+  update:async(s,id,tickers,amountCzk)=>{if(!sessions.has(s)||id!==record?.id)return false;Object.assign(record,{tickers,amountCzk});return true},
   event:async name=>{events.push(name)},withdrawAnalytics:async()=>{events.length=0},
  }
  return {repo,events,statuses,get record(){return record}}
@@ -30,7 +31,7 @@ test('requested mail carries an opaque token, persists no raw token and restores
  assert.match(token,/^[A-Za-z0-9_-]{43}$/);assert.equal(db.record?.tokenHash,hash(token));assert.equal(db.record?.marketingConsent,false)
  assert.ok(!JSON.stringify(db.record).includes(token));assert.deepEqual(db.statuses,['sent']);assert.deepEqual(db.events,[])
  const access=await app.access({token},'test-ip');const saved=await app.read(access.id,access.session);assert.equal(saved.amountCzk,100000);assert.deepEqual(saved.tickers,['TESTA','TESTB'])
- await assert.rejects(app.access({token},'test-ip'),/Odkaz vypršel/)
+ const again=await app.access({token},'test-ip');assert.equal(again.id,access.id);assert.notEqual(again.session,access.session);assert.equal((await app.read(again.id,again.session)).amountCzk,100000)
  await assert.rejects(app.read(access.id,'z'.repeat(43)),/Přístup vypršel/)
  const updated=await app.update(access.id,access.session,{tickers:['TESTA','TESTC'],amountCzk:250000},'test-ip');assert.equal(updated.amountCzk,250000)
 })

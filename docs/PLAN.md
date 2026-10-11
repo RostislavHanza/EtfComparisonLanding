@@ -15,12 +15,12 @@ Rozšiřitelný katalog přibližně 15–20 skutečných ETF na NYSE Arca, hled
 3. **Porovnání:** index, expense ratio, dividendy, charakteristika, data kontroly/platnosti a primární zdroje. Veřejná ověřená metadata pocházejí z API, nikoli demonstračního seed souboru.
 4. **Kalkulačka:** číselné pole/posuvník Kč, orientační roční náklady v tabulce a jednoduchém grafu. Částka × expense ratio / 100. Bez brokera, konverzí, daní a změn hodnoty; nejde o výnos ani samostatnou fakturu fondu.
 5. **E-mail až po nastavení:** „Vaše srovnání je připravené“, samostatný nepovinný marketingový souhlas, informace o správci/retenci; odeslání odlišené od doručení.
-6. **Potvrzení a návrat:** e-mail obsahuje pouze unikátní odkaz. Tlačítko potvrdí přístup ke schránce, server vydá session a obnoví výběr i částku. Úpravy lze uložit. Samotný GET náhledu zprávy nespotřebuje token.
+6. **Potvrzení a návrat:** e-mail obsahuje pouze unikátní odkaz. První otevření automaticky potvrdí přístup ke schránce, server vydá session a obnoví výběr i částku. Stejný platný e-mailový odkaz funguje opakovaně i bez původní session. Úpravy lze uložit. Samotný GET náhledu zprávy nespotřebuje token.
 7. **FAQ, souvislosti a patička:** PRIIPs/KID, investiční rizika, zdroje, ochrana údajů a volitelné měření.
 
 Mobil od 320 px, bez horizontálního přetékání, čitelné labely, klávesnice, focus, 44px dotykové cíle, srozumitelné stavy načítání/chyb. Upozornění na omezenou dostupnost amerických ETF pro retail v EU před formulářem; nejde o UCITS alternativy ani doporučení.
 
-Aktualizace zadání 12. října 2026: reklama → výběr → e-mail → odeslání odkazu → automatické serverové ověření v aktivním prohlížeči → chráněná kalkulačka/graf/tabulky. Marketing není podmínkou vyžádaného doručení. Přístupový odkaz neobsahuje osobní údaje. Jednorázové potvrzení platí 7 dní, session v potvrzujícím prohlížeči 30 dní. První potvrzení může být na jiném zařízení; po použití odkazu/ztrátě session MVP nabídne novou žádost, bez automatické obnovy starého přehledu.
+Aktualizace zadání 12. října 2026: reklama → výběr → e-mail → odeslání odkazu → automatické serverové ověření v aktivním prohlížeči → chráněná kalkulačka/graf/tabulky. Marketing není podmínkou vyžádaného doručení. Přístupový odkaz neobsahuje osobní údaje. Nový návratový odkaz má pevnou maximální platnost 90 dní od vytvoření, session 30 dní. Nepoužité žádosti se nadále mažou po 30 dnech. Každé platné otevření stejného e-mailového odkazu obnoví přístup i na jiném zařízení nebo po ztrátě session, bez dalšího potvrzení/adresy. E-mail a událost potvrzení se zaznamenají pouze jednou.
 
 ## Technické řešení
 

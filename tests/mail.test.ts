@@ -15,7 +15,7 @@ test('SMTP loads only server configuration, requires all fields and enforces enc
 })
 test('SMTP mail has professional Czech HTML and text alternatives, with escaped HTML link',async()=>{
  const message=comparisonMessage('https://example.invalid/#access=TEST_ONLY&extra="quoted"')
- assert.match(message.text,/potvrdí automaticky/);assert.match(message.text,/7 dní/);assert.match(message.html,/&amp;extra=&quot;quoted&quot;/);assert.match(message.html,/<html lang="cs">/)
+ assert.match(message.text,/potvrdí automaticky/);assert.match(message.text,/90 dní/);assert.match(message.html,/&amp;extra=&quot;quoted&quot;/);assert.match(message.html,/<html lang="cs">/)
  const transport=nodemailer.createTransport({streamTransport:true,buffer:true,newline:'unix'})
  const result=await transport.sendMail({from:'test@example.invalid',to:'recipient@example.invalid',...message})
  const mime=result.message.toString();assert.match(mime,/multipart\/alternative/);assert.match(mime,/text\/plain/);assert.match(mime,/text\/html/)

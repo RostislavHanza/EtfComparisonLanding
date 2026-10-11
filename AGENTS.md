@@ -24,7 +24,7 @@
 - Validuj vstupy i na serveru. Zamez dvojímu odeslání, nastav ochranu proti spamu a distribuované omezení frekvence. Klientská validace sama nestačí.
 - Supabase musí mít RLS; anonymní klient nesmí číst ani zapisovat kontakty. Privilegované klíče nikdy nedávej do klientského bundle ani proměnných `VITE_*`.
 - Necommituj tajné hodnoty; `.env.example` obsahuje jen názvy a bezpečné ukázky. Nezapisuj e-maily, klíče ani potvrzovací tokeny do logů, analytiky nebo URL parametrů pro měření.
-- U potvrzovacích tokenů používej hash v úložišti, expiraci a jednorázové použití. Zajisti opakovatelné bezpečné zpracování a obnovu při selhání doručování.
+- U tokenů používej hash v úložišti a expiraci. Uživatelský e-mailový odkaz k uloženému srovnání je opakovaně použitelný i bez původní session; potvrzení zaznamenej jen poprvé. Administrátorské přihlášení zůstává jednorázové. Zajisti opakovatelné bezpečné zpracování a obnovu při selhání doručování.
 - Pro nové i existující adresy vracej stejnou veřejnou odpověď. Preview a testy musí používat oddělená data a bezpečné testovací doručování.
 - Neukládej zbytečné osobní údaje. Změny účelu zpracování, souhlasů a retence musí respektovat schválené informační texty.
 
@@ -39,7 +39,7 @@
 ## Doplněný rozsah do 16. října 2026
 
 - Schválený funkční rozsah: rozšiřitelný katalog přibližně 15–20 ručně ověřených ETF na NYSE Arca, hledání tickeru/názvu a výběr 2–5 fondů. Od 12. října 2026 veřejný vstup nabízí pouze výběr a e-mail; parametry, kalkulačka a historie vyžadují serverově ověřenou session z automaticky zpracovaného e-mailového odkazu. Zachovej původní redakční vzhled.
-- Veřejná ověřená metadata jsou z katalogového API. Uložený výběr a částku chraň serverovou session, včetně přímých požadavků na endpoint. První automatické potvrzení může proběhnout na jiném zařízení; již spotřebovaný odkaz je opakovatelný pouze s jeho platnou vázanou session. Pravdivě vysvětli omezení aktivních browser skenerů a ztráty session. Demo data patří pouze do výslovně označených archivních návrhů a testů.
+- Veřejná ověřená metadata jsou z katalogového API. Uložený výběr a částku chraň serverovou session, včetně přímých požadavků na endpoint. První automatické potvrzení může proběhnout na jiném zařízení; platný e-mailový odkaz opakovaně vytvoří novou session i bez původní cookie. Pravdivě vysvětli omezení aktivních browser skenerů, expiraci a ochranu přístupového odkazu. Demo data patří pouze do výslovně označených archivních návrhů a testů.
 - Používej jen skutečné, ověřené údaje. Ke každému poli eviduj primární zdroj, datum platnosti a datum kontroly. AI není finanční zdroj; neověřené hodnoty vynech a popiš omezení.
 - Implementuj funnel podle `docs/PLAN.md`: návštěvy, interakce, formulář, serverové přijetí, potvrzení a otevření srovnání. Zamez dvojímu započítání, úniku osobních údajů a míchání nesrovnatelných kohort. Respektuj souhlas se sledováním.
 - Odhad konverze vždy označ jako předpoklad do ověření. A/B testy prováděj postupně; bez dostatečného vzorku neoznačuj variantu za vítěze.

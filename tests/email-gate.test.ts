@@ -15,35 +15,49 @@ test('public selection metadata excludes protected financial data; protected cat
  await assert.rejects(app.catalog(other,'s'.repeat(43)),/Přístup vypršel/);assert.equal(calls,1)
  assert.deepEqual((await app.catalog(id,'s'.repeat(43))).funds,funds)
 })
-test('reopening a consumed link requires the existing bound, unexpired session; fresh redemption is still one-time',async()=>{
+test('reusable return token creates fresh sessions, confirms only once and rejects expired/revoked tokens',async()=>{
  const db=new PGlite()
  try{
   await db.exec('create role anon; create role authenticated; create role service_role bypassrls;')
   for(const name of ['202610100001_mvp.sql','202610100003_gmail_smtp.sql','202610120007_email_link_access.sql'])await db.exec(await readFile(`supabase/migrations/${name}`,'utf8'))
   for(const ticker of ['TESTA','TESTB'])await db.query("insert into etfs(ticker,name,exchange,tracked_index,expense_ratio_percent,dividends,description,verified_at,data_as_of,sources,verified_by,usage_review,published) values($1,'TEST','NYSE Arca','TEST',0.03,'TEST','TEST',now(),current_date,$2,'TEST','{}',true)",[ticker,JSON.stringify(Array.from({length:6},()=>({test:true})))])
-  await db.query('select create_comparison($1,$2,$3,$4,$5,false,$6,$7)',[id,'test@example.invalid',['TESTA','TESTB'],10000000,'a'.repeat(64),'test',JSON.stringify({visitId:other,campaign:'direct'})])
-  const reopen=async(token='a'.repeat(64),session='b'.repeat(64))=>(await db.query<{id:string|null}>('select reopen_comparison($1,$2) as id',[token,session])).rows[0].id
-  assert.equal(await reopen(),null)
-  assert.equal((await db.query<{id:string}>('select redeem_comparison($1,$2) as id',['a'.repeat(64),'b'.repeat(64)])).rows[0].id,id)
-  assert.equal(await reopen(),id);assert.equal(await reopen(),id)
-  assert.equal(await reopen('a'.repeat(64),'c'.repeat(64)),null);assert.equal(await reopen('c'.repeat(64)),null)
-  assert.equal((await db.query<{id:null}>('select redeem_comparison($1,$2) as id',['a'.repeat(64),'c'.repeat(64)])).rows[0].id,null)
+  const create=async(comparison:string,token:string)=>db.query('select create_comparison($1,$2,$3,$4,$5,false,$6,$7)',[comparison,'test@example.invalid',['TESTA','TESTB'],10000000,token,'test',JSON.stringify({visitId:other,campaign:'direct'})])
+  await create(other,'9'.repeat(64))
+  await db.query("update comparisons set token_expires_at=now()-interval '1 second' where id=$1",[other])
+  const originalExpiry=(await db.query<{expiry:string}>('select token_expires_at::text as expiry from comparisons where id=$1',[other])).rows[0].expiry
+  await db.exec(await readFile('supabase/migrations/202610120008_reusable_comparison_links.sql','utf8'))
+  assert.equal((await db.query<{expiry:string}>('select token_expires_at::text as expiry from comparisons where id=$1',[other])).rows[0].expiry,originalExpiry)
+  await create(id,'a'.repeat(64))
+  assert.equal(Number((await db.query<{days:string}>('select extract(epoch from token_expires_at-created_at)/86400 as days from comparisons where id=$1',[id])).rows[0].days),90)
+  const redeem=async(token:string,session:string)=>(await db.query<{id:string|null}>('select redeem_comparison($1,$2) as id',[token,session])).rows[0].id
+  assert.equal(await redeem('9'.repeat(64),'e'.repeat(64)),null)
+  assert.equal(await redeem('a'.repeat(64),'b'.repeat(64)),id)
+  assert.equal((await db.query<{ok:boolean}>('select update_comparison($1,$2,$3,$4) as ok',['b'.repeat(64),id,['TESTA','TESTB'],12345678])).rows[0].ok,true)
+  const confirmed=(await db.query<{stamp:string}>('select confirmed_at::text as stamp from comparisons where id=$1',[id])).rows[0].stamp
+  await db.exec("update comparison_sessions set expires_at=now()-interval '1 second'")
+  assert.equal((await db.query<{saved:unknown}>('select read_comparison($1,$2) as saved',['b'.repeat(64),id])).rows[0].saved,null)
+  // No original session/cookie is an input. Concurrent return visits both succeed.
+  assert.deepEqual(await Promise.all([redeem('a'.repeat(64),'c'.repeat(64)),redeem('a'.repeat(64),'d'.repeat(64))]),[id,id])
+  const saved=(await db.query<{saved:{tickers:string[];amountCzk:number}}>('select read_comparison($1,$2) as saved',['c'.repeat(64),id])).rows[0].saved
+  assert.deepEqual(saved.tickers,['TESTA','TESTB']);assert.equal(saved.amountCzk,123456.78)
+  assert.equal((await db.query<{stamp:string}>('select confirmed_at::text as stamp from comparisons where id=$1',[id])).rows[0].stamp,confirmed)
   assert.equal((await db.query("select * from funnel_events where name='email_confirmed'")).rows.length,1)
-  assert.equal((await db.query('select * from comparison_sessions')).rows.length,1)
-  await db.exec("update comparisons set token_expires_at=now()-interval '1 second'");assert.equal(await reopen(),null)
-  await db.exec("update comparisons set token_expires_at=now()+interval '1 day'; update comparison_sessions set expires_at=now()-interval '1 second'");assert.equal(await reopen(),null)
-  await db.exec('set role anon');await assert.rejects(reopen(),/permission denied/)
+  assert.equal((await db.query('select * from comparison_sessions')).rows.length,3)
+  assert.equal(await redeem('x'.repeat(64),'e'.repeat(64)),null)
+  await db.exec("update comparisons set token_expires_at=now()-interval '1 second'");assert.equal(await redeem('a'.repeat(64),'e'.repeat(64)),null)
+  assert.equal((await db.query('select * from comparison_sessions')).rows.length,3)
+  await db.exec('set role anon');await assert.rejects(redeem('a'.repeat(64),'f'.repeat(64)),/permission denied/)
  }finally{await db.close()}
 })
 
-test('automatic access reuses only the session already bound to the same token',async()=>{
- const token='t'.repeat(43);let used=false,session=''
- const repo={limit:async()=>true,redeem:async(t:string,s:string)=>{if(used||t!==hash(token))return null;used=true;session=s;return id},reopen:async(t:string,s:string)=>t===hash(token)&&s===session?id:null} as unknown as Repository
+test('automatic return link does not require the previous browser session',async()=>{
+ const token='t'.repeat(43);let expired=false
+ const repo={limit:async()=>true,redeem:async(t:string)=>!expired&&t===hash(token)?id:null} as unknown as Repository
  const app=new Application(repo,{baseUrl:'https://example.invalid',secret:'x'.repeat(32),environment:'preview',previewRecipients:[]})
- const access=await app.access({token},'test-ip')
- assert.deepEqual(await app.access({token},'test-ip',access.session),access)
- await assert.rejects(app.access({token},'test-ip','x'.repeat(43)),/Odkaz vypršel/)
- await assert.rejects(app.access({token:'x'.repeat(43)},'test-ip',access.session),/Odkaz vypršel/)
+ const first=await app.access({token},'test-ip'),again=await app.access({token},'test-ip')
+ assert.equal(again.id,first.id);assert.notEqual(again.session,first.session)
+ await assert.rejects(app.access({token:'x'.repeat(43)},'test-ip'),/Odkaz vypršel/)
+ expired=true;await assert.rejects(app.access({token},'test-ip'),/Odkaz vypršel/)
 })
 
 test('GET and HEAD email scans cannot redeem a token at the access endpoint',async()=>{
