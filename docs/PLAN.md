@@ -39,7 +39,7 @@ Primární zdroje: nyse.com, ssga.com, investor.vanguard.com, ishares.com a ofic
 
 Týdenní ruční kontrola je vhodná pro index/nákladovost/dividendovou politiku. Nová srovnání nezahrnují fond s ověřením starším než 14 dní. Uložená srovnání zachovávají snapshot a datum; uložením změn přijmou aktuální data. Denní aktualizace má smysl až pro budoucí dynamické údaje, které MVP nesbírá.
 
-Oficiální data/API/podmínky nebylo možné z tohoto prostředí ověřit kvůli HTTP 403. Nevymýšlet data ani dostupnost API. Automatický import nyní neimplementovat; později jen dokumentované povolené API/export, validace a audit, podezřelé změny ručně schválit. Denní Cron v MVP slouží pouze retenci, nikoli importu ETF.
+Předchozí ověřování primárních zdrojů blokovala HTTP 403; nově je ověřené dokumentované TickerInside API a jeho podmínky. Nevymýšlet data ani dostupnost API. Původní MVP automatický import odložilo. Po následném schválení TickerInside je připravený chráněný import jeho dostupných polí do kandidátní vrstvy a aktualizace nákladovosti pouze výslovně schválených publikovaných fondů. Index/dividendy/popis nadále doplnit z primárních zdrojů. Týdenní ETF Cron je připraven pro budoucí Production; v Preview se spouští ručně. Denní retenční Cron zůstává. Stav a omezení viz DATA_SOURCES.md.
 
 ## Implementační kroky a ověření
 

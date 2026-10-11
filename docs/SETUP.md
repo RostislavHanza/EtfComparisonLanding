@@ -105,3 +105,25 @@ Nepoužívané proměnné: RESEND_API_KEY, RESEND_WEBHOOK_SECRET a PREVIEW_RECIP
 Pouze pro dobrovolný lokální vývoj se serverem používat `.env.local` se stejnými serverovými názvy, ale APP_ENV=development a APP_BASE_URL=http://localhost:5173. Není to požadavek na Codex Cloud. Browser fixture testy mají dvě volitelné běžné konfigurace: TEST_BASE_URL (výchozí http://127.0.0.1:4173) a BROWSER_PATH (cesta k existujícímu Chromium; jinak Playwright). Ani jedna nepatří do Vercelu. Pro ruční import ETF stačí SUPABASE_URL a jeden serverový Supabase klíč v prostředí spuštění importu; project ref ani management token není potřeba.
 
 CRON_SECRET Vercel používá v Authorization pro Cron z vercel.json; Cron běží pouze v Production. Preview tato proměnná chrání mail-health a ruční údržbu. Všechny SMTP proměnné se vyhodnocují serverově při běhu funkce, nikoli ve frontendovém buildu. Samotná konfigurace nemůže nahradit naplnění ověřeného katalogu ani skutečný test doručení.
+
+## 8. TickerInside synchronizace: ruční Preview, budoucí Production
+
+Původní tři migrace jsou již aplikované a nespouštějí se znovu. Operátor samostatně zkontroluje a aplikuje **pouze novou** `supabase/migrations/202610110004_etf_sync.sql`. V tomto vývoji nebyla aplikovaná vzdáleně. Neobsahuje žádná produkční data.
+
+Na Vercelu používá endpoint stávající SUPABASE_URL, SUPABASE_SECRET_KEY (nebo legacy serverový klíč) a CRON_SECRET. Nepotřebuje TickerInside klíč, SMTP ani novou placenou službu. Vercel musí mít odchozí HTTPS přístup na tickerinside.com a svůj Supabase projekt. Tato změna nezasahuje do uložených environment variables. Funkce má maxDuration 60 s; 20 souborů stahuje se dvěma workery, timeoutem 4 s na požadavek a limitem 1 MiB. DB operace mají timeout 5 s. Žádné automatické HTTP retry.
+
+Ruční spuštění po aplikování nové migrace a samostatném nasazení nové větve (nejde o součást této implementace): v shellu s již bezpečně nastavenými APP_BASE_URL a CRON_SECRET:
+
+```sh
+curl --fail-with-body -H "Authorization: Bearer $CRON_SECRET" "$APP_BASE_URL/api/etf-sync"
+```
+
+Stejný endpoint je dostupný lokálně přes dev:api, ale jeho autorizované volání se skutečnou konfigurací zapisuje do Supabase; pro izolované testy používat npm test. Unauthenticated GET vrací 401 a nic nenačítá. Běžný výsledek má state=ok/partial a počty candidates/updated/failed; 20 candidates a 0 updated je správný výsledek bez schválených fondů. busy vrací 409. already_attempted znamená bez nových požadavků na API. Úplné selhání zdrojů vrací 503, audit zůstává v DB. Detail chyb prohlédnout v etf_sync_runs; absence nové migrace také vrací 503. Ověřit skutečné počty v DB, nikoli pouze HTTP 200.
+
+Připravený Cron v vercel.json: `0 4 * * 1` → GET /api/etf-sync, jednou týdně v pondělí kolem 04:00 UTC (v Praze 06:00 při letním a 05:00 při zimním čase). Vercel připojuje Authorization Bearer CRON_SECRET. Cron se spouští jen v Production, nikoli v Preview. Nic zde nedokládá, že již běží. Pro design-exploration Preview funguje ruční volání; Production se nyní nenasazuje a main se nemění. Denní /api/maintenance zůstává samostatný.
+
+Přístup k tarifu projektu nemáme. Dokumentaci https://vercel.com/docs/cron-jobs/usage-and-pricing při této kontrole blokovala proxy CONNECT 403. Operátor musí před Production ověřit dostupnost Cron, maxDuration a použití tarifu pro komerční demo Clientelo; kompatibilitu či nulové náklady na konkrétním účtu nelze potvrdit. U plánu s nižší přesností může čas spuštění kolísat. Nepřidáváme externí scheduler ani placenou službu.
+
+Kandidáti nejsou veřejný katalog. Po kontrole primárních zdrojů doplnit index, dividendovou politiku a popis, použít validovaný ruční import a schválit licenci konkrétního použití. Až poté může operátor nastavit tickerinside_sync_enabled=true pouze u vybraných již publikovaných fondů; předběžné IVV/ITOT/IWM nepovolovat bez plného schválení. Vyžaduje se soulad názvu s API a datum SEC podkladu nákladovosti, které neustupuje proti původnímu dokladu. Třída market_data neprovádí veřejné aktualizace.
+
+Samotná synchronizace neobnovuje verified_at ani neuvolňuje published. Celý srovnávač na Preview lze skutečně otestovat teprve po naplnění alespoň dvou úplných schválených fondů a ověření backendu; tento krok neprokazuje doručení e-mailů.
