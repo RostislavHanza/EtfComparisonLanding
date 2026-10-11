@@ -5,6 +5,7 @@ import type { Repository, LeadRecord } from '../server/repository.ts'
 import { DatabaseError } from '../server/repository.ts'
 import type { EventName } from '../shared/validation.ts'
 import { annualCost } from '../shared/model.ts'
+import { readAppConfig } from '../server/http.ts'
 const config:AppConfig={baseUrl:'https://example.invalid',secret:'x'.repeat(32),environment:'production',previewRecipients:[],privacy:{controllerName:'TEST ONLY',controllerContact:'test@example.invalid',retentionDays:90}}
 const lead={tickers:['TESTA','TESTB'],amountCzk:100000,email:' Test@Example.invalid ',marketingConsent:false,website:''}
 function repository(){
@@ -52,4 +53,15 @@ test('preview recipient allowlist prevents real campaigns; only consented server
 })
 test('annual expense arithmetic uses percentage units, including zero and decimal amounts',()=>{
  assert.equal(annualCost(100000,0.03),30);assert.equal(annualCost(0,0.03),0);assert.equal(annualCost(100000,0.0945),94.5);assert.ok(Math.abs(annualCost(12345.67,0.03)-3.703701)<1e-8)
+})
+
+test('preview uses only SMTP_USER, ignores retired recipient configuration and rejects other recipients before storing a comparison',async()=>{
+ const env={APP_BASE_URL:'https://example.invalid',RATE_LIMIT_SECRET:'x'.repeat(32),APP_ENV:'preview',SMTP_USER:' Test@Example.invalid ',PREVIEW_RECIPIENTS:'other@example.invalid',OPERATOR_NAME:'TEST ONLY',OPERATOR_CONTACT:'test@example.invalid'}
+ const db=repository(),sent:string[]=[]
+ const app=new Application(db.repo,readAppConfig(env),{send:async(email)=>{sent.push(email);return 'test-provider'}})
+ await assert.rejects(app.create({...lead,email:'other@example.invalid'},'test-ip'),/testovací adresy/)
+ assert.equal(db.record,undefined);assert.deepEqual(sent,[])
+ await app.create(lead,'test-ip');assert.deepEqual(sent,['test@example.invalid'])
+ const unavailable=repository(),withoutUser=new Application(unavailable.repo,readAppConfig({...env,SMTP_USER:''}),{send:async()=>{throw Error('must not send')}})
+ await assert.rejects(withoutUser.create(lead,'test-ip'),/testovací adresy/);assert.equal(unavailable.record,undefined)
 })
