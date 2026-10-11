@@ -1,6 +1,6 @@
 # Plán landing page
 
-Aktualizace 10. října 2026 podle schváleného funkčního MVP a následné změny poskytovatele na Gmail SMTP. Nahrazuje původní omezení na 2–3 ETF a uzamčené porovnání před e-mailem. Termín předání: 16. října 2026.
+Aktualizace 12. října 2026 podle schváleného funkčního MVP, Gmail SMTP a nového požadavku na e-mailovou bránu. Výběr je 2–5 ETF; kalkulačka/graf/tabulky jsou nově přístupné až po automatickém serverovém ověření odkazu. Termín předání: 16. října 2026.
 
 ## Cíl a rozsah MVP
 
@@ -20,7 +20,7 @@ Rozšiřitelný katalog přibližně 15–20 skutečných ETF na NYSE Arca, hled
 
 Mobil od 320 px, bez horizontálního přetékání, čitelné labely, klávesnice, focus, 44px dotykové cíle, srozumitelné stavy načítání/chyb. Upozornění na omezenou dostupnost amerických ETF pro retail v EU před formulářem; nejde o UCITS alternativy ani doporučení.
 
-Reklama → výběr → kalkulačka → e-mail → odeslání odkazu → explicitní potvrzení → uložený přehled. Marketing není podmínkou vyžádaného doručení. Přístupový odkaz neobsahuje osobní údaje. Jednorázové potvrzení platí 7 dní, session v potvrzujícím prohlížeči 30 dní. První potvrzení může být na jiném zařízení; po použití odkazu/ztrátě session MVP nabídne novou žádost, bez automatické obnovy starého přehledu.
+Aktualizace zadání 12. října 2026: reklama → výběr → e-mail → odeslání odkazu → automatické serverové ověření v aktivním prohlížeči → chráněná kalkulačka/graf/tabulky. Marketing není podmínkou vyžádaného doručení. Přístupový odkaz neobsahuje osobní údaje. Jednorázové potvrzení platí 7 dní, session v potvrzujícím prohlížeči 30 dní. První potvrzení může být na jiném zařízení; po použití odkazu/ztrátě session MVP nabídne novou žádost, bez automatické obnovy starého přehledu.
 
 ## Technické řešení
 
@@ -106,6 +106,6 @@ Harmonogram předpokládá včasné zadání implementace a přístupy ke služb
 
 **README:** při implementaci nahradit současný nadpis vysvětlením pořadí sekcí (příslib → vlastní výběr → hodnota nabídky → důvěra → CTA), strategie potvrzeného kontaktu, technického toku a místního spuštění. Uvést konfiguraci bez tajných hodnot, zdroje ETF, provedené testy a aktuální nedostatky: omezení dostupnosti ETF, ruční aktualizace dat, závislost na doručování, mezery měření a dosud neověřené konverzní předpoklady. Důsledně rozlišit plánované a hotové funkce.
 
-**`ai-log/`:** vést datované Markdown záznamy od plánování po implementaci. Uchovat skutečné použité prompty a jejich pořadí, stručný popis výsledku, provedené kontroly se zdroji/příkazy, nalezené chyby, opravy a neověřené části. Citlivé údaje redigovat. Nezaměňovat plán kontrol za jejich provedení ani zpětně nevymýšlet prompty. Evidovat zejména ověření finančních dat a schválené změny rozsahu: veřejné porovnání a chráněné uložené srovnání. README i logy jsou součástí předání, nikoli volitelný dodatek.
+**`ai-log/`:** vést datované Markdown záznamy od plánování po implementaci. Uchovat skutečné použité prompty a jejich pořadí, stručný popis výsledku, provedené kontroly se zdroji/příkazy, nalezené chyby, opravy a neověřené části. Citlivé údaje redigovat. Nezaměňovat plán kontrol za jejich provedení ani zpětně nevymýšlet prompty. Evidovat zejména ověření finančních dat a schválené změny rozsahu: e-mailová brána a serverově chráněné interaktivní srovnání. README i logy jsou součástí předání, nikoli volitelný dodatek.
 
 Souhlas s nepovinnou analytikou řeší lišta Nastavení soukromí, nikoli e-mailový formulář. Stejně dostupné přijetí/odmítnutí, opětovné otevření a bezpečné odvolání; marketing zůstává samostatný. Implementovaná měření a interpretace souhlasících kohort jsou v `docs/ANALYTICS.md`.

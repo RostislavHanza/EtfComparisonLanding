@@ -6,16 +6,18 @@ const funds=JSON.parse(await readFile('data/priority-five.approved.json','utf8')
 const observed=JSON.parse(await readFile('data/review/performance-observations.json','utf8')).funds
 const performance=observed.map(r=>({...r,asOf:r.as_of,attributionUrl:`https://tickerinside.com/etf/${r.ticker.toLowerCase()}/`,currency:'USD',weeklyReturns:r.weekly.map((value,i)=>({weekEnd:new Date(Date.parse(r.weeks_end)-(155-i)*7*86400000).toISOString().slice(0,10),returnFraction:value}))}))
 const browser=await chromium.launch({executablePath:process.env.BROWSER_PATH||undefined,args:['--no-sandbox']})
+const id='11111111-1111-4111-8111-111111111111'
+const saved={id,tickers:['SPY','VOO'],amountCzk:100000,funds:funds.slice(0,2)}
 const base=process.env.TEST_BASE_URL??'http://127.0.0.1:4173'
 try{
  for(const width of [320,390,1440]){
   const page=await browser.newPage({viewport:{width,height:900}});let requests=0
   await page.route('**/api/**',async route=>{
-   const path=new URL(route.request().url()).pathname;assert.ok(['/api/catalog','/api/performance'].includes(path))
+   const path=new URL(route.request().url()).pathname;assert.ok(['/api/catalog','/api/performance','/api/comparison'].includes(path))
    if(path==='/api/performance')requests++
-   await route.fulfill({json:path==='/api/catalog'?{funds,privacy:null}:{funds:performance,unavailable:[]}})
+   await route.fulfill({json:path==='/api/catalog'?{funds,privacy:null}:path==='/api/comparison'?saved:{funds:performance,unavailable:[]}})
   })
-  await page.goto(base);await page.getByRole('button',{name:'Odmítnout',exact:true}).click()
+  await page.goto(`${base}/?comparison=${id}`);await page.getByRole('button',{name:'Odmítnout',exact:true}).click()
   await page.locator('#assumed-SPY').waitFor();await page.waitForFunction(()=>document.querySelector('#assumed-SPY').value!=='')
   const periodButton=year=>page.getByRole('group',{name:'Historické referenční období'}).getByRole('button',{name:year===1?'1 rok':year===3?'3 roky':'5 let',exact:true})
   const profit=async ticker=>(await page.getByTestId(`profit-${ticker}`).innerText()).replace(/\s/g,'')
@@ -77,7 +79,8 @@ try{
   await page.locator('#assumed-SPY').fill('-100');assert.equal(await profit('SPY'),'-200000,00Kč')
   assert.equal(await page.locator('.cost-chart').count(),0);assert.equal(await page.getByRole('button',{name:'Hypotetický scénář',exact:true}).count(),0)
   assert.ok(await page.evaluate(()=>document.querySelector('.historical-section').compareDocumentPosition(document.querySelector('.comparison-section'))&4))
-  await page.getByRole('button',{name:'Pokračovat k e-mailu →',exact:true}).click();await page.getByRole('button',{name:'← Upravit výběr',exact:true}).click()
+  // Protected calculators no longer navigate to an email form.
+  assert.equal(await page.locator('#email').count(),0)
   assert.equal(await page.locator('#assumed-SPY').inputValue(),'-100');assert.equal(await page.locator('#assumed-VOO').inputValue(),'-10');assert.equal(await page.locator('#investment').inputValue(),'200000')
   await page.locator('#investment-range').fill('100000');assert.equal(await page.locator('#investment').inputValue(),'100000')
   // Extreme valid amounts remain readable on narrow screens.
@@ -88,11 +91,12 @@ try{
  for(const unavailable of ['null','outage']){
   const page=await browser.newPage({viewport:{width:320,height:900}})
   await page.route('**/api/**',async route=>{
-   if(new URL(route.request().url()).pathname==='/api/catalog')await route.fulfill({json:{funds,privacy:null}})
+   if(new URL(route.request().url()).pathname==='/api/comparison')await route.fulfill({json:saved})
+   else if(new URL(route.request().url()).pathname==='/api/catalog')await route.fulfill({json:{funds,privacy:null}})
    else if(unavailable==='outage')await route.fulfill({status:503,json:{error:'Unavailable'}})
    else await route.fulfill({json:{funds:performance.map(r=>({...r,r1:null,r3:null,r5:null,weeklyReturns:[]})),unavailable:[]}})
   })
-  await page.goto(base);await page.getByRole('button',{name:'Odmítnout',exact:true}).click()
+  await page.goto(`${base}/?comparison=${id}`);await page.getByRole('button',{name:'Odmítnout',exact:true}).click()
   await page.locator('#assumed-SPY').waitFor();if(unavailable==='outage')await page.getByText('Historická data nyní nejsou dostupná.',{exact:false}).first().waitFor()
   assert.equal(await page.locator('#assumed-SPY').inputValue(),'')
   await page.locator('#assumed-SPY').fill('0');assert.ok((await page.getByTestId('profit-SPY').innerText()).replace(/\s/g,'').includes('0,00'))

@@ -1,3 +1,4 @@
+import { Application,HttpError } from '../server/application.js'
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
@@ -47,8 +48,12 @@ test('loader is fixed, timed out safely and cache coalesces requests and preserv
  const down=createPerformanceCache(async()=>{failures++;throw Error('unavailable')},()=>time)
  await assert.rejects(down());await assert.rejects(down());assert.equal(failures,5)
 })
-test('public Vercel endpoint exposes only derived figures with bounded caching and rejects other methods',async t=>{
+test('protected performance endpoint checks the session before loading data and never exposes CDN cache',async t=>{
  const endpoint=(await import('../api/performance.js')).default
+ const envKeys=['APP_BASE_URL','APP_ENV','RATE_LIMIT_SECRET','SUPABASE_URL','SUPABASE_SECRET_KEY'] as const
+ const previous=envKeys.map(key=>process.env[key]);t.after(()=>envKeys.forEach((key,i)=>{if(previous[i]===undefined)delete process.env[key];else process.env[key]=previous[i]}))
+ Object.assign(process.env,{APP_BASE_URL:'https://example.invalid',APP_ENV:'preview',RATE_LIMIT_SECRET:'x'.repeat(32),SUPABASE_URL:'https://test.supabase.co',SUPABASE_SECRET_KEY:'test-only-key'})
+ t.mock.method(Application.prototype,'read',async(_id:unknown,session:string)=>{if(session!=='s'.repeat(43))throw new HttpError(401,'Unauthorized');return{id:'test'}})
  const urls:string[]=[],headers:Record<string,string>={};let status=0,body:unknown
  t.mock.method(globalThis,'fetch',async(input:string|URL|Request)=>{
   const url=String(input);urls.push(url)
@@ -57,7 +62,8 @@ test('public Vercel endpoint exposes only derived figures with bounded caching a
  })
  const response={setHeader(key:string,value:string){headers[key]=value},status(code:number){status=code;return this},json(value:unknown){body=value}}
  await endpoint({method:'POST',headers:{}} as unknown as Parameters<typeof endpoint>[0],response as unknown as Parameters<typeof endpoint>[1]);assert.equal(status,405);assert.equal(urls.length,0)
- await endpoint({method:'GET',headers:{},query:{ticker:'attacker'}} as unknown as Parameters<typeof endpoint>[0],response as unknown as Parameters<typeof endpoint>[1])
- assert.equal(status,200);assert.equal(urls.length,5);assert.equal(headers['Cache-Control'],'public, max-age=300, s-maxage=86400')
+ await endpoint({method:'GET',headers:{},query:{}} as unknown as Parameters<typeof endpoint>[0],response as unknown as Parameters<typeof endpoint>[1]);assert.equal(status,401);assert.equal(urls.length,0)
+ await endpoint({method:'GET',headers:{cookie:`etf_session=${'s'.repeat(43)}`},query:{comparison:'test'}} as unknown as Parameters<typeof endpoint>[0],response as unknown as Parameters<typeof endpoint>[1])
+ assert.equal(status,200);assert.equal(urls.length,5);assert.equal(headers['Cache-Control'],'private, no-store')
  const text=JSON.stringify(body);assert.equal(text.includes('DO NOT FORWARD'),false);assert.equal(text.includes('"weekly":'),false);assert.equal(text.includes('last_close'),false)
 })

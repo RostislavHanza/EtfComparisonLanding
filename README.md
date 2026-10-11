@@ -4,11 +4,11 @@
 
 ## Jak web funguje
 
-Redakční úvod → hledání ETF podle tickeru/názvu → výběr 2–5 a částka → editovatelné řádky se ziskem všech fondů → historický graf ETF → podrobná tabulka → e-mail → unikátní odkaz → potvrzení a obnovený interaktivní přehled. E-mail přichází až po sestavení srovnání. Veřejné porovnání poskytuje hodnotu; uložený návratový odkaz motivuje ke kontaktu. Výběr i částka se uloží v Supabase a po otevření lze změny znovu uložit.
+Redakční úvod → výběr 2–5 ETF → e-mail → bezpečný odkaz → automatické ověření v aktivním prohlížeči → interaktivní kalkulačka, historie a podrobné srovnání. Veřejná stránka obsahuje pouze výběr a e-mail; kalkulačka a podrobná data jsou chráněné serverovou session. Výběr a výchozí částka 100 000 Kč se uloží v Supabase; částku lze měnit až v otevřeném přehledu.
 
 Kalkulace je částka × expense ratio / 100 (100 000 Kč × 0,03 % = 30 Kč/rok). Nezahrnuje brokera, konverze, daně nebo změny hodnoty investice a nepředpovídá výnosy. Nové historické r1/r3/r5 jsou kumulativní, vlastní scénář používá složené úročení; oba ignorují historický USD/CZK kurz. Historické total returns se nesnižují znovu o expense ratio. Podrobnosti a skutečné výnosy: [PERFORMANCE.md](docs/PERFORMANCE.md). PRIIPs/KID a omezená dostupnost amerických ETF pro retail v EU jsou viditelné před formulářem; obsah není doporučení.
 
-FAQ, metodika, rizika a informace o zpracování údajů následují za srovnávačem. Marketingový souhlas je samostatný a nepovinný. Provozovatel musí doplnit svou identitu/kontakt a schválit informační texty; do nastavení správce server nepřijímá kontakty.
+FAQ, metodika, rizika a informace o zpracování údajů následují za srovnávačem. V tomto zjednodušeném formuláři se marketing nenabízí; nové žádosti mají marketingConsent=false. Dřívější samostatné souhlasy v databázi se nemažou. Provozovatel musí doplnit svou identitu/kontakt a schválit informační texty; do nastavení správce server nepřijímá kontakty.
 
 ## Spuštění a testy
 
@@ -25,7 +25,7 @@ npx playwright install chromium
 npm run test:browser
 ```
 
-Browser test používá izolované testovací odpovědi API, ne skutečnou databázi nebo odesílání. `BROWSER_PATH` může určit existující Chromium, `TEST_BASE_URL` testovaný build. Testy pokrývají katalog 20 fixtures, maximum pěti fondů, hledání, kalkulačku, formulář, explicitní potvrzení, obnovení/uložení, souhlas a prázdný katalog na šířkách 320–1440 px. SQL testy spouštějí skutečné migrace na PostgreSQL enginu PGlite a ověřují RLS/oprávnění, tokeny, session, retenci a odstranění starého provider RPC. Mail testy kontrolují konfiguraci, TLS, skutečnou MIME strukturu HTML/text, SMTP acceptance a bezpečné logování. Neprokazují živé Supabase/Gmail SMTP doručení.
+Browser test používá izolované testovací odpovědi API, ne skutečnou databázi nebo odesílání. `BROWSER_PATH` může určit existující Chromium, `TEST_BASE_URL` testovaný build. Testy pokrývají katalog 20 fixtures, maximum pěti fondů, hledání, kalkulačku, formulář, automatické otevření aktivní stránky, obnovení/uložení, souhlas a prázdný katalog na šířkách 320–1440 px. SQL testy spouštějí skutečné migrace na PostgreSQL enginu PGlite a ověřují RLS/oprávnění, tokeny, session, retenci a odstranění starého provider RPC. Mail testy kontrolují konfiguraci, TLS, skutečnou MIME strukturu HTML/text, SMTP acceptance a bezpečné logování. Neprokazují živé Supabase/Gmail SMTP doručení.
 
 ## Data a nasazení
 
@@ -33,13 +33,13 @@ První pětice SPY, VOO, IVV, VTI a IWM je podle potvrzení správce již publik
 
 Vercel: framework Vite, build `npm run build`, output `dist`, Node 24. Serverové proměnné, databázové migrace, Gmail app password, ověření SMTP, adresu SMTP_USER jako příjemce Preview a denní retenční úklid: [SETUP.md](docs/SETUP.md). Tajné klíče patří pouze na server. RLS a explicitní zákazy chrání kontakty; API používá serverovou validaci, honeypot, kontrolu Origin a atomické HMAC rate limity.
 
-Odkaz má 256bitový token v fragmentu, bez adresy nebo výběru; DB uchovává hash. Potvrzení tlačítkem zabrání běžnému GET skeneru spotřebovat odkaz. Jednorázové potvrzení platí 7 dní, session ve stejném prohlížeči 30 dní. Návratová URL obsahuje pouze náhodné ID a vyžaduje HttpOnly cookie. Po ztrátě session je v MVP třeba vytvořit nové srovnání. Stav `sent` znamená přijetí Gmail SMTP serverem, nikoli doručení. Gmail neposkytuje spolehlivý delivery webhook; doručení zůstává neověřené do testu ve schránce. Potvrzení přístupu (`confirmed_at`) nastává až po tlačítku. SMTP nemá garantovanou idempotenci; po síťové nejistotě může opakování poslat další zprávu.
+Odkaz má 256bitový token v fragmentu, bez adresy nebo výběru; DB uchovává hash. GET/HEAD odkaz token nespotřebuje. Aktivní, viditelná a fokusovaná JavaScript stránka automaticky zavolá stejnooriginový POST /api/access; nepotřebuje další potvrzovací tlačítko. Skener plně simulující aktivní prohlížeč nelze bez uživatelského kroku spolehlivě odlišit od člověka. Jednorázové potvrzení platí 7 dní, session ve stejném prohlížeči 30 dní. Návratová URL obsahuje pouze náhodné ID a vyžaduje HttpOnly cookie. Po ztrátě session je v MVP třeba vytvořit nové srovnání; spotřebovaný e-mailový odkaz znovu otevře stejné srovnání pouze se stejnou platnou session a během platnosti tokenu. Stav `sent` znamená přijetí Gmail SMTP serverem, nikoli doručení. Gmail neposkytuje spolehlivý delivery webhook; doručení zůstává neověřené do testu ve schránce. Potvrzení přístupu (`confirmed_at`) nastává při úspěšném serverovém zpracování odkazu. SMTP nemá garantovanou idempotenci; po síťové nejistotě může opakování poslat další zprávu.
 
 Git větev `design-exploration`; `main` se nemerguje. Ve Vercelu otevřete projekt → Deployments → poslední Preview pro tuto větev → Visit. Push sám neprokazuje úspěšný deployment. Doporučená stabilní testovací doména v `APP_BASE_URL`; preview používá vlastní Supabase projekt a jako jediného testovacího příjemce adresu `SMTP_USER`.
 
 ## Zachované návrhy
 
-Bez parametru nebo `?variant=editorial` je skutečná API stránka. `?variant=editorial-demo` zachovává předchozí frontendový prototyp s výslovně DEMO údaji a simulací e-mailu. Další návrhy: `editorial-blue`, `editorial-green`, `compact-blue`, `compact-green`, `steps-blue`, `steps-green`, `terminal`, `guide` přes `?variant=…`. Přepínač návrhů zůstává pro preview; archivní formuláře neodesílají a zástupné položky nejsou produkční ETF.
+Bez parametru nebo `?variant=editorial` je skutečná stránka s e-mailovou bránou. Přepínač archivních návrhů se zobrazí až po serverově ověřeném otevření srovnání; samotný parametr variant neobchází e-mailovou bránu. Archivy mají pouze DEMO, nikdy neotevírají chráněná API data. `?variant=editorial-demo` zachovává předchozí frontendový prototyp s výslovně DEMO údaji a simulací e-mailu. Další návrhy: `editorial-blue`, `editorial-green`, `compact-blue`, `compact-green`, `steps-blue`, `steps-green`, `terminal`, `guide` přes `?variant=…`. Přepínač návrhů zůstává pro preview; archivní formuláře neodesílají a zástupné položky nejsou produkční ETF.
 
 ## Měření a zbývající omezení
 
@@ -84,4 +84,10 @@ Výběr ETF → částka a horizont → jedna tabulka se společným záhlavím,
 
 Graf **Historický vývoj ETF** používá licencované vypočtené weekly total returns, nikoli indexové řady nebo raw price feed. Zdroj nabízí 156 týdnů: 52 pro 1 rok, 156 pro přibližně 3 roky; pětiletý souhrnný výnos nevytváří pětiletou křivku. Normalizace = 100, tooltip a klávesnicový slider, skutečné kalendářní týdenní hranice a příslušná atribuce. Null se nenahrazuje nulou, neplatné vstupy nemají falešný výsledek. Podrobnosti: [PERFORMANCE.md](docs/PERFORMANCE.md).
 
-Serverový `/api/performance?schema=2` zachovává keš a pevný seznam pětice, nově ověřuje a vrací datované weeklyReturns. Žádné nové klíče, dependencies nebo Supabase migrace. Výchozí scénář není prognóza, Kč model ignoruje USD/CZK, daně a brokera. Uložený e-mailový průchod nadále zachovává ETF výběr a částku; nové pracovní modelové parametry se do DB neukládají. Analytika, lišta soukromí a Gmail zůstávají zachované.
+Chráněný serverový `/api/performance?schema=3&comparison=ID` zachovává keš a pevný seznam pětice, nově ověřuje a vrací datované weeklyReturns. Žádné nové klíče nebo dependencies; migrace 202610120007_email_link_access.sql přidává pouze bezpečný návrat přes spotřebovaný e-mailový odkaz. Výchozí scénář není prognóza, Kč model ignoruje USD/CZK, daně a brokera. Uložený e-mailový průchod nadále zachovává ETF výběr a částku; nové pracovní modelové parametry se do DB neukládají. Analytika, lišta soukromí a Gmail zůstávají zachované.
+
+## E-mailová brána (12. října 2026)
+
+`/api/catalog` bez ID vrací jen ticker, název a datum kontroly pro výběr. `?comparison=ID` vyžaduje serverovou session pro toto ID a zpřístupní kompletní katalog. `/api/performance` vyžaduje stejné ověření a má private/no-store; upstream cache zůstává na serveru. `/api/comparison` i zápis zůstávají svázané s HttpOnly cookie, nezávisle na stavu Reactu. Ověření stále emituje původní `email_confirmed` (ne nový email_verified) a otevření `comparison_opened` jen pro návštěvy s analytickým souhlasem.
+
+Před kontrolou nového Preview aplikujte **pouze novou** migraci `202610120007_email_link_access.sql` podle [SETUP.md](docs/SETUP.md). Původní migrace neopakovat. Žádná nová environment variable; změna nebyla vzdáleně nasazena ani ověřena skutečným e-mailem.
