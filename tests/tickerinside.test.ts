@@ -33,6 +33,6 @@ test('sync endpoint denies unauthorized access before connecting to database or 
  try{
   let status=0;const res={setHeader(){},status(code:number){status=code;return this},json(){}} as unknown as VercelResponse
   await health({method:'GET',headers:{}} as VercelRequest,res);assert.equal(status,401)
-  await health({method:'POST',headers:{authorization:'Bearer '+'T'.repeat(32)}} as VercelRequest,res);assert.equal(status,405)
+  await health({method:'POST',headers:{authorization:'Bearer '+'T'.repeat(32)}} as VercelRequest,res);assert.equal(status,403)
  }finally{if(before===undefined)delete process.env.CRON_SECRET;else process.env.CRON_SECRET=before}
 })

@@ -4,6 +4,7 @@ import { concepts, designs, funds } from './data'
 import type { Concept, DesignId } from './data'
 import EditorialComparator from './EditorialComparator'
 import EditorialDemo from './EditorialDemo'
+import PreviewAdmin from './PreviewAdmin'
 
 function initialDesign(): DesignId {
   const value = new URLSearchParams(window.location.search).get('variant')
@@ -140,7 +141,7 @@ function Landing({ variant, palette }: { variant: Concept, palette?: 'blue' | 'g
   </div>
 }
 
-export default function App() {
+function LandingApp() {
   const [designId, setDesignId] = useState<DesignId>(initialDesign)
   const design = designs.find(d => d.id === designId)
   const variant: Concept = design?.concept ?? (designId === 'editorial' ? 'editorial' : designId === 'terminal' ? 'terminal' : 'guide')
@@ -153,4 +154,8 @@ export default function App() {
     setDesignId(value)
   }
   return <><a className="skip-link" href="#main">Přejít na obsah</a><aside className={`concept-bar palette-${designId === 'editorial' ? 'original' : design?.palette ?? 'blue'}`} aria-label="Přepínání návrhů"><div className="concept-inner"><span className="prototype-label">DESIGN STUDIE <span>• Editorial + designové návrhy</span></span><label className="mobile-switch">Návrh<select value={designId} onChange={e => choose(e.target.value as DesignId)}><option value="editorial">Editorial – funkční srovnávač</option><option value="editorial-demo">Editorial – archivní demo</option>{!design && designId !== 'editorial' && designId !== 'editorial-demo' && <option value={designId}>{concepts.find(c => c.id === variant)?.name} (kolo 1)</option>}{designs.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}</select></label><nav className="desktop-switch" aria-label="Varianty"><button onClick={() => choose('editorial')} aria-pressed={designId === 'editorial'}>Editorial – původní</button>{designs.map(d => <button key={d.id} onClick={() => choose(d.id)} aria-pressed={designId === d.id}>{d.name}</button>)}</nav></div><p className="concept-description">{design ? `${design.name} · Výběr ETF → nastavení → e-mail → odkaz na srovnání.` : designId === 'editorial' ? 'Katalog ETF → porovnání nákladů → odkaz na uložené srovnání.' : concepts.find(c => c.id === variant)?.note} <strong>{designId === 'editorial' ? 'Pouze ověřené údaje.' : 'Demo bez odesílání.'}</strong></p></aside>{designId === 'editorial' ? <EditorialComparator/> : designId === 'editorial-demo' ? <EditorialDemo/> : <Landing key={variant} variant={variant} palette={design?.palette}/>}</>
+}
+
+export default function App(){
+ return new URLSearchParams(window.location.search).get("admin")==="etf-sync"?<PreviewAdmin/>:<LandingApp/>
 }

@@ -127,3 +127,23 @@ Přístup k tarifu projektu nemáme. Dokumentaci https://vercel.com/docs/cron-jo
 Kandidáti nejsou veřejný katalog. Po kontrole primárních zdrojů doplnit index, dividendovou politiku a popis, použít validovaný ruční import a schválit licenci konkrétního použití. Až poté může operátor nastavit tickerinside_sync_enabled=true pouze u vybraných již publikovaných fondů; předběžné IVV/ITOT/IWM nepovolovat bez plného schválení. Vyžaduje se soulad názvu s API a datum SEC podkladu nákladovosti, které neustupuje proti původnímu dokladu. Třída market_data neprovádí veřejné aktualizace.
 
 Samotná synchronizace neobnovuje verified_at ani neuvolňuje published. Celý srovnávač na Preview lze skutečně otestovat teprve po naplnění alespoň dvou úplných schválených fondů a ověření backendu; tento krok neprokazuje doručení e-mailů.
+
+## Dočasná Preview diagnostika synchronizace
+
+Pouze pro `APP_ENV=preview`; nepřidává žádné environment variables. Používá existující Supabase serverový klíč, `RATE_LIMIT_SECRET`, Gmail SMTP a `CRON_SECRET`. `APP_BASE_URL` musí být HTTPS adresa tohoto Preview, aby přihlašovací odkaz vedl zpět do správného prostředí.
+
+1. Po již aplikované migraci `202610110004_etf_sync.sql` ručně aplikujte **novou** `supabase/migrations/202610110005_preview_admin.sql` v Supabase SQL editoru. Předchozí migrace nespouštějte znovu. Nová tabulka obsahuje pouze hashe tokenů/session, časové limity a původ webu; anonymní ani běžný přihlášený Supabase uživatel k ní nemá přístup.
+2. Po automatickém dokončení Git preview buildu otevřete `https://etf-comparison-landing-git-design-exploration-rh-6003.vercel.app/?admin=etf-sync`.
+3. Klikněte na **Poslat přihlašovací odkaz administrátorovi**. Příjemcem je výhradně serverové `SMTP_USER`; návštěvník si nemůže zvolit jinou adresu. Nejvýše 1 žádost/minutu globálně, 6/den globálně, 3/hodinu na IP a společný SMTP limit 100/den. SMTP přijetí zprávy není potvrzením doručení.
+4. Ve schránce Gmail (případně spamu) otevřete odkaz a do 10 minut klikněte na **Potvrdit přihlášení**. Pouhý GET nic nepotvrzuje. Token je ve fragmentu URL, odstraní se z adresního řádku a při vědomém potvrzení se odešle přes HTTPS. Je jednorázový; databáze uchovává pouze SHA-256 hash. Vlastník této schránky má pro tuto diagnostiku administrátorské oprávnění.
+5. Klikněte na **Otestovat synchronizaci ETF**. POST `/api/etf-sync` vyžaduje platnou 30minutovou session v `Secure; HttpOnly; SameSite=Strict` cookie a povolený Origin/JSON. Teprve backend vytvoří interní autorizaci pomocí `CRON_SECRET`; secret se nikdy nevrací do prohlížeče. Původní GET pro Cron stále vyžaduje Bearer secret.
+6. Výsledek ukáže počet načtených kandidátů, aktualizovaných katalogových ETF, chyb zdroje a stav. Jeden pokus/den UTC a databázový zámek zůstávají zachovány. Opakovaný pokus vrací uložené počty. Při chybě databáze/timeoutu nemusí být počty dostupné: neinterpretujte chybu jako úspěch, zkontrolujte `etf_sync_runs`. API nevrací interní chyby, adresy ani tokeny.
+7. Odhlaste se tlačítkem **Odhlásit se**; session bude serverově zrušena. Expirace je 30 minut bez prodlužování. Staré přístupy se odstraní při další žádosti o přihlášení.
+
+**Import nepublikuje ETF.** Tři nepublikované záznamy IVV/ITOT/IWM zůstanou nepublikované. `candidates=20, updated=0` může být správně: katalog vyžaduje samostatné schválení povinných údajů a explicitní opt-in aktualizací. Diagnostika nezaručuje dostupnost kompletního srovnávače bez schváleného katalogu.
+
+Odstranění před odevzdáním: odstraňte `src/PreviewAdmin.tsx`, `src/preview-admin.css`, odbočku `admin=etf-sync` v `src/App.tsx`, `api/preview-admin.ts`, `server/preview-admin.ts`, jeho místní API route a Vercel function nastavení, metodu `sendAdmin` a POST větev/import v `api/etf-sync.ts`. Zachovejte původní chráněný GET, import a Cron. Tabulku/RPC lze později odstranit novou migrací; aplikované migrace nepřepisujte. Alternativně `APP_ENV=production` již tyto administrátorské operace blokuje.
+
+Skutečné doručení přihlašovacího e-mailu a import na Vercelu nebyly v Codexu provedeny. Testy používají lokální PostgreSQL a mock SMTP/API; první skutečné ověření proveďte výše uvedeným postupem.
+
+Lokální ověření dočasného UI (API nahrazena fixtures; nejde o test vzdálených služeb): po `npm run build` a spuštění `npm run preview` spusťte `BROWSER_PATH=/usr/bin/chromium node tests/browser/preview-admin.mjs`. Stávající srovnávač ověřuje `npm run test:browser`.
