@@ -157,3 +157,11 @@ Runtime Node.js 24 vychází z `package.json` (`engines.node`). Serverová konfi
 - Kontroly nečtou skutečné účty do testovacích požadavků, nepoužívají SMTP/Supabase a zakazují externí fetch. Funkční dotazy používají pouze bezpečné metody/validace a nepřihlášený GET administrace.
 
 Po Git push vyčkejte na nový automatický Preview deployment a ověřte, že odpovídá novému commitu. Otevřete `/api/preview-admin`: při `APP_ENV=preview` bez přihlášení má vrátit HTTP 200 a `{"authenticated":false}`. V Runtime Logs nesmí být `ERR_MODULE_NOT_FOUND`. Potom otevřete `/?admin=etf-sync`; teprve nyní případně vyžádejte přihlašovací e-mail a proveďte ruční import podle předchozího postupu. Samotná HTTP kontrola nepotvrzuje doručení e-mailu ani úspěšný import.
+
+## Lišta soukromí a odvolání analytiky
+
+Ručně aplikujte pouze novou migraci `202610110006_analytics_revocation.sql` (předchozí znovu nespouštějte). Přidává tabulku revokovaných návštěv, blokování opožděných zápisů a rozšíření stávajícího withdraw/purge; nevytváří kontakty ani ETF data. Žádné nové environment variables. Do její aplikace funguje původní mazání, ale není nová serverová ochrana proti opožděným událostem; úplné ověření proveďte až po migraci.
+
+Po automatickém Preview deploymentu otestujte anonymní návštěvu v čistém prohlížeči (bez měření), Odmítnout, reload, formulář bez analytiky, Nastavení soukromí → Přijmout analytiku, interakci a Odmítnout. V Supabase ověřte odstranění událostí daného visitId, zachované srovnání/session a revokované UUID. Test mazání při výpadku: v DevTools blokujte /api/events, odvolejte souhlas a ověřte chybu/retry, nulové nové měření i po reloadu; po odblokování musí retry uspět. Skutečné e-maily při tomto diagnostickém scénáři neodesílejte. Funkční e-mailový průchod je samostatný ruční test pouze na SMTP_USER.
+
+Katalog vyplňte dávkovým schvalovacím souborem a prepare:etfs/dry run/explicitním importem dle docs/CATALOG_REVIEW.md. Lišta sama pending fondy nezveřejňuje. `npm run check:vercel` musí nadále projít pro všech devět funkcí.

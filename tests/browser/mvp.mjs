@@ -48,8 +48,9 @@ try{
  assert.equal(await p.locator('#investment').inputValue(),'250000');assert.equal(await p.locator('.real-etf-selection input:checked').count(),3)
  await p.locator('#investment').fill('123456.78');await p.getByRole('button',{name:'Uložit změny →'}).click();await p.getByText('Změny jsou uložené.',{exact:false}).waitFor()
  await p.reload();await p.locator('.preview-heading').waitFor();assert.equal(await p.locator('#investment').inputValue(),'123456.78')
- await Promise.all([p.waitForResponse(r=>r.url().includes('/api/events')),p.getByRole('button',{name:'Povolit měření',exact:true}).click()]);assert.ok(events.includes('landing_view'))
- await Promise.all([p.waitForResponse(r=>r.url().includes('/api/events')&&r.request().postDataJSON().withdraw===true),p.getByRole('button',{name:'Vypnout volitelné měření'}).click()]);assert.ok(events.includes('withdraw'));assert.equal(await p.evaluate(()=>localStorage.getItem('etf_analytics_consent')),'denied')
+ await Promise.all([p.waitForResponse(r=>r.url().includes('/api/events')),p.getByRole('button',{name:'Přijmout analytiku',exact:true}).click()]);assert.ok(events.includes('landing_view'))
+ await p.getByRole('button',{name:'Nastavení soukromí',exact:true}).click();
+ await Promise.all([p.waitForResponse(r=>r.url().includes('/api/events')&&r.request().postDataJSON().withdraw===true),p.getByRole('button',{name:'Odmítnout',exact:true}).click()]);assert.ok(events.includes('withdraw'));assert.equal(await p.evaluate(()=>localStorage.getItem('etf_analytics_consent')),'denied')
  console.log('PASS explicit access, restored selection/amount, update/reload, opt-in and withdrawal')
  for(const variant of ['editorial-demo','editorial-blue','editorial-green','compact-blue','compact-green','steps-blue','steps-green','terminal','guide']){
   await p.goto(`${base}/?variant=${variant}`);await p.locator('h1').waitFor();assert.equal(await p.locator('.catalog-search').count(),0)

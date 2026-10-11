@@ -17,7 +17,7 @@ Předchozí ověřování emitentů blokovala proxy HTTP 403; to je historická 
 
 ## Postup publikace
 
-1. Ověřit název a ticker, listing NYSE Arca (NYSE), index, nákladovost (přesný název expense ratio), dividendovou politiku a charakteristiku v dokumentech emitenta.
+1. Ověřit název a ticker, listing NYSE Arca (NYSE nebo příslušný oficiální emitent), index, nákladovost (přesný název expense ratio), dividendovou politiku a charakteristiku v dokumentech emitenta.
 2. Pro každé pole zapsat konkrétní HTTPS URL, datum platnosti, datum kontroly a stručný doklad kontroly (např. název dokumentu, strana a sekce). Uvést skutečného kontrolora. AI výstup není zdroj.
 3. Prověřit podmínky použití, vyplnit `usageReview` a nepublikovat fond při nejistotě. Druhý průchod kontroly porovná hodnoty s dokumenty; nic nepřebírat z původních demo sazeb bez ověření.
 4. Připravit lokální JSON podle struktury níže. Žádné klíče ani osobní údaje v souboru.
@@ -31,7 +31,7 @@ Kořen je `{ "records": [...] }`. Každý záznam obsahuje:
 
 - `ticker`, `name`, `exchange` (přesně `NYSE Arca`), `index`, `expenseRatioPercent` (číslo v procentech), `dividends`, `description`;
 - `verifiedAt` (ISO čas), `dataAsOf` (datum), `verifiedBy`;
-- `sources`: pro každé pole `name`, `exchange`, `index`, `expenseRatioPercent`, `dividends`, `description` alespoň jeden objekt `{field, url, verified_at, as_of, evidence}`. Zdroj burzy musí být na nyse.com; všechny kontroly musí být alespoň tak nové jako `verifiedAt`;
+- `sources`: pro každé pole `name`, `exchange`, `index`, `expenseRatioPercent`, `dividends`, `description` alespoň jeden objekt `{field, url, verified_at, as_of, evidence}`. Zdroj burzy musí být na nyse.com nebo na explicitně povolené doméně příslušného emitenta pro daný ticker. Emitentský důkaz musí výslovně uvádět ticker i NYSE Arca; všechny kontroly musí být alespoň tak nové jako `verifiedAt`;
 - `usageReview`: `{approved: true, reviewedAt, reviewer, basis, policyUrl}`. Vyplnit skutečné rozhodnutí a důvod oprávnění, nikoli automaticky potvrdit.
 
 Datum nesmí být budoucí, ověření nesmí být starší než 14 dní. Jeden JSON nemůže obsahovat duplicitní tickery. Publikace má přednostně projít testovacím projektem.
@@ -48,7 +48,7 @@ Oficiální dokumentace: https://tickerinside.com/api/. Dokumentovaný endpoint 
 
 Automaticky získáváme ticker, název, burzu, nákladovost v procentech, typ jejího zdroje, případné datum a URL SEC filing a atribuci. Hodnota 0.03 znamená 0,03 %, nikoli 3 %; null nikdy není nula. `as_of` je datum cen a `holdings_as_of` datum holdings, nikoli datum nákladovosti. Používáme jen `expense_ratio_as_of` pro nákladovost; chybějící datum ponecháme null v kandidátní vrstvě. `checkedAt` je náš čas technické kontroly API, nikoli nové lidské ověření fondu.
 
-API index, dividendovou politiku a požadovaný popis pro těchto 20 fondů neposkytuje. Ty se doplňují a schvalují ručně z primárních zdrojů uvedených výše. Dividendový výnos ani kategorie fondu je nenahrazují. SCHB/SCHD/RSP stále potřebují schválení dalších primárních emitentských zdrojů. Validátor dovoluje TickerInside a SEC jako doplňkové zdroje, ale zachovává požadavek samostatného NYSE důkazu burzy a ostatní pravidla ruční publikace.
+API index, dividendovou politiku a požadovaný popis pro těchto 20 fondů neposkytuje. Ty se doplňují a schvalují ručně z primárních zdrojů uvedených výše. Dividendový výnos ani kategorie fondu je nenahrazují. SCHB/SCHD/RSP stále potřebují schválení dalších primárních emitentských zdrojů. Validátor dovoluje TickerInside a SEC jako doplňkové zdroje, ale přijímá důkaz NYSE nebo jednoznačný doklad příslušného emitenta a ostatní pravidla ruční publikace.
 
 ### Licence a atribuce
 
@@ -74,4 +74,6 @@ Dočasná stránka `?admin=etf-sync` umožňuje vlastníkovi schránky `SMTP_USE
 
 ## Prvních pět fondů: skutečně načtené podklady, schválení čeká
 
-SPY/VOO/IVV/VTI/IWM mají připravené věcné parametry a původní české popisy v `data/review/priority-five.pending.json`; evidence skutečně načtených primárních dokumentů a API je v `data/review/priority-five.evidence.json`. Všechny jsou pending, lidská data ověření zůstávají null a usageReview.approved=false. Import je záměrně odmítne. Podrobnosti, zdrojové rozpory (SPY 0.0945 % proti API 0.09 %, přejmenování VTI na Morningstar), chybějící NYSE důkaz, práva a přesný postup schválení/importu jsou v [CATALOG_REVIEW.md](CATALOG_REVIEW.md). `npm run review:etfs -- data/review/priority-five.pending.json` vytvoří pouze lokální kontrolní výpis bez DB zápisu.
+SPY/VOO/IVV/VTI/IWM mají připravené věcné parametry a původní české popisy v `data/review/priority-five.pending.json`; evidence skutečně načtených primárních dokumentů a API je v `data/review/priority-five.evidence.json`. Všechny jsou pending, lidská data ověření zůstávají null a usageReview.approved=false. Import je záměrně odmítne. Podrobnosti, zdrojové rozpory (SPY 0.0945 % proti API 0.09 %, přejmenování VTI na Morningstar), přijatelný emitentský důkaz burzy a zbývající práva a přesný postup schválení/importu jsou v [CATALOG_REVIEW.md](CATALOG_REVIEW.md). `npm run review:etfs -- data/review/priority-five.pending.json` vytvoří pouze lokální kontrolní výpis bez DB zápisu.
+
+Emitentská alternativa listingu je nyní implementována pro fondy SSGA, Vanguard (včetně fund-docs) a iShares uvedené v mapě validátoru. TickerInside není samostatným publikačním důkazem burzy. BlackRock/ICE jsou povolené pouze pro policyUrl právní kontroly, nikoli automaticky jako finanční datové zdroje. HTTP dostupnost nebo zařazení domény do allowlistu není schválení licence.

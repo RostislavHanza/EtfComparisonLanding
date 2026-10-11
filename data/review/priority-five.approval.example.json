@@ -1,0 +1,69 @@
+{
+  "reviewer": null,
+  "verifiedAt": null,
+  "usageReview": {
+    "approved": false,
+    "reviewedAt": null,
+    "reviewer": null,
+    "basis": null,
+    "policyUrl": null
+  },
+  "records": [
+    {
+      "ticker": "SPY",
+      "approved": false,
+      "dataAsOf": null,
+      "confirmedSourceIds": [],
+      "sourceDateOverrides": {},
+      "sourceIdsToReview": [
+        "spy-pdf",
+        "spy-page"
+      ]
+    },
+    {
+      "ticker": "VOO",
+      "approved": false,
+      "dataAsOf": null,
+      "confirmedSourceIds": [],
+      "sourceDateOverrides": {},
+      "sourceIdsToReview": [
+        "voo-pdf",
+        "api-voo"
+      ]
+    },
+    {
+      "ticker": "IVV",
+      "approved": false,
+      "dataAsOf": null,
+      "confirmedSourceIds": [],
+      "sourceDateOverrides": {},
+      "sourceIdsToReview": [
+        "ivv-pdf",
+        "api-ivv"
+      ]
+    },
+    {
+      "ticker": "VTI",
+      "approved": false,
+      "dataAsOf": null,
+      "confirmedSourceIds": [],
+      "sourceDateOverrides": {},
+      "sourceIdsToReview": [
+        "vti-page",
+        "vti-pdf",
+        "api-vti"
+      ]
+    },
+    {
+      "ticker": "IWM",
+      "approved": false,
+      "dataAsOf": null,
+      "confirmedSourceIds": [],
+      "sourceDateOverrides": {},
+      "sourceIdsToReview": [
+        "iwm-pdf",
+        "api-iwm"
+      ]
+    }
+  ]
+}
