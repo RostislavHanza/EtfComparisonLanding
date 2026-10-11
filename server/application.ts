@@ -41,14 +41,10 @@ export class Application {
     }
     return {status:'sent',message:'Zpráva byla předána k odeslání. Zkontrolujte schránku včetně složky spam.'}
   }
-  async access(body:unknown,ip:string,currentSession=''){
+  async access(body:unknown,ip:string){
     await this.limit('access-ip',ip,30,600)
     const token=tokenInput(body),session=newToken(),id=await this.repo.redeem(hash(token),hash(session))
-    if(!id&&/^[A-Za-z0-9_-]{43}$/.test(currentSession)&&this.repo.reopen){
-      const previous=await this.repo.reopen(hash(token),hash(currentSession))
-      if(previous)return{id:previous,session:currentSession}
-    }
-    if(!id)throw new HttpError(410,'Odkaz vypršel, byl již použit nebo není platný. Vraťte se do původního prohlížeče nebo si vyžádejte nové srovnání.')
+    if(!id)throw new HttpError(410,'Odkaz vypršel, byl zneplatněn nebo není platný.')
     return {id,session}
   }
   async read(id:unknown,session:string){if(!/^[A-Za-z0-9_-]{43}$/.test(session))throw new HttpError(401,'Přístup vyžaduje platný e-mailový odkaz.');const result=await this.repo.read(hash(tokenInput({token:session})),uuid(id));if(!result)throw new HttpError(401,'Přístup vypršel nebo srovnání není dostupné.');return result}
