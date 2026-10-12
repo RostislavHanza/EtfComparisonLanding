@@ -135,3 +135,10 @@
 .profit-controls-row .profit-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem 1rem}
 .profit-controls-row .history-period{margin-top:0}
 .profit-controls-row .profit-history-note{margin:0 0 .5rem}
+
+/* Trim only the gap below the functional opening; retain its single divider. */
+.editorial.original-editorial .comparator-content{margin-top:16px}
+.editorial.original-editorial .hero{padding-bottom:16px}
+.editorial.original-editorial .editorial-intro{padding-bottom:0}
+.editorial.original-editorial .editorial-intro ol{margin-bottom:0}
+.editorial.original-editorial .editorial-intro{align-self:end}

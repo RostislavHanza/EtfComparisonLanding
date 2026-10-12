@@ -39,7 +39,7 @@ try{
   assert.equal(await page.getByRole('button',{name:'Odmítnout',exact:true}).count(),0)
   await page.locator('#email').fill('test@example.invalid')
   assert.equal(await page.locator('form input[type=checkbox]').count(),0)
-  await page.getByRole('button',{name:'Zaslat kalkulačku na mail'}).click();await page.getByRole('heading',{name:'Zkontrolujte svůj e-mail.'}).waitFor()
+  await page.getByRole('button',{name:'Zaslat srovnání na mail'}).click();await page.getByRole('heading',{name:'Zkontrolujte svůj e-mail.'}).waitFor()
   assert.equal(submits[0].attribution,null);assert.equal(submits[0].marketingConsent,false);assert.equal(events.length,0)
   await page.getByRole('button',{name:'Nastavení soukromí',exact:true}).click();await Promise.all([page.waitForResponse(r=>r.url().endsWith('/api/events')),accept.click()])
   const id=await page.evaluate(()=>globalThis.sessionStorage.getItem('etf_visit_id'));assert.ok(id)

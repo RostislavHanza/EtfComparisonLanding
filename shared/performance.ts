@@ -16,4 +16,17 @@ export function profitScale(profits:(number|null)[]){
  const zero=min===0?0:-min/span*100
  return {zero,bars:profits.map(p=>p===null||!Number.isFinite(p)?null:{start:Math.min(zero,(p-min)/span*100),width:Math.abs(p)/span*100})}
 }
-export function scenarioProfit(initial:number,rate:number,years:number){return scenarioSeries(initial,rate,years).at(-1)!.value-initial}
+function expenseFactor(expense:number|null){return typeof expense==='number'&&Number.isFinite(expense)&&expense>=0&&expense<100?1-expense/100:null}
+export function grossReturnFromNet(net:number|null,expense:number|null){
+ const factor=expenseFactor(expense)
+ if(net===null||factor===null)return null
+ if(!Number.isFinite(net)||net< -100)throw new RangeError('Neplatný výnos.')
+ return ((1+net/100)/factor-1)*100
+}
+export function scenarioProfit(initial:number,grossRate:number,years:number,expense:number|null){
+ // Reuse the existing investment, rate and horizon validation; costs are not optional zeroes.
+ scenarioSeries(initial,grossRate,years)
+ const factor=expenseFactor(expense)
+ if(factor===null)return null
+ return initial*((1+grossRate/100)*factor)**years-initial
+}
