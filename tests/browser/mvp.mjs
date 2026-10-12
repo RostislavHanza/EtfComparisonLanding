@@ -84,7 +84,7 @@ try{
  await page.locator('.real-etf-selection input').nth(1).check();await page.locator('#email').fill('test@example.invalid');await page.getByRole('button',{name:'Zaslat srovnání na mail'}).click();await page.getByRole('heading',{name:'Zkontrolujte svůj e-mail.'}).waitFor();assert.equal(posts.at(-1).tickers.length,1)
  console.log('PASS one-fund email submission and rejection of an empty selection')
  assert.deepEqual(events,[])
- for(const variant of ['editorial-demo','compact-blue','steps-green']){await page.goto(`${base}/?variant=${variant}`);await page.locator('#email').waitFor();assert.equal(await page.locator('.profit-comparison,.comparison-table,.concept-bar').count(),0)}
+ for(const variant of ['editorial','blue','compact','steps','editorial-demo','compact-blue','steps-green']){await page.goto(`${base}/?variant=${variant}`);await page.locator('#email').waitFor();assert.equal(await page.locator('.profit-comparison,.comparison-table,.concept-bar').count(),0)}
  await page.goto(`${base}/?comparison=${id}`);await page.getByRole('alert').filter({hasText:'unauthorized'}).waitFor();assert.equal(await page.locator('.profit-comparison,.comparison-table').count(),0)
  console.log('PASS direct URL without server session grants no calculator')
  await page.goto(`${base}/#access=${'x'.repeat(43)}`);await page.getByRole('alert').filter({hasText:'invalid or expired'}).waitFor();assert.equal(await page.locator('.comparison-table').count(),0)
@@ -95,12 +95,19 @@ try{
  await page.evaluate(()=>{Object.defineProperty(document,'hasFocus',{configurable:true,value:()=>true});globalThis.dispatchEvent(new globalThis.Event('focus'))})
  await page.locator('.preview-heading').waitFor();assert.equal(accesses,before+1);assert.equal(new URL(page.url()).hash,'')
  assert.equal(await page.getByRole('button',{name:'Potvrdit a otevřít srovnání →'}).count(),0)
+ assert.equal(await page.locator('.concept-bar,.desktop-switch,.mobile-switch').count(),0)
  assert.equal(await page.locator('.real-etf-selection input:checked').count(),3);assert.equal(await page.locator('#investment').inputValue(),'100000')
  assert.ok((await context.cookies()).some(c=>c.name==='etf_session'&&c.httpOnly))
  await page.locator('#investment').fill('123456.78');await page.getByRole('button',{name:'Uložit změny →'}).click();await page.getByText('Změny jsou uložené.',{exact:false}).waitFor()
  await page.reload();await page.locator('.preview-heading').waitFor();assert.equal(await page.locator('#investment').inputValue(),'123456.78')
  // The init script keeps scans unfocused; explicitly activate again for a repeated email link.
  await page.goto(`${base}/#access=${token}`);await page.evaluate(()=>{Object.defineProperty(document,'hasFocus',{configurable:true,value:()=>true});globalThis.dispatchEvent(new globalThis.Event('focus'))});await page.locator('.preview-heading').waitFor()
+ for(const variant of ['editorial','blue','compact','steps','editorial-blue','editorial-green','compact-green','steps-blue','terminal','guide','editorial-demo']){
+  await page.goto(`${base}/?comparison=${id}&variant=${variant}`);await page.locator('.preview-heading').waitFor()
+  assert.equal(await page.locator('.original-editorial').count(),1);assert.equal(await page.locator('.concept-bar,.desktop-switch,.mobile-switch').count(),0)
+  assert.equal(await page.locator('#investment').inputValue(),'123456.78')
+ }
+ console.log('PASS retired variant URLs retain Editorial and saved comparison access')
  console.log('PASS automatic link access, focused-page scanner gate, stored selection, session/reopen and updates')
  await context.clearCookies();await page.goto(`${base}/?lost=session#access=${token}`);await page.evaluate(()=>{Object.defineProperty(document,'hasFocus',{configurable:true,value:()=>true});globalThis.dispatchEvent(new globalThis.Event('focus'))});await page.locator('.preview-heading').waitFor();assert.equal(await page.locator('#investment').inputValue(),'123456.78');assert.equal(await page.locator('.real-etf-selection input:checked').count(),3)
  const fresh=await browser.newContext(),returned=await fresh.newPage();await returned.route('**/api/**',apiRoutes);await returned.goto(`${base}/#access=${token}`);await returned.locator('.preview-heading').waitFor();assert.equal(await returned.locator('#investment').inputValue(),'123456.78');assert.equal(new URL(returned.url()).hash,'');await fresh.close()

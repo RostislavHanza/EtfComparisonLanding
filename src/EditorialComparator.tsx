@@ -26,7 +26,7 @@ function ComparisonTable({funds,amount}:{funds:EtfRecord[];amount:number}){
 }
 
 const valid=(v:string)=>v.trim()!==''&&Number.isFinite(Number(v))&&Number(v)>=0&&Number(v)<=MAX_AMOUNT_CZK&&Math.abs(Number(v)*100-Math.round(Number(v)*100))<0.00001
-export default function EditorialComparator({onAccessChange}:{onAccessChange?:(allowed:boolean)=>void}={}){
+export default function EditorialComparator(){
  const [link,setLink]=useState(initialLink),[token,setToken]=useState(link.token),[id,setId]=useState(link.id)
  const [view,setView]=useState<View>(link.token?'access':link.id?'saved':'compare')
  const [catalog,setCatalog]=useState<EtfOption[]>([]),[fullCatalog,setFullCatalog]=useState<EtfRecord[]>([]),[snapshot,setSnapshot]=useState<EtfRecord[]>([]),[privacy,setPrivacy]=useState<Privacy|null>(null),[authorized,setAuthorized]=useState(false)
@@ -35,7 +35,6 @@ export default function EditorialComparator({onAccessChange}:{onAccessChange?:(a
  const [investmentSettings,setInvestmentSettings]=useState<InvestmentSettings>({period:5,graphPeriod:5,horizon:10,edits:{}})
  const content=useRef<HTMLElement>(null),previous=useRef(view),attempted=useRef(''),currentToken=useRef(token)
  currentToken.current=token
- useEffect(()=>{onAccessChange?.(authorized)},[authorized,onAccessChange])
  useEffect(()=>{
   const navigate=(event:Event)=>{const next=initialLink(event instanceof HashChangeEvent?event.newURL:location.href);setLink(next);setToken(next.token);setId(next.id);setError('');setAuthorized(false);setSnapshot([]);setFullCatalog([]);attempted.current='';setView(next.token?'access':next.id?'saved':'compare')}
   window.addEventListener('hashchange',navigate);window.addEventListener('popstate',navigate)

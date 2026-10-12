@@ -1,3 +1,4 @@
+import { displayNumber, parseDecimal } from './display.js'
 import { funds } from './funds.js'
 import { history, historicalAssumption } from './history.js'
 import type { HistoricalYears } from '../shared/performance.js'
@@ -6,26 +7,33 @@ import { profitScale, scenarioProfit } from '../shared/performance.js'
 
 const investment = document.querySelector<HTMLInputElement>('#investment')!
 const slider = document.querySelector<HTMLInputElement>('#investment-range')!
-investment.max = slider.max = String(MAX_AMOUNT_CZK)
+slider.max = String(MAX_AMOUNT_CZK)
+const precise = new Map<HTMLInputElement, number | null>([[investment, 100000]])
 const horizon = document.querySelector<HTMLInputElement>('#horizon')!
+const horizonSlider = document.querySelector<HTMLInputElement>('#horizon-range')!
 const error = document.querySelector<HTMLParagraphElement>('#error')!
 const body = document.querySelector<HTMLTableSectionElement>('#funds')!
 for (const fund of funds) {
   const row = document.createElement('tr')
-  row.innerHTML = `<th scope="row"><strong>${fund.ticker}</strong><span class="name">${fund.name}</span><span class="fee">Nákladovost ${String(fund.expenseRatioPercent).replace('.', ',')} % / rok</span></th>
-    <td><label class="sr-only" for="rate-${fund.ticker}">Předpokládaný roční výnos ${fund.ticker} (%)</label><input id="rate-${fund.ticker}" type="number" min="-100" max="100" step="any" required inputmode="decimal"></td>
+  row.innerHTML = `<th scope="row"><strong>${fund.ticker}</strong><span class="name">${fund.name}</span><span class="fee"><span class="fee-label">Nákladovost /rok</span> ${String(fund.expenseRatioPercent).replace('.', ',')} %</span></th>
+    <td><label class="sr-only" for="rate-${fund.ticker}">Předpokládaný roční výnos ${fund.ticker} (%)</label><input id="rate-${fund.ticker}" type="text" required inputmode="decimal"></td>
     <td><output id="profit-${fund.ticker}"></output><div class="track" aria-hidden="true"><span class="zero"></span><span class="bar"></span></div></td>`
   body.append(row)
 }
 const rates = funds.map(f => document.querySelector<HTMLInputElement>(`#rate-${f.ticker}`)!)
 function update() {
-  if (investment.checkValidity()) {
-    slider.value = investment.value
-    slider.setAttribute('aria-valuetext', money(investment.valueAsNumber))
+  const amount = precise.get(investment) ?? null
+  const validAmount = amount !== null && amount >= 0 && amount <= MAX_AMOUNT_CZK
+  if (validAmount) {
+    slider.value = String(amount)
+    slider.setAttribute('aria-valuetext', money(amount))
   }
-  const validSettings = investment.checkValidity() && horizon.checkValidity()
-  const profits = funds.map((fund, i) => validSettings && rates[i].checkValidity()
-    ? scenarioProfit(investment.valueAsNumber, rates[i].valueAsNumber, horizon.valueAsNumber, fund.expenseRatioPercent) : null)
+  if (horizon.checkValidity()) horizonSlider.value = horizon.value
+  const profits = funds.map((fund, i) => {
+    const rate = precise.get(rates[i]) ?? null
+    return validAmount && horizon.checkValidity() && rate !== null && rate >= -100 && rate <= 100
+      ? scenarioProfit(amount, rate, horizon.valueAsNumber, fund.expenseRatioPercent) : null
+  })
   const scale = profitScale(profits)
   error.hidden = profits.every(p => p !== null)
   error.textContent = error.hidden ? '' : 'Zadejte částku 0–10 000 000 Kč, horizont 1–30 celých let a roční výnos −100 až 100 %.'
@@ -45,17 +53,15 @@ function update() {
 let period: HistoricalYears = 5
 const periodButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-period]')]
 function restoreHistory() {
-  const dates = new Set<string>()
   funds.forEach((fund, i) => {
     const snapshot = history.find(h => h.ticker === fund.ticker)
     const cumulative = snapshot?.[`r${period}`] ?? null
     const rate = historicalAssumption(cumulative, period, fund.expenseRatioPercent)
-    rates[i].value = rate === null ? '' : String(rate)
+    precise.set(rates[i], rate)
+    rates[i].value = rate === null ? '' : displayNumber(rate)
     rates[i].placeholder = rate === null ? 'Nedostupné' : ''
-    if (snapshot) dates.add(new Date(`${snapshot.as_of}T00:00:00Z`).toLocaleDateString('cs-CZ', { timeZone: 'UTC' }))
   })
-  document.querySelector<HTMLParagraphElement>('#reference')!.textContent =
-    `Historické referenční období: ${period === 1 ? '1 rok' : period === 3 ? '3 roky' : '5 let'}. Údaje k ${[...dates].join(', ')}. Procenta jsou odvozena z historie a přepočtena před modelovanými náklady. Nejde o předpověď.`
+  document.querySelector<HTMLParagraphElement>('#reference')!.textContent = 'Historické referenční období.'
   periodButtons.forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.period) === period)))
   update()
 }
@@ -64,6 +70,19 @@ for (const button of periodButtons) button.addEventListener('click', () => {
   restoreHistory()
 })
 document.querySelector<HTMLButtonElement>('#restore')!.addEventListener('click', restoreHistory)
-slider.addEventListener('input', () => { investment.value = slider.value; update() })
-for (const input of [investment, horizon, ...rates]) input.addEventListener('input', update)
+slider.addEventListener('input', () => {
+  precise.set(investment, slider.valueAsNumber)
+  investment.value = displayNumber(slider.valueAsNumber)
+  update()
+})
+horizonSlider.addEventListener('input', () => { horizon.value = horizonSlider.value; update() })
+horizon.addEventListener('input', update)
+for (const input of [investment, ...rates]) {
+  input.addEventListener('input', () => { precise.set(input, parseDecimal(input.value)); update() })
+  input.addEventListener('blur', () => {
+    const value = precise.get(input)
+    if (typeof value === 'number') input.value = displayNumber(value)
+  })
+}
+investment.value = displayNumber(100000)
 restoreHistory()
