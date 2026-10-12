@@ -38,7 +38,7 @@
 
 ## Doplněný rozsah do 16. října 2026
 
-- Schválený funkční rozsah: rozšiřitelný katalog přibližně 15–20 ručně ověřených ETF na NYSE Arca, hledání tickeru/názvu a výběr 2–5 fondů. Od 12. října 2026 veřejný vstup nabízí pouze výběr a e-mail; parametry, kalkulačka a historie vyžadují serverově ověřenou session z automaticky zpracovaného e-mailového odkazu. Zachovej původní redakční vzhled.
+- Schválený funkční rozsah: rozšiřitelný katalog přibližně 15–20 ručně ověřených ETF na NYSE Arca, hledání tickeru/názvu a výběr od jednoho fondu bez pevného maxima (neprázdný, bez duplicit a v rámci ověřeného katalogu). Od 12. října 2026 veřejný vstup nabízí pouze výběr a e-mail; parametry, kalkulačka a historie vyžadují serverově ověřenou session z automaticky zpracovaného e-mailového odkazu. Zachovej původní redakční vzhled.
 - Veřejná ověřená metadata jsou z katalogového API. Uložený výběr a částku chraň serverovou session, včetně přímých požadavků na endpoint. První automatické potvrzení může proběhnout na jiném zařízení; platný e-mailový odkaz opakovaně vytvoří novou session i bez původní cookie. Pravdivě vysvětli omezení aktivních browser skenerů, expiraci a ochranu přístupového odkazu. Demo data patří pouze do výslovně označených archivních návrhů a testů.
 - Používej jen skutečné, ověřené údaje. Ke každému poli eviduj primární zdroj, datum platnosti a datum kontroly. AI není finanční zdroj; neověřené hodnoty vynech a popiš omezení.
 - Implementuj funnel podle `docs/PLAN.md`: návštěvy, interakce, formulář, serverové přijetí, potvrzení a otevření srovnání. Zamez dvojímu započítání, úniku osobních údajů a míchání nesrovnatelných kohort. Respektuj souhlas se sledováním.

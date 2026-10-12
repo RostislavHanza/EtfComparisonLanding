@@ -112,3 +112,19 @@
 @media(max-width:600px){.profit-fund-column{width:18%}.profit-rate-column{width:30%}.profit-value-column{width:52%}.profit-comparison th,.profit-comparison td{padding:.7rem .35rem}.profit-comparison thead th{font-size:.72rem}.profit-fund span{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.profit-fund strong{font-size:1rem}.profit-assumption input{font-size:1rem;padding:.35rem}.profit-result strong{font-size:1rem}.profit-track{height:32px}}
 /* Remove the inherited decorative A / B / C pseudo-element on the functional landing. */
 .editorial.original-editorial .hero::after{content:none;display:none}
+
+/* Current public comparator: compact intro and two fund choices per mobile row. */
+.editorial.original-editorial .editorial-intro{padding:12px 0}
+.editorial.original-editorial .editorial-intro ol{margin:8px 0}
+.editorial.original-editorial .real-etf-selection>div{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}
+.editorial.original-editorial .real-etf-option{gap:8px;min-width:0}
+.editorial.original-editorial .real-etf-option>span{min-width:0;overflow-wrap:anywhere}
+.editorial.original-editorial .real-etf-option input{flex-shrink:0}
+.catalog-more{min-height:44px;margin-top:12px}
+.comparison-table-scroll{max-width:100%;overflow-x:auto}
+.comparison-table-scroll:focus-visible{outline:3px solid #467786;outline-offset:3px}
+@media(min-width:700px){
+ .editorial.original-editorial .real-etf-selection>div{grid-template-columns:repeat(3,minmax(0,1fr));gap:0 22px}
+ .comparison-table-scroll.wide .comparison-table{table-layout:auto}
+ .comparison-table-scroll.wide th,.comparison-table-scroll.wide td{min-width:140px}
+}

@@ -39,7 +39,7 @@ export class Application {
       try{await this.repo.failed(id)}catch{/* Safe response; no credentials or addresses logged. */}
       throw new HttpError(503,'Odeslání se nepodařilo dokončit. Zkuste to později; zpráva při síťové chybě přesto mohla dorazit.')
     }
-    return {status:'sent',message:'Zpráva byla předána k odeslání. Zkontrolujte schránku včetně složky spam.'}
+    return {status:'sent',message:'Zpráva byla odeslána'}
   }
   async access(body:unknown,ip:string){
     await this.limit('access-ip',ip,30,600)

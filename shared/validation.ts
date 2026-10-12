@@ -6,7 +6,7 @@ export function object(value: unknown): Record<string, unknown> {
 }
 export function comparisonInput(value: unknown) {
   const body = object(value)
-  if (!Array.isArray(body.tickers) || body.tickers.length < 2 || body.tickers.length > 5 || body.tickers.some(t => typeof t !== 'string' || !/^[A-Z0-9.-]{1,10}$/.test(t)) || new Set(body.tickers).size !== body.tickers.length) throw new InputError('Vyberte 2 až 5 různých ETF.')
+  if (!Array.isArray(body.tickers) || body.tickers.length < 1 || body.tickers.some(t => typeof t !== 'string' || !/^[A-Z0-9.-]{1,10}$/.test(t)) || new Set(body.tickers).size !== body.tickers.length) throw new InputError('Vyberte alespoň jedno ETF bez duplicit.')
   if (typeof body.amountCzk !== 'number' || !Number.isFinite(body.amountCzk) || body.amountCzk < 0 || body.amountCzk > MAX_AMOUNT_CZK || Math.abs(body.amountCzk * 100 - Math.round(body.amountCzk * 100)) > 0.00001) throw new InputError('Částka musí být od 0 do 10 milionů Kč, nejvýše se dvěma desetinnými místy.')
   return { tickers: body.tickers as string[], amountCzk: body.amountCzk }
 }

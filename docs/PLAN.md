@@ -1,17 +1,17 @@
 # Plán landing page
 
-Aktualizace 12. října 2026 podle schváleného funkčního MVP, Gmail SMTP a nového požadavku na e-mailovou bránu. Výběr je 2–5 ETF; kalkulačka/graf/tabulky jsou nově přístupné až po automatickém serverovém ověření odkazu. Termín předání: 16. října 2026.
+Aktualizace 12. října 2026 podle schváleného funkčního MVP, Gmail SMTP a nového požadavku na e-mailovou bránu. Výběr je od jednoho ETF bez pevného maxima; kalkulačka/graf/tabulky jsou nově přístupné až po automatickém serverovém ověření odkazu. Termín předání: 16. října 2026.
 
 ## Cíl a rozsah MVP
 
 Český mobilní návštěvník z reklamy sestaví užitečné srovnání ETF a získá e-mailem odkaz na uložený interaktivní přehled. Primární metrika je potvrzený přístup ke schránce vůči měřeným návštěvám. Bez účtů, plateb, živých cen, výnosových predikcí, PDF a složitého screeneru.
 
-Rozšiřitelný katalog přibližně 15–20 skutečných ETF na NYSE Arca, hledání tickeru/názvu, porovnání 2–5. Neověřené fondy se nezveřejňují. Aktuální implementace neobsahuje produkční seed; ověřený katalog musí být doplněn validovaným importem. Původní Editorial zůstává výchozí, archivní návrhy jsou jasně označená dema.
+Rozšiřitelný katalog přibližně 15–20 skutečných ETF na NYSE Arca, hledání tickeru/názvu, porovnání alespoň jednoho fondu bez pevného maxima. Neověřené fondy se nezveřejňují. Aktuální implementace neobsahuje produkční seed; ověřený katalog musí být doplněn validovaným importem. Původní Editorial zůstává výchozí, archivní návrhy jsou jasně označená dema.
 
 ## Pořadí sekcí a konverzní cesta
 
 1. **Redakční úvod:** příslib porovnání a CTA ke srovnávači; e-mailový formulář není v úvodní obrazovce.
-2. **Výběr a hledání:** předvybrané dvě dostupné ETF, možnost změnit výběr na 2–5, jasný souhrn a datum ověření.
+2. **Výběr a hledání:** předvybrané dvě dostupné ETF, libovolný neprázdný výběr, jasný souhrn; datum ověření v detailech.
 3. **Porovnání:** index, expense ratio, dividendy, charakteristika, data kontroly/platnosti a primární zdroje. Veřejná ověřená metadata pocházejí z API, nikoli demonstračního seed souboru.
 4. **Kalkulačka:** číselné pole/posuvník Kč, orientační roční náklady v tabulce a jednoduchém grafu. Částka × expense ratio / 100. Bez brokera, konverzí, daní a změn hodnoty; nejde o výnos ani samostatnou fakturu fondu.
 5. **E-mail až po nastavení:** „Vaše srovnání je připravené“, samostatný nepovinný marketingový souhlas, informace o správci/retenci; odeslání odlišené od doručení.
@@ -27,7 +27,7 @@ Aktualizace zadání 12. října 2026: reklama → výběr → e-mail → odesl�
 - React, Vite, TypeScript strict, Tailwind; minimální doplnění současného redakčního frontendu.
 - Vercel Functions: katalog `GET /api/catalog`, vytvoření `POST /api/comparisons`, potvrzení `POST /api/access`, chráněné čtení/úpravy `GET/PUT /api/comparison?id=…`, měření `POST /api/events`, chráněné ověření SMTP a denní údržba.
 - Supabase: ověřená ETF, kontakty, srovnání/snapshot, oddělené consent records, session, e-mailové stavy, funnel a atomický rate limiter. Migrace, RLS, zákaz anon/authenticated přímých operací i privilegovaných RPC. Secret/service_role pouze na serveru.
-- Server ověřuje 2–5 jedinečných tickerů, publikaci/čerstvost dat, částku, e-mail, typ souhlasu, honeypot, Origin a velikost JSON. HMAC klíče limiteru neobsahují čitelnou IP/adresu.
+- Server ověřuje neprázdný výběr jedinečných tickerů, publikaci/čerstvost dat, částku, e-mail, typ souhlasu, honeypot, Origin a velikost JSON. HMAC klíče limiteru neobsahují čitelnou IP/adresu.
 - 256bitové tokeny a session: v DB pouze hash; cookie HttpOnly, Secure na HTTPS, SameSite=Lax. Osobní uložená srovnání nejsou přístupná jen se znalostí ID.
 - Gmail SMTP přes Nodemailer na serveru: TLS, validované environment variables, HTML/text zpráva, časové limity. Stav sent znamená přijetí SMTP serverem, nikoli doručení; Gmail neposkytuje spolehlivý delivery webhook a doručení zůstává neověřené do kontroly schránky. confirmed_at samostatně po vědomém tlačítku. Při chybě bezpečný log a pravdivá odpověď. Globálně nejvýše 100 pokusů o odeslání denně pro malé MVP, dále IP/adresní limity. SMTP nemá provider idempotency key: po síťové nejistotě může nový pokus vytvořit další zprávu. Fronta/retry odloženy.
 - Oddělené preview prostředí a testovací adresy; žádné tajné klíče ve VITE_* nebo Gitu. `.env.example` a přesný postup v [SETUP.md](SETUP.md).
@@ -46,7 +46,7 @@ Předchozí ověřování primárních zdrojů blokovala HTTP 403; nově je ově
 1. Datový model, schválené zdroje, validovaný ruční import.
 2. Vercel API a Supabase transakce, RLS, bezpečný přístup a rate limiting.
 3. Gmail SMTP HTML/text zpráva, bezpečné chybové stavy, oddělené přijetí SMTP a potvrzení; skutečné doručení ověřit ve schránce.
-4. API frontend: hledání, 2–5 ETF, tabulka/graf, e-mail, obnovení a uložení.
+4. API frontend: hledání, jeden či více ETF bez pevného maxima, tabulka/graf, e-mail, obnovení a uložení.
 5. Volitelné consented měření, testy SQL/validace/mail chyb/tokenů, mobilní browser testy, dokumentace.
 
 Build a typecheck průběžně. PostgreSQL testy skutečných migrací na PGlite; browser fixtures nejsou produkční data. Živý Supabase, skutečné e-mailové doručení a Vercel nasazení vyžadují nastavení a test podle SETUP.md. Bez tohoto testu ani ověřeného katalogu nepovažovat produkci za hotovou. Cílit na LCP ≤2,5 s, INP ≤200 ms, CLS ≤0,1; plný WCAG/performance audit je samostatná předspouštěcí kontrola.
@@ -94,7 +94,7 @@ Testovat postupně po spuštění, jednu změnu najednou, s náhodným stabilní
 
 ## Dokumentace a termín 16. října 2026
 
-Rozsah do termínu: jedna landing page, vyhledávání v ověřeném katalogu a výběr 2–5 ETF, ověřená serverová data, jeden formulář, potvrzení e-mailu, chráněné srovnání a základní funnel. Bez vlastního screeneru, účtů, PDF generátoru, živých cen a vlastní platformy A/B testů. Pro omezení frekvence využít Supabase nebo podporované řešení poskytovatele; nepřidávat samostatnou infrastrukturu bez potřeby.
+Rozsah do termínu: jedna landing page, vyhledávání v ověřeném katalogu a výběr od jednoho ETF bez pevného maxima, ověřená serverová data, jeden formulář, potvrzení e-mailu, chráněné srovnání a základní funnel. Bez vlastního screeneru, účtů, PDF generátoru, živých cen a vlastní platformy A/B testů. Pro omezení frekvence využít Supabase nebo podporované řešení poskytovatele; nepřidávat samostatnou infrastrukturu bez potřeby.
 
 - **9.–10. října:** dokončit plán, vybrat a ověřit data; určit provozovatele, doménu a e-mailovou službu. Implementace byla schválena; chybějící služby a data zůstávají podmínkou spuštění.
 - **11.–12. října:** mobilní stránka, interaktivní výběr a obsah.

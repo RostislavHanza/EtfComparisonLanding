@@ -1,0 +1,197 @@
+Pracuj v repozitáři `RostislavHanza/EtfComparisonLanding` pouze na větvi `design-exploration`. `main` neměň.
+
+# Úkol: Úprava textů, FAQ a výběru ETF
+
+Jde o cílené změny současného webu. Nepředělávej design ani kalkulačku. Nepřidávej vlastní marketingové texty či další funkce mimo toto zadání.
+
+## 1. Potvrzení o odeslání e-mailu
+
+Nahraď text:
+
+„Zpráva byla předána k odeslání. To ještě nepotvrzuje doručení; zkontrolujte také spam.“
+
+novým textem:
+
+**„Zpráva byla odeslána“**
+
+Tuto zprávu zobrazuj po úspěšném potvrzení odeslání serverem/SMTP. Pokud odeslání selže, zobraz odpovídající chybový stav. Neprezentuj pouhé vložení do fronty jako dokončené odeslání.
+
+## 2. Přejmenuj sekci s dotazy
+
+Původní:
+
+„Důležité souvislosti“
+„Přehled není doporučení.“
+
+Nahraď
+
+**„Často kladené dotazy"**
+**"FAQ“**
+
+
+
+## 3. Změň první otázku FAQ
+
+Původní otázku:
+
+„Jsou údaje ověřené?“
+
+nahraď:
+
+**„Věrohodnost údajů“**
+
+Text odpovědi nahraď přesně takto:
+
+„Zveřejňujeme pouze ručně ověřené fondy s primárními zdroji. Data kontrolujeme týdně. Fond s ověřením starším než 14 dní není dostupný pro nové srovnání. Uložené přehledy zachovávají datum původních údajů.“
+
+## 4. Odeber datum kontroly z výběru ETF
+
+U jednotlivých položek v seznamu pro výběr ETF nezobrazuj datum kontroly.
+
+Datum kontroly může zůstat v detailním srovnání a evidenci zdrojů. Odstraň ho pouze z jednoduchého výběru fondů.
+
+## 5. FAQ: dostupnost ETF v EU
+
+Otázku ponech:
+
+„Mohu tyto fondy koupit v EU?“
+
+Odpověď změň na:
+
+„Dostupnost amerických ETF může být pro retail v EU omezená kvůli PRIIPs/KID. Ověřte ji u brokera.“
+
+Odstraň závěrečnou větu „Není to doporučení k nákupu.“ z této odpovědi.
+
+Zachovej obecná upozornění týkající se investičních modelů na jejich stávajících vhodných místech; nepřidávej je znovu do této FAQ odpovědi.
+
+## 6. FAQ: návratový odkaz
+
+Otázku ponech:
+
+„Jak funguje návratový odkaz?“
+
+Odpověď nahraď přesně tímto textem:
+
+„V odkazu dostanete potvrzení o sestavení interaktivní kalkulačky a odkaz k ní. Nové odkazy platí nejvýše 90 dní od vytvoření; nepoužité žádosti mažeme po 30 dnech. Starší odkazy si zachovávají původní dobu platnosti. Odkaz nesdílejte, protože umožňuje přístup k přehledu.“
+
+Nesahej na skutečnou funkcionalitu e-mailového odkazu. Musí dál automaticky ověřovat e-mail a umožňovat opakované otevření srovnání na jiném zařízení.
+
+## 7. Zkrať text o ochraně osobních údajů
+
+Současný dlouhý text o správci nahraď tímto:
+
+„Správce: ETFMaster, kontakt: [etfsrovnani@gmail.com](mailto\:etfsrovnani@gmail.com). Adresu a výběr zpracováváme pro doručení vyžádaného srovnání na základě vyřízení vaší žádosti. Nepotvrzené žádosti uchováváme 30 dní, následně do denního úklidu, uložené přehledy 90 dní od poslední úpravy, následně do denního úklidu. Máte právo žádat přístup, opravu nebo odstranění a podat stížnost u ÚOOÚ. Volitelné měření změníte pomocí odkazu Nastavení soukromí v patičce.“
+
+Jde o požadované zkrácení viditelného textu. Zkontroluj, jestli odstraněné informace o příjemcích údajů a případném samostatném marketingovém souhlasu musí být nadále dostupné někde jinde, aby zveřejněné informace nebyly zavádějící nebo neúplné. Pokud ano, ponech je ve vhodném samostatném oznámení a ve výsledku jasně upozorni, co je potřeba doplnit. Neměň skutečnou funkcionalitu souhlasů a retenčních lhůt.
+
+## 8. Přejmenuj nadpis uloženého srovnání
+
+Ponech označení:
+
+**„Uložené srovnání“**
+
+Současný nadpis:
+
+„Vaše ETF. Vaše souvislosti.“
+
+změň na:
+
+**„Vaše ETF Srovnání“**
+
+Popis pod ním ponech:
+
+„Výběr i částka byly obnoveny. Úpravy potvrďte tlačítkem ‚Uložit změny‘. Pro další návrat použijte původní odkaz z e-mailu, i po zavření prohlížeče nebo na jiném zařízení.“
+
+## 9. Výběr libovolného počtu ETF
+
+Současný text:
+
+„Vyhledejte ticker nebo název. Porovnat můžete 2–5 ETF.“
+
+změň na:
+
+**„Vyhledejte ticker nebo název.“**
+
+Odstraň omezení výběru na 2–5 ETF.
+
+Nové chování:
+
+- Musí být možné vybrat pouze jedno ETF.
+- Musí být možné vybrat více než pět ETF.
+- Nezaváděj nové pevné uživatelské maximum.
+- Prázdný výběr dál nedovolí odeslat srovnání.
+- Při jediném vybraném ETF musí fungovat odeslání e-mailu, uložení srovnání, kalkulačka, historický graf i detailní tabulka.
+- Při větším počtu vybraných ETF musí fungovat všechny stejné části bez chyb.
+
+Prozkoumej a podle potřeby uprav všechny související kontroly v Reactu, backendu, API, e-mailovém workflow a databázových omezeních. Nestačí jen odstranit text „2–5“.
+
+Zachovej serverové bezpečnostní limity proti zneužití, například rozumný limit velikosti požadavku. Nezaváděj ale svévolný limit počtu fondů menší než dostupný katalog.
+
+## 10. Mobilní rozložení katalogu ETF
+
+Na mobilu zobraz **2 ETF vedle sebe na jednom řádku**.
+
+Další požadavky:
+
+- Na začátku zobraz maximálně 6 dostupných ETF.
+- Pokud existuje více než 6 ETF, zobraz ovládací prvek **„Zobrazit další“**.
+- Kliknutím zobraz dalších maximálně 6 ETF.
+- Další kliknutí přidá dalších 6 a tak dále, dokud není zobrazen celý katalog.
+- Již zobrazené položky se při rozšíření neztrácejí.
+- Výběr fondů se při rozšiřování seznamu zachová.
+- Vyhledávání podle tickeru nebo názvu musí správně fungovat i pro ETF, která původně nebyla mezi prvními šesti.
+- Vybraná ETF musí zůstat dostupná a označená i při změně vyhledávání nebo počtu zobrazených položek.
+
+Zachovej současný vizuální styl. Nepřidávej nové obrázky ani další doprovodné texty.
+
+## 11. Souhrn
+
+
+Současný text:
+
+1. 01Vyberte ETF pro porovnání
+2. 02Zadejte Email pro zaslání interaktivní tabulky
+
+Změň na:
+
+1. 01Vyberte ETF pro porovnání
+2. 02Zadejte Email pro zaslání interaktivní kalkulačky
+   
+   Dále sniž odsazení nahoře i dole aby odpovidalo ostatním sloupcům
+
+## 12. Testování a dokončení
+
+Otestuj:
+
+- Přesné požadované texty.
+- Zobrazení FAQ.
+- Skrytí data kontroly v katalogu.
+- Úspěšné a neúspěšné odeslání e-mailu.
+- Výběr jednoho ETF.
+- Výběr více než pěti ETF, pokud testovací katalog obsahuje dostatek položek.
+- Funkčnost e-mailového odkazu a uloženého srovnání.
+- Kalkulačku, graf a tabulku pro jeden i více fondů.
+- Dva fondy na řádek na mobilu.
+- Postupné zobrazování po šesti fondech.
+- Vyhledávání přes celý katalog.
+- Zachování výběru při změnách UI.
+
+Spusť lint, typecheck, testy, build, browser testy a kontrolu Vercel Functions.
+
+Zachovej Supabase, Gmail SMTP, cookie nastavení, analytiku, bezpečnost a existující funkcionalitu návratových odkazů.
+
+Pokud bude potřeba migrace kvůli odstranění databázového limitu, pouze ji připrav a uveď v závěru. Neprováděj vzdálené zápisy ani skutečné odesílání e-mailů.
+
+Aktualizuj potřebnou dokumentaci a AI log.
+
+Commitni a pushni pouze na `design-exploration`; `main` neměň.
+
+Na závěr napiš:
+
+1. Jaké texty byly změněny.
+2. Jaké limity výběru ETF byly odstraněny.
+3. Jak funguje mobilní rozložení a zobrazování dalších fondů.
+4. Zda je potřeba migrace.
+5. Jaké testy prošly a commit SHA.
+
+Nepřidávej další změny, které nejsou výslovně požadované.
