@@ -11,22 +11,24 @@
 <body>
   <main>
     <header>
-      <p class="eyebrow">ETF NYSE / Ukázka kalkulačky</p>
-      <h1>Kalkulačka výnosů</h1>
+      <h1>Kalkulačka <em>výnosů</em></h1>
       <p class="intro">Vyzkoušejte, jak částka, čas a průběžné náklady mění odhadovaný zisk.</p>
     </header>
     <section aria-label="Ukázková kalkulačka">
       <div class="settings">
         <div class="amount-controls"><label for="investment">Investovaná částka v Kč
-          <input id="investment" type="number" min="0" max="10000000" step="any" value="100000" inputmode="decimal" required>
+          <input id="investment" type="text" value="100000" inputmode="decimal" required>
         </label>
           <label class="sr-only" for="investment-range">Upravit částku posuvníkem</label>
           <input id="investment-range" type="range" min="0" max="10000000" step="1000" value="100000">
           <div class="range-limits"><span>0 Kč</span><span>10 mil. Kč</span></div>
         </div>
-        <label for="horizon">Investiční horizont (roky)
+        <div class="horizon-controls"><label for="horizon">Investiční horizont (roky)
           <input id="horizon" type="number" min="1" max="30" step="1" value="10" inputmode="numeric" required>
         </label>
+          <label class="sr-only" for="horizon-range">Upravit horizont posuvníkem</label>
+          <input id="horizon-range" type="range" min="1" max="30" step="1" value="10">
+        </div>
       </div>
       <table>
         <caption class="sr-only">Srovnání odhadovaného zisku SPY a VOO</caption>
@@ -45,16 +47,14 @@
         </td></tr></tfoot>
       </table>
       <p id="error" role="alert" hidden></p>
-      <p class="disclaimer">Hypotetický model zahrnuje roční nákladovost ETF. Nezahrnuje měnové změny, daně ani poplatky brokera.</p>
-      <p class="disclaimer">Investování může vést ke ztrátě.</p>
+      <p class="disclaimer">Hypotetický model zahrnuje roční nákladovost ETF. Nezahrnuje měnové změny, daně ani poplatky brokera. Investování může vést ke ztrátě.</p>
     </section>
     <section class="cta" aria-label="Vlastní srovnání">
       <p>Chcete si sestavit vlastní srovnání ETF?</p>
       <a class="button" href="/#comparator">Vytvořit vlastní srovnání →</a>
     </section>
     <footer>
-      <p>Statická metadata z ověřeného katalogu · kontrola 11. 10. 2026.</p>
-      <p>Základní údaje: <a href="https://tickerinside.com/api/">TickerInside</a>, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Data byla vybrána a upravena. Přesný název a nákladovost SPY: <a href="https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf">SSGA</a>. Ověření VOO: <a href="https://fund-docs.vanguard.com/F0968.pdf">Vanguard</a>. Historické souhrnné výnosy: <a href="https://tickerinside.com/api/v1/fund/spy.json">SPY</a> a <a href="https://tickerinside.com/api/v1/fund/voo.json">VOO</a>, TickerInside, CC BY 4.0.</p>
+      <p>Metadata: 11. 10. 2026 · historie: 9. 10. 2026.<br>Zdroj: <a href="https://tickerinside.com/api/">TickerInside</a> (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>), vybráno a upraveno. Historie: <a href="https://tickerinside.com/api/v1/fund/spy.json">SPY</a>, <a href="https://tickerinside.com/api/v1/fund/voo.json">VOO</a>. Přesný název a nákladovost SPY: <a href="https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf">SSGA</a>. Ověření VOO: <a href="https://fund-docs.vanguard.com/F0968.pdf">Vanguard</a>.</p>
     </footer>
   </main>
 </body>

@@ -54,3 +54,13 @@ test('ad annualizes history and restores gross assumptions without subtracting e
   assert.equal(historicalAssumption(20, 3, null), null)
   assert.ok(historicalAssumption(-20, 3, .03)! < 0)
 })
+
+test('ad Czech display formatting does not alter precise decimal model inputs', async () => {
+  const { displayNumber, parseDecimal } = await import('../ads/display.js')
+  assert.equal(displayNumber(1.234567), '1,23')
+  assert.equal(displayNumber(2), '2')
+  assert.equal(parseDecimal('123 456,789'),123456.789)
+  assert.equal(parseDecimal('-1,2345'),-1.2345)
+  assert.equal(parseDecimal('2,'),2)
+  for(const input of ['', 'abc', '1,2,3','Infinity'])assert.equal(parseDecimal(input),null)
+})
