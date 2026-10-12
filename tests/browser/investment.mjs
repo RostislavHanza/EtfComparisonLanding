@@ -120,18 +120,28 @@ try{
  // Actual expanded metadata and licensed observations, mocked API only; no remote services.
  const remaining=JSON.parse(await readFile('data/remaining-twelve.approved.json','utf8')).records
  const remainingHistory=JSON.parse(await readFile('data/review/remaining-fifteen.performance.json','utf8')).funds
- const expandedMetadata=[...funds,...remaining],expandedHistory=[...performance,...remainingHistory.map(r=>({...r,asOf:r.as_of,attributionUrl:`https://tickerinside.com/etf/${r.ticker.toLowerCase()}/`,currency:'USD',weeklyReturns:r.weekly.map((value,i)=>({weekEnd:new Date(Date.parse(r.weeks_end)-(155-i)*7*86400000).toISOString().slice(0,10),returnFraction:value}))}))]
+ const final=JSON.parse(await readFile('data/final-three.approved.json','utf8')).records
+ const finalHistory=JSON.parse(await readFile('data/review/final-three.performance.json','utf8')).funds
+ const expandedMetadata=[...funds,...remaining,...final],expandedHistory=[...performance,...[...remainingHistory,...finalHistory].map(r=>({...r,asOf:r.as_of,attributionUrl:`https://tickerinside.com/etf/${r.ticker.toLowerCase()}/`,currency:'USD',weeklyReturns:r.weekly.map((value,i)=>({weekEnd:new Date(Date.parse(r.weeks_end)-(155-i)*7*86400000).toISOString().slice(0,10),returnFraction:value}))}))]
  for(const width of [320,1440]){
   const page=await browser.newPage({viewport:{width,height:900}})
   await page.route('**/api/**',async route=>{const path=new URL(route.request().url()).pathname;await route.fulfill({json:path==='/api/catalog'?{funds:expandedMetadata,privacy:null}:path==='/api/comparison'?{...saved,tickers:expandedMetadata.map(f=>f.ticker),funds:expandedMetadata}:{funds:expandedHistory,unavailable:[]}})})
   await page.goto(`${base}/?comparison=${id}`);await page.getByRole('button',{name:'Odmítnout',exact:true}).click();await page.waitForFunction(()=>document.querySelector('#assumed-ITOT')?.value!=='')
-  assert.equal(await page.locator('.profit-row').count(),17);assert.equal(await page.locator('.historical-chart svg polyline').count(),17)
+  assert.equal(await page.locator('.profit-row').count(),20);assert.equal(await page.locator('.historical-chart svg polyline').count(),20)
   await page.locator('#catalog-search').fill('ITOT');assert.equal(await page.locator('.real-etf-option').count(),1);assert.equal(await page.locator('.real-etf-option input').isChecked(),true)
   await page.getByLabel('Investiční horizont',{exact:true}).selectOption('1');await page.locator('#assumed-ITOT').fill('0')
   assert.equal((await page.getByTestId('profit-ITOT').innerText()).replace(/\s/g,''),'-30,00Kč')
   assert.ok((await page.locator('.comparison-table').innerText()).includes('Morningstar US Large Cap Growth Index'))
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth))
-  console.log(`PASS actual 17-fund catalog, ITOT selection/cost, new history and Morningstar metadata at ${width}px`);await page.close()
+  for(const [ticker,loss] of [['RSP','-200,00Kč'],['SCHB','-30,00Kč'],['SCHD','-60,00Kč']]){
+   await page.locator(`#assumed-${ticker}`).fill('0');assert.equal((await page.getByTestId(`profit-${ticker}`).innerText()).replace(/\s/g,''),loss)
+  }
+  for(const fund of expandedMetadata)if(fund.ticker!=='RSP')await page.getByRole('button',{name:`Odebrat ${fund.ticker}`,exact:true}).click()
+  assert.equal(await page.locator('.profit-row').count(),1);assert.equal(await page.locator('.historical-chart svg polyline').count(),1);assert.ok((await page.locator('.comparison-table').innerText()).includes('S&P 500 Equal Weight Index'))
+  await page.locator('#catalog-search').fill('SCH');await page.locator('.real-etf-option').filter({hasText:'SCHB'}).locator('input').check();await page.locator('.real-etf-option').filter({hasText:'SCHD'}).locator('input').check()
+  assert.equal(await page.locator('.profit-row').count(),3);assert.equal(await page.locator('.historical-chart svg polyline').count(),3)
+  assert.equal(await page.locator('.profit-bar.negative').count(),3);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth))
+  console.log(`PASS actual 20-fund catalog and final three, single/multiple selection, real history and cost losses at ${width}px`);await page.close()
  }
  for(const unavailable of ['null','outage']){
   const page=await browser.newPage({viewport:{width:320,height:900}})
