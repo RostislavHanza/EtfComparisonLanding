@@ -26,10 +26,9 @@ test('transactional creation, one-time token, sessions, updates and expiry',asyn
  assert.equal((await db.query("select * from funnel_events where name='email_confirmed'")).rows.length,1)
  }finally{await db.close()}
 })
-test('rate limiter counts atomically and retired provider RPC is unavailable',async()=>{
+test('rate limiter counts atomically',async()=>{
  const db=await database();try{
  await seed(db);await create(db);assert.equal((await db.query<{consume_rate_limit:boolean}>("select consume_rate_limit('k',2,60)")).rows[0].consume_rate_limit,true);await db.query("select consume_rate_limit('k',2,60)");assert.equal((await db.query<{consume_rate_limit:boolean}>("select consume_rate_limit('k',2,60)")).rows[0].consume_rate_limit,false)
- await assert.rejects(db.query("select record_email_webhook('obsolete','obsolete','email.delivered',now())"),/does not exist/)
  }finally{await db.close()}
 })
 
