@@ -1,5 +1,12 @@
 import { chromium } from 'playwright'
 import assert from 'node:assert/strict'
+import { readFile } from 'node:fs/promises'
+const snapshots = JSON.parse(await readFile('data/review/performance-observations.json', 'utf8')).funds
+const gross = (ticker, years, fee) => {
+  const cumulative = snapshots.find(f => f.ticker === ticker)[`r${years}`]
+  return (((1 + cumulative / 100) ** (1 / years)) / (1 - fee / 100) - 1) * 100
+}
+const spyDefault = gross('SPY', 5, .0945), vooDefault = gross('VOO', 5, .03)
 const base = process.env.TEST_BASE_URL ?? 'http://127.0.0.1:4173'
 const browser = await chromium.launch({ executablePath: process.env.BROWSER_PATH || undefined, args: ['--no-sandbox'] })
 const format = value => `${value > 0 ? '+' : ''}${new Intl.NumberFormat('cs-CZ', { style: 'currency', currency: 'CZK', maximumFractionDigits: 2 }).format(value)}`
@@ -13,19 +20,36 @@ try {
     await page.goto(`${base}/add`)
     await page.locator('#profit-SPY').waitFor()
     assert.equal(await page.title(), 'Ukázka ETF kalkulačky · SPY a VOO')
+    assert.equal(await page.getByRole('heading', { level: 1 }).textContent(), 'Kalkulačka výnosů')
+    assert.equal(await page.locator('.eyebrow').textContent(), 'ETF NYSE / Ukázka kalkulačky')
+    assert.equal(await page.locator('.intro').textContent(), 'Vyzkoušejte, jak částka, čas a průběžné náklady mění odhadovaný zisk.')
+    assert.deepEqual(await page.locator('.disclaimer').allTextContents(), ['Hypotetický model zahrnuje roční nákladovost ETF. Nezahrnuje měnové změny, daně ani poplatky brokera.', 'Investování může vést ke ztrátě.'])
     const check = async (amount, spy, voo, years) => {
       assert.equal(await page.locator('#profit-SPY').textContent(), expected(amount, spy, years, .0945))
       assert.equal(await page.locator('#profit-VOO').textContent(), expected(amount, voo, years, .03))
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
     }
-    await check(100000, 6, 6, 10)
-    await page.reload(); await check(100000, 6, 6, 10)
-    await page.locator('#investment').fill('200000'); await check(200000, 6, 6, 10)
-    await page.locator('#horizon').fill('3'); await check(200000, 6, 6, 3)
-    await page.locator('#rate-SPY').fill('0'); await check(200000, 0, 6, 3)
-    assert.equal(await page.locator('#rate-VOO').inputValue(), '6')
+    await check(100000, spyDefault, vooDefault, 10)
+    await page.reload(); await check(100000, spyDefault, vooDefault, 10)
+    for (const years of [1, 3, 5]) {
+      await page.getByRole('button', { name: years === 1 ? '1 rok' : years === 3 ? '3 roky' : '5 let', exact: true }).click()
+      assert.equal(Number(await page.locator('#rate-SPY').inputValue()), gross('SPY', years, .0945))
+      assert.equal(Number(await page.locator('#rate-VOO').inputValue()), gross('VOO', years, .03))
+      assert.ok((await page.locator('#reference').textContent()).includes('9. 10. 2026'))
+      await check(100000, gross('SPY', years, .0945), gross('VOO', years, .03), 10)
+      await page.locator('#rate-SPY').fill('2')
+      await page.locator('#rate-VOO').fill('4')
+      await page.getByRole('button', { name: 'Obnovit podle historie', exact: true }).click()
+      await check(100000, gross('SPY', years, .0945), gross('VOO', years, .03), 10)
+    }
+    await page.locator('#investment').fill('200000'); await check(200000, spyDefault, vooDefault, 10)
+    await page.locator('#horizon').fill('3'); await check(200000, spyDefault, vooDefault, 3)
+    await page.locator('#rate-SPY').fill('0'); await check(200000, 0, vooDefault, 3)
+    assert.equal(Number(await page.locator('#rate-VOO').inputValue()), vooDefault)
     assert.equal(await page.locator('tr:has(#rate-SPY) .bar.negative').count(), 1)
     await page.locator('#rate-VOO').fill('-4'); await check(200000, 0, -4, 3)
+    await page.locator('#investment').fill('100000'); await check(100000, 0, -4, 3)
+    await page.locator('#investment').fill('200000'); await check(200000, 0, -4, 3)
     await page.locator('#horizon').fill('1')
     await page.locator('#rate-VOO').fill('0'); await check(200000, 0, 0, 1)
     assert.equal(await page.locator('.bar.negative').count(), 2)
@@ -36,6 +60,11 @@ try {
     assert.equal(await page.locator('#profit-SPY').textContent(), '—')
     assert.equal(await page.locator('#error').isVisible(), true)
     await page.locator('#rate-SPY').fill('6'); assert.equal(await page.locator('#error').isVisible(), false)
+    await page.getByRole('button', { name: '3 roky', exact: true }).click()
+    await check(200000, gross('SPY', 3, .0945), gross('VOO', 3, .03), 1)
+    assert.equal(await page.locator('#investment').inputValue(), '200000')
+    assert.equal(await page.locator('#horizon').inputValue(), '1')
+    assert.equal(await page.getByRole('button', { name: '3 roky', exact: true }).getAttribute('aria-pressed'), 'true')
     for (const input of await page.locator('input').all()) assert.ok((await input.boundingBox()).height >= 44)
     assert.equal(await page.getByRole('link', { name: 'Vytvořit vlastní srovnání →' }).getAttribute('href'), '/#comparator')
     assert.equal(await page.locator('#root').count(), 0)
