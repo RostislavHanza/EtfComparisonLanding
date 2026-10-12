@@ -39,3 +39,25 @@ test('retention deletes expired comparisons and orphaned contacts with dependent
 test('withdrawing optional analytics clears attribution and events without deleting the requested comparison',async()=>{
  const db=await database();try{await seed(db);await create(db);await db.query('select redeem_comparison($1,$2)',['a'.repeat(64),'b'.repeat(64)]);await db.query('select withdraw_analytics($1)',[other]);assert.equal((await db.query<{attribution:null}>('select attribution from comparisons')).rows[0].attribution,null);assert.equal((await db.query('select * from funnel_events')).rows.length,0);assert.equal((await db.query('select * from comparisons')).rows.length,1)}finally{await db.close()}
 })
+
+
+test('saved campaign is preserved through email access, reads and edits without direct attribution overwrite',async()=>{
+ for(const campaign of ['ad-a','ad-b','direct']){
+  const db=await database()
+  try{
+   await db.exec(await readFile(new URL('../supabase/migrations/202610120008_reusable_comparison_links.sql',import.meta.url),'utf8'))
+   await seed(db)
+   await db.query('select create_comparison($1,$2,$3,$4,$5,$6,$7,$8)',[id,'test@example.invalid',['TESTA','TESTB'],10000000,'a'.repeat(64),false,'test',JSON.stringify({visitId:other,campaign})])
+   await db.query('select redeem_comparison($1,$2)',['a'.repeat(64),'b'.repeat(64)])
+   await db.query('select read_comparison($1,$2)',['b'.repeat(64),id])
+   await db.query('select update_comparison($1,$2,$3,$4)',['b'.repeat(64),id,['TESTB','TESTC'],20000000])
+   await db.exec('delete from comparison_sessions')
+   await db.query('select redeem_comparison($1,$2)',['a'.repeat(64),'c'.repeat(64)])
+   await db.query('select read_comparison($1,$2)',['c'.repeat(64),id])
+   assert.equal((await db.query<{attribution:{campaign:string}}>('select attribution from comparisons')).rows[0].attribution.campaign,campaign)
+   const events=await db.query<{name:string;campaign:string}>('select name,campaign from funnel_events')
+   assert.ok(events.rows.some(e=>e.name==='email_confirmed'));assert.ok(events.rows.some(e=>e.name==='comparison_opened'))
+   assert.ok(events.rows.every(e=>e.campaign===campaign))
+  }finally{await db.close()}
+ }
+})

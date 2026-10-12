@@ -11,16 +11,16 @@ const lead={tickers:['TESTA','TESTB'],amountCzk:100000,email:' Test@Example.inva
 function repository(){
  let record:LeadRecord|undefined
  const sessions=new Set<string>()
- const events:EventName[]=[], statuses:string[]=[]
+ const events:EventName[]=[], statuses:string[]=[],campaignEvents:{name:EventName;campaign:string}[]=[]
  const repo:Repository={
   catalog:async()=>[],limit:async()=>true,
   create:async l=>{record=l}, sent:async()=>{statuses.push('sent')},failed:async()=>{statuses.push('failed')},
   redeem:async(t,s)=>{if(t!==record?.tokenHash)return null;sessions.add(s);return record.id},
   read:async(s,id)=>sessions.has(s)&&id===record?.id?{id,tickers:record.tickers,amountCzk:record.amountCzk,funds:[],createdAt:'test',updatedAt:'test'}:null,
   update:async(s,id,tickers,amountCzk)=>{if(!sessions.has(s)||id!==record?.id)return false;Object.assign(record,{tickers,amountCzk});return true},
-  event:async name=>{events.push(name)},withdrawAnalytics:async()=>{events.length=0},
+  event:async(name,a)=>{events.push(name);campaignEvents.push({name,campaign:a.campaign})},withdrawAnalytics:async()=>{events.length=0},
  }
- return {repo,events,statuses,get record(){return record}}
+ return {repo,events,statuses,campaignEvents,get record(){return record}}
 }
 test('requested mail carries an opaque token, persists no raw token and restores the configured comparison',async()=>{
  const db=repository();let sentLink='';let recipient=''
@@ -75,4 +75,17 @@ test('SMTP-backed create and return flow accepts one or every catalog fund witho
   const token=new URLSearchParams(new URL(link).hash.slice(1)).get('access')!
   const access=await app.access({token},'test-ip');assert.deepEqual((await app.read(access.id,access.session)).tickers,tickers)
  }
+})
+
+
+test('all supported campaigns are persisted and carried through accepted and sent server events',async()=>{
+ for(const campaign of ['ad-a','ad-b','direct']){
+  const db=repository(),app=new Application(db.repo,config,{send:async()=> 'test-mail'})
+  await app.create({...lead,attribution:{consent:true,visitId:'11111111-1111-4111-8111-111111111111',campaign}},'test-ip')
+  assert.equal(db.record?.attribution?.campaign,campaign)
+  assert.deepEqual(db.campaignEvents,[{name:'lead_accepted',campaign},{name:'email_sent',campaign}])
+ }
+ const db=repository(),app=new Application(db.repo,config,{send:async()=> 'test-mail'})
+ await app.create({...lead,attribution:null},'test-ip')
+ assert.equal(db.record?.attribution,null);assert.deepEqual(db.campaignEvents,[])
 })
