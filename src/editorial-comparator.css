@@ -164,5 +164,6 @@
 
 @media(max-width:699px){
  .editorial.original-editorial .hero h1{font-size:min(12vw,46.4px)}
+ .editorial.original-editorial .hero h1>em{font-size:.92em}
  .editorial.original-editorial .hero h1>span,.editorial.original-editorial .hero h1>em{white-space:nowrap}
 }
