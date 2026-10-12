@@ -22,9 +22,15 @@ const apiRoutes=async route=>{
 }
 await page.route('**/api/**',apiRoutes)
 try{
- for(const width of [320,390,768,1100,1440]){
+ for(const width of [320,360,390,393,768,1100,1440]){
   await page.setViewportSize({width,height:900});await page.goto(base);await page.locator('.real-etf-selection input').first().waitFor()
-  assert.equal(await page.locator('h1').innerText(),'Americká ETF.\nKalkulačka výnosů.')
+  assert.equal(await page.locator('h1').innerText(),'Americká ETF\nKalkulačka výnosů')
+  if(width<700)assert.ok(await page.locator('.hero h1').evaluate(h=>{
+   const first=document.createRange(),second=document.createRange();first.selectNodeContents(h.querySelector('span'));second.selectNodeContents(h.querySelector('em'))
+   return first.getClientRects().length===1&&second.getClientRects().length===1&&h.scrollWidth<=h.clientWidth
+  }))
+  assert.equal(await page.locator('.editorial-intro').evaluate(e=>getComputedStyle(e).borderTopWidth),await page.locator('.selection-section').evaluate(e=>getComputedStyle(e).borderTopWidth))
+
   assert.equal(await page.locator('.editorial-intro li').count(),2)
   assert.equal(await page.locator('.editorial-intro').innerText(),'01\nVyberte ETF pro porovnání\n02\nZadejte Email pro zaslání osobní interaktivní kalkulačky')
   assert.equal(await page.locator('.hero-description,.hero-cta,.hero-footnote,.hero-art').count(),0)
@@ -37,7 +43,7 @@ try{
   assert.equal(await page.locator('.real-etf-option small').count(),6);assert.ok(!(await page.locator('.real-etf-selection').innerText()).includes('Ověřeno'))
   if(width<700){const boxes=await page.locator('.real-etf-option').evaluateAll(es=>es.slice(0,2).map(e=>e.getBoundingClientRect().toJSON()));assert.equal(boxes[0].y,boxes[1].y);assert.ok(boxes[1].x>boxes[0].x)}
   assert.equal(await page.locator('.faq h2').innerText(),'Často kladené dotazy');assert.equal(await page.locator('.faq h1,.faq h2,.faq h3,.faq .eyebrow').count(),1)
-  assert.equal((await page.locator('.hero .eyebrow').innerText()).trim(),'AMERICKÝ TRH. ETF NYSE.')
+  assert.equal(await page.locator('.hero .eyebrow').count(),0)
   assert.equal(await page.locator('.editorial-intro li').last().evaluate(e=>getComputedStyle(e).borderBottomWidth),'0px');assert.equal(await page.locator('.selection-section').evaluate(e=>getComputedStyle(e).borderTopWidth),'3px')
   assert.equal(await page.locator('.selection-section .eyebrow').textContent(),'01 / Výběr ETF')
   assert.equal(await page.locator('.comparator-content').evaluate(e=>getComputedStyle(e).marginTop),'16px')
@@ -52,7 +58,7 @@ try{
    const style=getComputedStyle(document.querySelector('.editorial-intro'))
    if(innerWidth<700){
     const heading=document.querySelector('#benefits-title'),range=document.createRange();range.selectNodeContents(heading)
-    return benefits.top-hero.bottom>=0&&benefits.top-hero.bottom<=24&&steps.top-benefits.bottom>=0&&steps.top-benefits.bottom<=24&&selection.top-steps.bottom>=0&&selection.top-steps.bottom<=24&&style.borderTopWidth==='4px'&&range.getClientRects().length===1&&heading.scrollWidth<=heading.clientWidth
+    return benefits.top-hero.bottom>=0&&benefits.top-hero.bottom<=24&&steps.top-benefits.bottom>=0&&steps.top-benefits.bottom<=24&&selection.top-steps.bottom>=0&&selection.top-steps.bottom<=24&&style.borderTopWidth===getComputedStyle(document.querySelector('.selection-section')).borderTopWidth&&range.getClientRects().length===1&&heading.scrollWidth<=heading.clientWidth
    }
    return steps.left>hero.left&&benefits.top>=hero.bottom&&benefits.top>=steps.bottom&&selection.top-benefits.bottom>=0&&selection.top-benefits.bottom<=24
   }))
