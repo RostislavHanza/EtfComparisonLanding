@@ -56,6 +56,14 @@
     {
       "source": "/add/",
       "destination": "/ads/index.html"
+    },
+    {
+      "source": "/add-simple",
+      "destination": "/ads/simple/index.html"
+    },
+    {
+      "source": "/add-simple/",
+      "destination": "/ads/simple/index.html"
     }
   ]
 }
