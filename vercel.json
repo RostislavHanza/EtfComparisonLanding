@@ -47,5 +47,15 @@
     "api/performance.ts": {
       "maxDuration": 60
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/add",
+      "destination": "/ads/index.html"
+    },
+    {
+      "source": "/add/",
+      "destination": "/ads/index.html"
+    }
+  ]
 }
