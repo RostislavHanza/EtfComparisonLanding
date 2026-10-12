@@ -36,7 +36,9 @@ try{
   assert.equal(await page.locator('.real-etf-option').count(),6)
   assert.equal(await page.locator('.real-etf-option small').count(),6);assert.ok(!(await page.locator('.real-etf-selection').innerText()).includes('Ověřeno'))
   if(width<700){const boxes=await page.locator('.real-etf-option').evaluateAll(es=>es.slice(0,2).map(e=>e.getBoundingClientRect().toJSON()));assert.equal(boxes[0].y,boxes[1].y);assert.ok(boxes[1].x>boxes[0].x)}
-  assert.equal(await page.locator('.faq .eyebrow').textContent(),'Často kladené dotazy');assert.equal(await page.locator('.faq h2').innerText(),'FAQ')
+  assert.equal(await page.locator('.faq h2').innerText(),'Často kladené dotazy');assert.equal(await page.locator('.faq h1,.faq h2,.faq h3,.faq .eyebrow').count(),1)
+  assert.equal((await page.locator('.hero .eyebrow').innerText()).trim(),'AMERICKÝ TRH. ETF NYSE.')
+  assert.equal(await page.locator('.editorial-intro li').last().evaluate(e=>getComputedStyle(e).borderBottomWidth),'0px');assert.equal(await page.locator('.selection-section').evaluate(e=>getComputedStyle(e).borderTopWidth),'3px')
   assert.equal(await page.locator('.faq details').nth(0).locator('summary').innerText(),'Věrohodnost údajů')
   assert.equal(await page.locator('.faq details').nth(0).locator('p').textContent(),'Zveřejňujeme pouze ručně ověřené fondy s primárními zdroji. Data kontrolujeme týdně. Fond s ověřením starším než 14 dní není dostupný pro nové srovnání. Uložené přehledy zachovávají datum původních údajů.')
   assert.equal(await page.locator('.faq details').nth(1).locator('p').textContent(),'Dostupnost amerických ETF může být pro retail v EU omezená kvůli PRIIPs/KID. Ověřte ji u brokera.')
@@ -51,15 +53,15 @@ try{
   await page.locator('.real-etf-selection input').nth(0).uncheck();assert.equal(await page.locator('.real-etf-selection input:checked').count(),1)
   for(const n of [2,3,4,5,6,7])await page.locator('.real-etf-selection input').nth(n).check()
   assert.equal(await page.locator('.real-etf-selection input:checked').count(),7);assert.equal(await page.locator('.real-etf-selection input').nth(8).isDisabled(),false)
-  await page.locator('#email').fill('test@example.invalid');await page.getByRole('button',{name:'Zaslat tabulku na mail',exact:true}).click();await page.getByRole('heading',{name:'Zkontrolujte svůj e-mail.'}).waitFor()
+  await page.locator('#email').fill('test@example.invalid');await page.getByRole('button',{name:'Zaslat kalkulačku na mail',exact:true}).click();await page.getByRole('heading',{name:'Zkontrolujte svůj e-mail.'}).waitFor()
   assert.equal(posts.at(-1).tickers.length,7);assert.equal(await page.getByRole('status').filter({hasText:'Zpráva byla odeslána'}).innerText(),'Zpráva byla odeslána');assert.equal(posts.at(-1).amountCzk,100000);assert.equal(posts.at(-1).marketingConsent,false);assert.equal(posts.at(-1).attribution,null)
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth))
   console.log(`PASS exact landing copy, email-only step and no public calculator at ${width}px`)
  }
  await page.goto(base);await page.locator('.real-etf-selection input').first().waitFor()
  await page.locator('.real-etf-selection input').nth(0).uncheck();await page.locator('.real-etf-selection input').nth(1).uncheck()
- assert.equal(await page.getByRole('button',{name:'Zaslat tabulku na mail'}).isDisabled(),true)
- await page.locator('.real-etf-selection input').nth(1).check();await page.locator('#email').fill('test@example.invalid');await page.getByRole('button',{name:'Zaslat tabulku na mail'}).click();await page.getByRole('heading',{name:'Zkontrolujte svůj e-mail.'}).waitFor();assert.equal(posts.at(-1).tickers.length,1)
+ assert.equal(await page.getByRole('button',{name:'Zaslat kalkulačku na mail'}).isDisabled(),true)
+ await page.locator('.real-etf-selection input').nth(1).check();await page.locator('#email').fill('test@example.invalid');await page.getByRole('button',{name:'Zaslat kalkulačku na mail'}).click();await page.getByRole('heading',{name:'Zkontrolujte svůj e-mail.'}).waitFor();assert.equal(posts.at(-1).tickers.length,1)
  console.log('PASS one-fund email submission and rejection of an empty selection')
  assert.deepEqual(events,[])
  for(const variant of ['editorial-demo','compact-blue','steps-green']){await page.goto(`${base}/?variant=${variant}`);await page.locator('#email').waitFor();assert.equal(await page.locator('.profit-comparison,.comparison-table,.concept-bar').count(),0)}
@@ -85,12 +87,12 @@ try{
  console.log('PASS reusable email link after lost cookie and in a fresh browser context restores saved edits')
  linkRevoked=true;await context.clearCookies();await page.goto(`${base}/#access=${token}`);await page.evaluate(()=>{Object.defineProperty(document,'hasFocus',{configurable:true,value:()=>true});globalThis.dispatchEvent(new globalThis.Event('focus'))});await page.getByRole('alert').filter({hasText:'invalid or expired'}).waitFor();assert.equal(await page.locator('.comparison-table').count(),0)
  console.log('PASS expired/revoked link does not restore access')
- failSend=true;await page.goto(base);await page.locator('#email').fill('test@example.invalid');await page.getByRole('button',{name:'Zaslat tabulku na mail'}).click();await page.getByRole('alert').filter({hasText:'TEST mail failed'}).waitFor();assert.equal(await page.getByRole('heading',{name:'Zkontrolujte svůj e-mail.'}).count(),0)
+ failSend=true;await page.goto(base);await page.locator('#email').fill('test@example.invalid');await page.getByRole('button',{name:'Zaslat kalkulačku na mail'}).click();await page.getByRole('alert').filter({hasText:'TEST mail failed'}).waitFor();assert.equal(await page.getByRole('heading',{name:'Zkontrolujte svůj e-mail.'}).count(),0)
  console.log('PASS failed mail never shows sent success')
- failSend=false;pendingSend=true;await page.getByRole('button',{name:'Zaslat tabulku na mail'}).click();await page.getByRole('alert').filter({hasText:'Server nepotvrdil odeslání'}).waitFor();assert.equal(await page.getByRole('heading',{name:'Zkontrolujte svůj e-mail.'}).count(),0);pendingSend=false
+ failSend=false;pendingSend=true;await page.getByRole('button',{name:'Zaslat kalkulačku na mail'}).click();await page.getByRole('alert').filter({hasText:'Server nepotvrdil odeslání'}).waitFor();assert.equal(await page.getByRole('heading',{name:'Zkontrolujte svůj e-mail.'}).count(),0);pendingSend=false
  console.log('PASS queued response never shows completed sending')
- await page.unroute('**/api/**');await page.route('**/api/catalog',r=>r.fulfill({json:{funds:[],privacy:null}}));await page.goto(base);await page.getByText('V katalogu zatím nejsou zveřejněné ověřené fondy.',{exact:false}).waitFor();assert.equal(await page.getByRole('button',{name:'Zaslat tabulku na mail'}).isDisabled(),true)
- await page.unroute('**/api/catalog');await page.route('**/api/catalog',r=>r.fulfill({json:{funds:options,privacy:null}}));await page.goto(base);await page.locator('.real-etf-selection input').first().waitFor();assert.equal(await page.getByRole('button',{name:'Zaslat tabulku na mail'}).isDisabled(),true)
+ await page.unroute('**/api/**');await page.route('**/api/catalog',r=>r.fulfill({json:{funds:[],privacy:null}}));await page.goto(base);await page.getByText('V katalogu zatím nejsou zveřejněné ověřené fondy.',{exact:false}).waitFor();assert.equal(await page.getByRole('button',{name:'Zaslat kalkulačku na mail'}).isDisabled(),true)
+ await page.unroute('**/api/catalog');await page.route('**/api/catalog',r=>r.fulfill({json:{funds:options,privacy:null}}));await page.goto(base);await page.locator('.real-etf-selection input').first().waitFor();assert.equal(await page.getByRole('button',{name:'Zaslat kalkulačku na mail'}).isDisabled(),true)
  await page.unroute('**/api/catalog');await page.route('**/api/catalog',r=>r.fulfill({status:503,json:{error:'TEST service unavailable'}}));await page.goto(base);await page.getByRole('button',{name:'Zkusit načíst katalog znovu'}).waitFor();assert.equal(await page.locator('.comparison-table').count(),0)
  console.log('PASS empty catalog, missing operator and API outage stay safe')
 }finally{await browser.close()}
