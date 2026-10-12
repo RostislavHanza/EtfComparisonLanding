@@ -4,7 +4,7 @@
 
 ## Jak web funguje
 
-Redakční úvod → výběr 2–5 ETF → e-mail → bezpečný odkaz → automatické ověření v aktivním prohlížeči → interaktivní kalkulačka, historie a podrobné srovnání. Veřejná stránka obsahuje pouze výběr a e-mail; kalkulačka a podrobná data jsou chráněné serverovou session. Výběr a výchozí částka 100 000 Kč se uloží v Supabase; částku lze měnit až v otevřeném přehledu.
+Redakční úvod → výběr alespoň jednoho ETF bez pevného maxima → e-mail → bezpečný odkaz → automatické ověření v aktivním prohlížeči → interaktivní kalkulačka, historie a podrobné srovnání. Veřejná stránka obsahuje pouze výběr a e-mail; kalkulačka a podrobná data jsou chráněné serverovou session. Výběr a výchozí částka 100 000 Kč se uloží v Supabase; částku lze měnit až v otevřeném přehledu.
 
 Kalkulace je částka × expense ratio / 100 (100 000 Kč × 0,03 % = 30 Kč/rok). Nezahrnuje brokera, konverze, daně nebo změny hodnoty investice a nepředpovídá výnosy. Nové historické r1/r3/r5 jsou kumulativní, vlastní scénář používá složené úročení; oba ignorují historický USD/CZK kurz. Historické total returns se nesnižují znovu o expense ratio. Podrobnosti a skutečné výnosy: [PERFORMANCE.md](docs/PERFORMANCE.md). PRIIPs/KID a omezená dostupnost amerických ETF pro retail v EU jsou viditelné před formulářem; obsah není doporučení.
 
@@ -25,7 +25,7 @@ npx playwright install chromium
 npm run test:browser
 ```
 
-Browser test používá izolované testovací odpovědi API, ne skutečnou databázi nebo odesílání. `BROWSER_PATH` může určit existující Chromium, `TEST_BASE_URL` testovaný build. Testy pokrývají katalog 20 fixtures, maximum pěti fondů, hledání, kalkulačku, formulář, automatické otevření aktivní stránky, obnovení/uložení, souhlas a prázdný katalog na šířkách 320–1440 px. SQL testy spouštějí skutečné migrace na PostgreSQL enginu PGlite a ověřují RLS/oprávnění, tokeny, session, retenci a odstranění starého provider RPC. Mail testy kontrolují konfiguraci, TLS, skutečnou MIME strukturu HTML/text, SMTP acceptance a bezpečné logování. Neprokazují živé Supabase/Gmail SMTP doručení.
+Browser test používá izolované testovací odpovědi API, ne skutečnou databázi nebo odesílání. `BROWSER_PATH` může určit existující Chromium, `TEST_BASE_URL` testovaný build. Testy pokrývají katalog 20 fixtures, stránkování po šesti, dva fondy na mobilní řádek, výběr jednoho i více než pěti fondů, hledání, kalkulačku, formulář, automatické otevření aktivní stránky, obnovení/uložení, souhlas a prázdný katalog na šířkách 320–1440 px. SQL testy spouštějí skutečné migrace na PostgreSQL enginu PGlite a ověřují RLS/oprávnění, tokeny, session, retenci a odstranění starého provider RPC. Mail testy kontrolují konfiguraci, TLS, skutečnou MIME strukturu HTML/text, SMTP acceptance a bezpečné logování. Neprokazují živé Supabase/Gmail SMTP doručení.
 
 ## Data a nasazení
 
@@ -91,3 +91,13 @@ Chráněný serverový `/api/performance?schema=3&comparison=ID` zachovává ke�
 `/api/catalog` bez ID vrací jen ticker, název a datum kontroly pro výběr. `?comparison=ID` vyžaduje serverovou session pro toto ID a zpřístupní kompletní katalog. `/api/performance` vyžaduje stejné ověření a má private/no-store; upstream cache zůstává na serveru. `/api/comparison` i zápis zůstávají svázané s HttpOnly cookie, nezávisle na stavu Reactu. Ověření stále emituje původní `email_confirmed` (ne nový email_verified) a otevření `comparison_opened` jen pro návštěvy s analytickým souhlasem.
 
 Před kontrolou nového Preview aplikujte **pouze novou** migraci `202610120008_reusable_comparison_links.sql` podle [SETUP.md](docs/SETUP.md). Původní migrace neopakovat. Žádná nová environment variable; změna nebyla vzdáleně nasazena ani ověřena skutečným e-mailem.
+
+## Texty a výběr ETF — 12. října 2026
+
+FAQ a potvrzení odeslání mají požadované texty; datum kontroly je pouze v detailu a zdrojích, nikoli ve výběru. Zpráva „Zpráva byla odeslána“ se zobrazí pouze po odpovědi status=sent, která na serveru následuje až po SMTP recipient acceptance a úspěšném zápisu stavu. Chyba nebo pouhé pending/queued nejsou úspěch; SMTP přijetí stále není důkaz doručení do inboxu.
+
+Počet fondů není pevně omezen: minimum jeden, bez duplicit, pouze publikovaný a čerstvě ověřený katalog. Zachovány 8KiB JSON limit a rate limiting. Začíná šest položek, Zobrazit další přidává po šesti. Vyhledávání prochází celý katalog a pro nový dotaz začíná šesti výsledky; vybrané tickery zůstávají označené a dostupné přes odebratelné štítky. Mobil má dva fondy na řádek. Rozsáhlejší detailní tabulka má na desktopu vlastní klávesnicí dostupný horizontální posun, nikoli přetékání celé stránky.
+
+**Před testem uložení jednoho či více než pěti fondů** jednou aplikujte migraci `202610120009_flexible_etf_selection.sql` podle SETUP, část 13. Předchozí 008 zachovává opakované návratové odkazy; pokud ještě nebyla aplikována, aplikujte ji před 009. Historický datový zdroj zůstává ověřený pro publikovanou pětici. Odstranění výběrového limitu nevytváří historická data pro další kandidáty: fond bez podkladů má prázdný vstupní předpoklad, funkční ruční model a žádnou vymyšlenou křivku.
+
+Viditelný zkrácený informační text používá požadované ETFMaster a mailto kontakt. Samostatné oznámení zachovává příjemce/zpracovatele a oddělení případných starších marketingových souhlasů. Před veřejným provozem správce musí sladit OPERATOR_NAME/OPERATOR_CONTACT se zveřejněným kontaktem, ověřit úplnou identitu správce (pokud ETFMaster je pouze značka) a doložit skutečné přenosy údajů mimo EHP včetně použitých záruk. Tyto právní/skutečné provozní informace nelze odvodit z kódu; jejich kontrola není předstírána. Konfigurace ani retenční lhůty nebyly změněny.

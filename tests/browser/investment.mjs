@@ -56,7 +56,7 @@ try{
   assert.ok((await page.locator('.history-coverage').innerText()).includes('156 týdnů'))
   // A single fund remains usable, with its own full-scale profit.
   await page.locator('.real-etf-option').filter({hasText:'VOO'}).locator('input').uncheck()
-  assert.equal(await page.locator('.profit-row').count(),1);assert.equal(await page.locator('.historical-chart svg polyline').count(),1)
+  assert.equal(await page.locator('.profit-row').count(),1);assert.equal(await page.locator('.historical-chart svg polyline').count(),1);assert.equal(await page.locator('.comparison-table thead th').count(),2)
   assert.equal(await page.locator('.profit-bar').evaluate(el=>el.style.width),'100%')
   await page.locator('.real-etf-option').filter({hasText:'VOO'}).locator('input').check()
   for(const ticker of ['IVV','VTI','IWM'])await page.locator('.real-etf-option').filter({hasText:ticker}).locator('input').check()
@@ -86,7 +86,17 @@ try{
   // Extreme valid amounts remain readable on narrow screens.
   await page.locator('#investment').fill('10000000');await page.getByLabel('Investiční horizont',{exact:true}).selectOption('20');await page.locator('#assumed-SPY').fill('100')
   assert.equal(requests,1);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth))
-  console.log(`PASS profit-only bars/shared zero, direct rates, reset/reference/graph, single and five funds, form return and responsiveness at ${width}px`);await page.close()
+  console.log(`PASS profit-only bars/shared zero, direct rates, reset/reference/graph, single and five funds, form return and responsiveness at ${width}px`);
+  // Synthetic sixth fund stays isolated in test responses; no invented production history.
+  const extra={ticker:'TESTEXTRA',name:'TEST ONLY EXTRA FUND',exchange:'NYSE Arca',index:'TEST ONLY',expenseRatioPercent:.03,dividends:'TEST ONLY',description:'TEST ONLY',verifiedAt:new Date().toISOString(),dataAsOf:new Date().toISOString(),sources:[]}
+  const expanded=[...funds,extra];await page.unroute('**/api/**')
+  await page.route('**/api/**',async route=>{const path=new URL(route.request().url()).pathname;await route.fulfill({json:path==='/api/catalog'?{funds:expanded,privacy:null}:path==='/api/comparison'?{...saved,tickers:expanded.map(f=>f.ticker),funds:expanded}:{funds:performance,unavailable:[]}})})
+  await page.reload();await page.locator('#assumed-TESTEXTRA').waitFor();assert.equal(await page.locator('.profit-row').count(),6)
+  assert.equal(await page.locator('#assumed-TESTEXTRA').inputValue(),'');await page.locator('#assumed-TESTEXTRA').fill('4');assert.ok(!(await profit('TESTEXTRA')).includes('Zadejte'))
+  assert.equal(await page.locator('.comparison-table thead th').count(),7)
+  await page.getByRole('group',{name:'Historické referenční období'}).getByRole('button',{name:'1 rok',exact:true}).click();await page.waitForFunction(()=>document.querySelectorAll('.historical-chart svg polyline').length===5)
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth))
+  console.log(`PASS six-fund calculator/table and honest missing history at ${width}px`);await page.close()
  }
  for(const unavailable of ['null','outage']){
   const page=await browser.newPage({viewport:{width:320,height:900}})

@@ -66,3 +66,13 @@ test('preview uses only SMTP_USER, ignores retired recipient configuration and r
  const unavailable=repository(),withoutUser=new Application(unavailable.repo,readAppConfig({...env,SMTP_USER:''}),{send:async()=>{throw Error('must not send')}})
  await assert.rejects(withoutUser.create(lead,'test-ip'),/testovací adresy/);assert.equal(unavailable.record,undefined)
 })
+
+test('SMTP-backed create and return flow accepts one or every catalog fund without a five-fund ceiling',async()=>{
+ for(const tickers of [['TESTA'],Array.from({length:20},(_,i)=>`TEST${i}`)]){
+  const db=repository();let link=''
+  const app=new Application(db.repo,config,{send:async(_email,url)=>{link=url;return 'test-provider'}})
+  assert.equal((await app.create({...lead,tickers},'test-ip')).status,'sent')
+  const token=new URLSearchParams(new URL(link).hash.slice(1)).get('access')!
+  const access=await app.access({token},'test-ip');assert.deepEqual((await app.read(access.id,access.session)).tickers,tickers)
+ }
+})

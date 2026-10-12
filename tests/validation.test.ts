@@ -6,8 +6,9 @@ import { validateImport } from '../server/import-validation.ts'
 import { guard, body, sessionCookie } from '../server/http.ts'
 const input={tickers:['TESTA','TESTB'],amountCzk:100000,email:'test@example.invalid',marketingConsent:false}
 test('server rejects malformed selections, amounts, consent, honeypot and attribution',()=>{
- assert.equal(comparisonInput({tickers:['A','B','C','D','E'],amountCzk:1.23}).tickers.length,5)
- for(const patch of [{tickers:['A']},{tickers:['A','A']},{tickers:['A','B','C','D','E','F']},{tickers:['a','B']},{amountCzk:NaN},{amountCzk:-1},{amountCzk:0.001},{amountCzk:10000001}])assert.throws(()=>comparisonInput({...input,...patch}))
+ assert.equal(comparisonInput({tickers:['A'],amountCzk:1.23}).tickers.length,1)
+ assert.equal(comparisonInput({tickers:Array.from({length:100},(_,i)=>`TEST${i}`),amountCzk:1.23}).tickers.length,100)
+ for(const patch of [{tickers:[]},{tickers:['A','A']},{tickers:['a','B']},{amountCzk:NaN},{amountCzk:-1},{amountCzk:0.001},{amountCzk:10000001}])assert.throws(()=>comparisonInput({...input,...patch}))
  for(const patch of [{email:'bad'},{email:'a@b.com\r\nBcc: a@b.com'},{marketingConsent:'true'},{website:'bot'}])assert.throws(()=>leadInput({...input,...patch}))
  assert.equal(leadInput(input).marketingConsent,false);assert.equal(attribution({consent:false}),null);assert.throws(()=>attribution({consent:true,visitId:'-'.repeat(36)}))
 })
