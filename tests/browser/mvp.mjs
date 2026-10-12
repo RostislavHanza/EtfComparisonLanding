@@ -27,7 +27,10 @@ try{
   assert.equal(await page.locator('h1').innerText(),'Americká ETF\nKalkulačka výnosů')
   if(width<700)assert.ok(await page.locator('.hero h1').evaluate(h=>{
    const first=document.createRange(),second=document.createRange();first.selectNodeContents(h.querySelector('span'));second.selectNodeContents(h.querySelector('em'))
+   const bounds=second.getBoundingClientRect(),headingSize=parseFloat(getComputedStyle(h).fontSize),subheadingSize=parseFloat(getComputedStyle(h.querySelector('em')).fontSize)
    return first.getClientRects().length===1&&second.getClientRects().length===1&&h.scrollWidth<=h.clientWidth
+    &&bounds.left>=20&&innerWidth-bounds.right>=32
+    &&Math.abs(headingSize-Math.min(innerWidth*.12,46.4))<.01&&Math.abs(subheadingSize/headingSize-.92)<.001
   }))
   assert.equal(await page.locator('.editorial-intro').evaluate(e=>getComputedStyle(e).borderTopWidth),await page.locator('.selection-section').evaluate(e=>getComputedStyle(e).borderTopWidth))
 
