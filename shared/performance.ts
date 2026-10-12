@@ -1,6 +1,6 @@
 import type { WeeklyReturn } from './history.js'
 import { MAX_AMOUNT_CZK } from './model.js'
-export const PERFORMANCE_TICKERS=['SPY','VOO','IVV','VTI','IWM'] as const
+export const PERFORMANCE_TICKERS=['SPY','VOO','IVV','VTI','IWM','DIA','IJH','IJR','ITOT','MDY','RSP','SCHB','SCHD','SPYD','VEA','VT','VTV','VUG','VWO','VYM'] as const
 export type HistoricalYears=1|3|5
 export interface FundPerformance {ticker:string;r1:number|null;r3:number|null;r5:number|null;asOf:string;retrievedAt:string;sourceUrl:string;attributionUrl:string;license:'CC BY 4.0';currency:'USD';weeklyReturns?:WeeklyReturn[];historyUnavailable?:boolean;stale?:boolean}
 export interface PerformanceCatalog {funds:FundPerformance[];unavailable:string[]}

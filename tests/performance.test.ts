@@ -2,10 +2,11 @@ import { Application,HttpError } from '../server/application.js'
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
-import { historicalValue,annualizedReturn,scenarioSeries } from '../shared/performance.js'
+import { historicalValue,annualizedReturn,scenarioSeries,PERFORMANCE_TICKERS } from '../shared/performance.js'
 import { normalizePerformance,fetchPerformance,createPerformanceCache } from '../server/performance.js'
 const observations=JSON.parse(await readFile('data/review/performance-observations.json','utf8'))
 const sample=observations.funds[0]
+const allObservations=[...observations.funds,...JSON.parse(await readFile('data/review/remaining-fifteen.performance.json','utf8')).funds]
 test('real observed five-fund snapshots retain cumulative values, price dates and attribution without raw histories',()=>{
  assert.equal(observations.funds.length,5)
  for(const raw of observations.funds){
@@ -40,13 +41,13 @@ test('loader is fixed, timed out safely and cache coalesces requests and preserv
  await assert.rejects(fetchPerformance('SPY',async()=>new Response('{}',{status:503})))
  await assert.rejects(fetchPerformance('SPY',async(_input,options)=>new Promise((_resolve,reject)=>options?.signal?.addEventListener('abort',()=>reject(Error('timeout')))),5))
  let time=0,calls=0,fail=false
- const cache=createPerformanceCache(async ticker=>{calls++;if(fail&&ticker==='SPY')throw Error('timeout');const raw=observations.funds.find((r:{ticker:string})=>r.ticker===ticker);return normalizePerformance(raw,ticker)},()=>time)
- const [a,b]=await Promise.all([cache(),cache()]);assert.equal(a,b);assert.equal(calls,5)
- await cache();assert.equal(calls,5)
+ const cache=createPerformanceCache(async ticker=>{calls++;if(fail&&ticker==='SPY')throw Error('timeout');const raw=allObservations.find((r:{ticker:string})=>r.ticker===ticker);return normalizePerformance(raw,ticker)},()=>time)
+ const [a,b]=await Promise.all([cache(),cache()]);assert.equal(a,b);assert.equal(calls,PERFORMANCE_TICKERS.length)
+ await cache();assert.equal(calls,PERFORMANCE_TICKERS.length)
  time+=86400001;fail=true;const stale=await cache();assert.equal(stale.funds.find(f=>f.ticker==='SPY')!.r1,20.5);assert.equal(stale.funds.find(f=>f.ticker==='SPY')!.stale,true);assert.deepEqual(stale.unavailable,['SPY'])
  let failures=0
  const down=createPerformanceCache(async()=>{failures++;throw Error('unavailable')},()=>time)
- await assert.rejects(down());await assert.rejects(down());assert.equal(failures,5)
+ await assert.rejects(down());await assert.rejects(down());assert.equal(failures,PERFORMANCE_TICKERS.length)
 })
 test('protected performance endpoint checks the session before loading data and never exposes CDN cache',async t=>{
  const endpoint=(await import('../api/performance.js')).default
@@ -57,13 +58,13 @@ test('protected performance endpoint checks the session before loading data and 
  const urls:string[]=[],headers:Record<string,string>={};let status=0,body:unknown
  t.mock.method(globalThis,'fetch',async(input:string|URL|Request)=>{
   const url=String(input);urls.push(url)
-  const row=observations.funds.find((r:{sourceUrl:string})=>r.sourceUrl===url)
+  const row=allObservations.find((r:{sourceUrl:string})=>r.sourceUrl===url)
   assert.ok(row);return new Response(JSON.stringify({...row,holdings:['DO NOT FORWARD'],last_close:123}))
  })
  const response={setHeader(key:string,value:string){headers[key]=value},status(code:number){status=code;return this},json(value:unknown){body=value}}
  await endpoint({method:'POST',headers:{}} as unknown as Parameters<typeof endpoint>[0],response as unknown as Parameters<typeof endpoint>[1]);assert.equal(status,405);assert.equal(urls.length,0)
  await endpoint({method:'GET',headers:{},query:{}} as unknown as Parameters<typeof endpoint>[0],response as unknown as Parameters<typeof endpoint>[1]);assert.equal(status,401);assert.equal(urls.length,0)
  await endpoint({method:'GET',headers:{cookie:`etf_session=${'s'.repeat(43)}`},query:{comparison:'test'}} as unknown as Parameters<typeof endpoint>[0],response as unknown as Parameters<typeof endpoint>[1])
- assert.equal(status,200);assert.equal(urls.length,5);assert.equal(headers['Cache-Control'],'private, no-store')
+ assert.equal(status,200);assert.equal(urls.length,PERFORMANCE_TICKERS.length);assert.equal(headers['Cache-Control'],'private, no-store')
  const text=JSON.stringify(body);assert.equal(text.includes('DO NOT FORWARD'),false);assert.equal(text.includes('"weekly":'),false);assert.equal(text.includes('last_close'),false)
 })

@@ -1,0 +1,61 @@
+{
+  "records": [
+    {
+      "ticker": "RSP",
+      "published": false,
+      "apiName": "Invesco S&P 500 Equal Weight ETF",
+      "apiExpenseRatioPercent": 0.2,
+      "index": null,
+      "dividends": null,
+      "blockers": [
+        "Primární produktovou stránku a alternativní zdroj emitenta/SEC blokuje síťová brána (CONNECT 403). Aktuální index, distribuce a nezávislé potvrzení metadat nejsou v této úloze doloženy."
+      ],
+      "sources": [
+        {
+          "id": "RSP-api",
+          "url": "https://tickerinside.com/api/v1/fund/rsp.json",
+          "sha256": "c1eeb8e55e9b8d1cc7b611d9fdbaf231ac3947506762507a33b7887723bce8ec",
+          "retrievedAt": "2026-10-12T12:33:41.131688+00:00"
+        }
+      ]
+    },
+    {
+      "ticker": "SCHB",
+      "published": false,
+      "apiName": "Schwab U.S. Broad Market ETF",
+      "apiExpenseRatioPercent": 0.03,
+      "index": null,
+      "dividends": null,
+      "blockers": [
+        "Primární produktovou stránku a alternativní zdroj emitenta/SEC blokuje síťová brána (CONNECT 403). Aktuální index, distribuce a nezávislé potvrzení metadat nejsou v této úloze doloženy."
+      ],
+      "sources": [
+        {
+          "id": "SCHB-api",
+          "url": "https://tickerinside.com/api/v1/fund/schb.json",
+          "sha256": "78b76174e1b455149b7177328e5480b77c948a79418954a72b7e6a55ac038653",
+          "retrievedAt": "2026-10-12T12:33:41.043893+00:00"
+        }
+      ]
+    },
+    {
+      "ticker": "SCHD",
+      "published": false,
+      "apiName": "Schwab US Dividend Equity ETF",
+      "apiExpenseRatioPercent": 0.06,
+      "index": null,
+      "dividends": null,
+      "blockers": [
+        "Primární produktovou stránku a alternativní zdroj emitenta/SEC blokuje síťová brána (CONNECT 403). Aktuální index, distribuce a nezávislé potvrzení metadat nejsou v této úloze doloženy."
+      ],
+      "sources": [
+        {
+          "id": "SCHD-api",
+          "url": "https://tickerinside.com/api/v1/fund/schd.json",
+          "sha256": "f224bbf9073ee1ce4a35bba3d0ef60e64e6e97cb2939c119ec57294f44723637",
+          "retrievedAt": "2026-10-12T12:33:41.058248+00:00"
+        }
+      ]
+    }
+  ]
+}
