@@ -30,10 +30,15 @@ export function createPerformanceCache(load:(ticker:string)=>Promise<FundPerform
   if(pending)return pending
   pending=(async()=>{
    const funds:FundPerformance[]=[],unavailable:string[]=[]
-   // Small fixed catalog, sequential requests; no caller-selected upstream URL or bulk history extraction.
-   for(const ticker of PERFORMANCE_TICKERS){try{funds.push(await load(ticker))}catch{
-    unavailable.push(ticker);const last=snapshot?.funds.find(f=>f.ticker===ticker);if(last)funds.push({...last,stale:true})
-   }}
+   // Fixed source allowlist; three requests at a time keep 20 timeouts within the function budget.
+   for(let offset=0;offset<PERFORMANCE_TICKERS.length;offset+=3){
+    const batch=PERFORMANCE_TICKERS.slice(offset,offset+3),results=await Promise.allSettled(batch.map(ticker=>load(ticker)))
+    for(let i=0;i<batch.length;i++){
+     const ticker=batch[i],result=results[i]
+     if(result.status==='fulfilled')funds.push(result.value)
+     else{unavailable.push(ticker);const last=snapshot?.funds.find(f=>f.ticker===ticker);if(last)funds.push({...last,stale:true})}
+    }
+   }
    if(!funds.length){expires=now()+300_000;failure=new HttpError(503,'Historická data nyní nejsou dostupná. Hypotetický výpočet můžete použít dál.');throw failure}
    failure=undefined;snapshot={funds,unavailable};expires=now()+(unavailable.length?300_000:86_400_000);return snapshot
   })()
