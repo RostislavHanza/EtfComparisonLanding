@@ -128,3 +128,10 @@
  .comparison-table-scroll.wide .comparison-table{table-layout:auto}
  .comparison-table-scroll.wide th,.comparison-table-scroll.wide td{min-width:140px}
 }
+
+/* One divider between the introductory steps and fund selection. */
+.editorial.original-editorial .editorial-intro li:last-child{border-bottom:0}
+.editorial.original-editorial .selection-section{border-top:3px solid var(--accent)}
+.profit-controls-row .profit-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem 1rem}
+.profit-controls-row .history-period{margin-top:0}
+.profit-controls-row .profit-history-note{margin:0 0 .5rem}

@@ -19,7 +19,8 @@ try{
   })
   await page.goto(`${base}/?comparison=${id}`);await page.getByRole('button',{name:'Odmítnout',exact:true}).click()
   await page.locator('#assumed-SPY').waitFor();await page.waitForFunction(()=>document.querySelector('#assumed-SPY').value!=='')
-  const periodButton=year=>page.getByRole('group',{name:'Historické referenční období'}).getByRole('button',{name:year===1?'1 rok':year===3?'3 roky':'5 let',exact:true})
+  const periodButton=year=>page.getByRole('group',{name:'Historické referenční období odhadu'}).getByRole('button',{name:year===1?'1 rok':year===3?'3 roky':'5 let',exact:true})
+  const graphButton=year=>page.getByRole('group',{name:'Období historického grafu'}).getByRole('button',{name:year===1?'1 rok':year===3?'3 roky':'5 let',exact:true})
   const profit=async ticker=>(await page.getByTestId(`profit-${ticker}`).innerText()).replace(/\s/g,'')
   assert.equal(await page.locator('#assumed-SPY').inputValue(),((1.867**.2-1)*100).toFixed(2))
   assert.equal(await page.locator('#assumed-VOO').inputValue(),((1.872**.2-1)*100).toFixed(2))
@@ -30,6 +31,10 @@ try{
   assert.equal(await page.getByRole('columnheader',{name:'Předpokládaný výnos ročně (%)',exact:true}).count(),1)
   assert.equal(await page.getByRole('button',{name:'Obnovit podle historie',exact:true}).count(),1)
   assert.equal(await page.locator('#profit-history-note').count(),1)
+  assert.equal(await page.locator('.profit-comparison tbody tr').last().getAttribute('class'),'profit-controls-row')
+  assert.equal(await page.locator('.profit-controls-row #profit-history-note,.profit-controls-row .restore-history,.profit-controls-row [role=group]').count(),3)
+  assert.equal(await page.getByRole('heading',{name:'Detailní přehled.',exact:true}).count(),1)
+  assert.equal(await page.locator('.comparison-section .eyebrow').textContent(),'04 / Srovnání')
   assert.equal(await page.locator('.profit-row label,.profit-row button,.profit-row small').count(),0)
   // Display profit, not future value; edit immediately, preserve independent assumptions.
   await page.getByLabel('Investiční horizont',{exact:true}).selectOption('1');await page.locator('#assumed-SPY').fill('62')
@@ -47,13 +52,17 @@ try{
   await periodButton(1).click()
   assert.equal(await page.locator('#assumed-SPY').inputValue(),'20.50');assert.equal(await page.locator('#assumed-VOO').inputValue(),'20.50')
   assert.equal(await page.getByLabel('Investiční horizont',{exact:true}).inputValue(),'3')
-  assert.notEqual(await profit('VOO'),'-54200,00Kč');assert.ok((await page.locator('.history-coverage').innerText()).includes('52 týdnů'))
+  assert.notEqual(await profit('VOO'),'-54200,00Kč');assert.ok((await page.locator('.history-coverage').innerText()).includes('156 týdnů'))
+  const initialModel={spy:await profit('SPY'),voo:await profit('VOO'),bars:await page.locator('.profit-bar').evaluateAll(es=>es.map(e=>e.getAttribute('style')))}
+  await graphButton(1).click();assert.ok((await page.locator('.history-coverage').innerText()).includes('52 týdnů'))
+  assert.equal(await profit('SPY'),initialModel.spy);assert.equal(await profit('VOO'),initialModel.voo);assert.deepEqual(await page.locator('.profit-bar').evaluateAll(es=>es.map(e=>e.getAttribute('style'))),initialModel.bars)
   await page.locator('#assumed-SPY').fill('6');await page.locator('#assumed-VOO').fill('-10')
   await page.getByRole('button',{name:'Obnovit podle historie',exact:true}).click()
   assert.equal(await page.locator('#assumed-SPY').inputValue(),'20.50');assert.equal(await page.locator('#assumed-VOO').inputValue(),'20.50')
   await periodButton(3).click()
   for(const ticker of ['SPY','VOO']){const r=observed.find(r=>r.ticker===ticker);assert.equal(await page.locator(`#assumed-${ticker}`).inputValue(),((Math.pow(1+r.r3/100,1/3)-1)*100).toFixed(2))}
-  assert.ok((await page.locator('.history-coverage').innerText()).includes('156 týdnů'))
+  assert.ok((await page.locator('.history-coverage').innerText()).includes('52 týdnů'))
+  await graphButton(3).click();assert.ok((await page.locator('.history-coverage').innerText()).includes('156 týdnů'))
   // A single fund remains usable, with its own full-scale profit.
   await page.locator('.real-etf-option').filter({hasText:'VOO'}).locator('input').uncheck()
   assert.equal(await page.locator('.profit-row').count(),1);assert.equal(await page.locator('.historical-chart svg polyline').count(),1);assert.equal(await page.locator('.comparison-table thead th').count(),2)
@@ -62,7 +71,8 @@ try{
   for(const ticker of ['IVV','VTI','IWM'])await page.locator('.real-etf-option').filter({hasText:ticker}).locator('input').check()
   assert.equal(await page.locator('.profit-row').count(),5);assert.equal(await page.locator('.history-legend li').count(),5)
   assert.equal(await page.locator('.historical-chart svg polyline').count(),5)
-  await periodButton(5).click()
+  await periodButton(5).click();assert.ok(!(await page.locator('.history-coverage').innerText()).includes('Pětiletý výnos je souhrnný'))
+  await graphButton(5).click()
   assert.ok((await page.locator('.history-coverage').innerText()).includes('Pětiletý výnos je souhrnný'))
   for(const ticker of ['SPY','VOO','IVV','VTI','IWM']){const r=observed.find(r=>r.ticker===ticker);assert.equal(await page.locator(`#assumed-${ticker}`).inputValue(),((Math.pow(1+r.r5/100,1/5)-1)*100).toFixed(2))}
   for(const ticker of ['SPY','VOO','IVV','VTI','IWM'])await page.locator(`#assumed-${ticker}`).fill('1')
@@ -73,6 +83,7 @@ try{
   await page.getByLabel('Prohlédnout historický týden').fill('156');assert.ok((await page.locator('.history-tooltip').innerText()).includes('9. 10. 2026'))
   await page.locator('.historical-chart svg').hover({position:{x:80,y:80}});assert.ok(!(await page.locator('.history-tooltip strong').innerText()).includes('9. 10. 2026'))
   await page.locator('#assumed-SPY').fill('6');await page.locator('#assumed-VOO').fill('-10')
+  const manualProfit=await profit('VOO');await graphButton(1).click();assert.equal(await page.locator('#assumed-VOO').inputValue(),'-10');assert.equal(await profit('VOO'),manualProfit);await graphButton(5).click()
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth))
   await page.locator('.investment-section').screenshot({path:`.cache/profit-${width}.png`})
   await page.locator('#assumed-SPY').fill('-101');assert.ok((await profit('SPY')).includes('Zadejte'));assert.equal(await page.locator('.profit-row').filter({has:page.locator('#assumed-SPY')}).locator('.profit-bar').count(),0)
@@ -94,7 +105,7 @@ try{
   await page.reload();await page.locator('#assumed-TESTEXTRA').waitFor();assert.equal(await page.locator('.profit-row').count(),6)
   assert.equal(await page.locator('#assumed-TESTEXTRA').inputValue(),'');await page.locator('#assumed-TESTEXTRA').fill('4');assert.ok(!(await profit('TESTEXTRA')).includes('Zadejte'))
   assert.equal(await page.locator('.comparison-table thead th').count(),7)
-  await page.getByRole('group',{name:'Historické referenční období'}).getByRole('button',{name:'1 rok',exact:true}).click();await page.waitForFunction(()=>document.querySelectorAll('.historical-chart svg polyline').length===5)
+  await page.getByRole('group',{name:'Období historického grafu'}).getByRole('button',{name:'1 rok',exact:true}).click();await page.waitForFunction(()=>document.querySelectorAll('.historical-chart svg polyline').length===5)
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth))
   console.log(`PASS six-fund calculator/table and honest missing history at ${width}px`);await page.close()
  }
@@ -111,6 +122,8 @@ try{
   assert.equal(await page.locator('#assumed-SPY').inputValue(),'')
   await page.locator('#assumed-SPY').fill('0');assert.ok((await page.getByTestId('profit-SPY').innerText()).replace(/\s/g,'').includes('0,00'))
   assert.equal(await page.locator('.historical-chart svg').count(),0)
+  await page.getByRole('group',{name:'Období historického grafu'}).getByRole('button',{name:'1 rok',exact:true}).click();assert.equal(await page.locator('#assumed-SPY').inputValue(),'0')
+  await page.getByRole('group',{name:'Historické referenční období odhadu'}).getByRole('button',{name:'3 roky',exact:true}).click();assert.equal(await page.locator('#assumed-SPY').inputValue(),'')
   console.log(`PASS ${unavailable} history leaves assumptions empty and manual model functional`);await page.close()
  }
 }finally{await browser.close()}
