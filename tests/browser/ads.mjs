@@ -117,7 +117,7 @@ try {
       assert.equal(Number(await page.locator('#horizon').inputValue()),years)
       await check(123456.789,1.2345,gross('VOO',3,.03),years)
     }
-    assert.ok(await page.locator('h1 em').evaluate(e=>getComputedStyle(e).color==='rgb(40, 76, 57)'))
+    assert.ok(await page.locator('h1 em').evaluate(e=>getComputedStyle(e).color==='rgb(40, 76, 57)'&&getComputedStyle(e).fontStyle==='normal'))
     if(width<700)assert.ok(await page.locator('h1 em').evaluate(e=>Math.abs(e.getBoundingClientRect().x+e.getBoundingClientRect().width/2-innerWidth/2)<1))
     for(const fee of await page.locator('.fee-label').all())assert.ok(await fee.evaluate(e=>{const r=document.createRange();r.selectNodeContents(e);return r.getClientRects().length===1}))
 

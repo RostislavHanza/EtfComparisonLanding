@@ -1,5 +1,5 @@
 /* Original palette and typography are inherited unchanged from 1716fea styles.css. */
-.original-editorial .editorial-intro { border-top: 4px solid var(--accent); padding: 28px 0; }
+.original-editorial .editorial-intro { border-top: 3px solid var(--accent); padding: 28px 0; }
 .original-editorial .editorial-intro h2 { margin-top: 12px; font-size: 32px; }
 .editorial-intro ol { list-style: none; padding: 0; margin: 26px 0; }
 .editorial-intro li { display: flex; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
@@ -160,4 +160,9 @@
  .has-benefits .hero{grid-column:1;grid-row:1}
  .has-benefits .editorial-intro{grid-column:2;grid-row:1}
  .has-benefits .comparison-benefits{grid-column:1/-1;grid-row:2;margin-top:0}
+}
+
+@media(max-width:699px){
+ .editorial.original-editorial .hero h1{font-size:min(12vw,46.4px)}
+ .editorial.original-editorial .hero h1>span,.editorial.original-editorial .hero h1>em{white-space:nowrap}
 }

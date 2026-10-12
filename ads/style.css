@@ -57,7 +57,7 @@ footer a { color: #284c39; text-underline-offset: 3px; }
 .amount-controls input[type=range]{display:block;width:100%;min-height:44px;padding:0;border:0;background:transparent;accent-color:#284c39}
 .range-limits{display:flex;justify-content:space-between;font-size:11px;color:#56675e}
 
-h1 em{color:#284c39}
+h1 em{color:#284c39;font-style:normal}
 .fee-label{display:block;white-space:nowrap}
 .horizon-controls input[type=range]{display:block;width:100%;min-height:44px;padding:0;border:0;background:transparent;accent-color:#284c39}
 @media(max-width:699px){
