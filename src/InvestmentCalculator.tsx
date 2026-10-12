@@ -1,0 +1,56 @@
+import { useEffect,useState } from 'react'
+import type { Dispatch,SetStateAction } from 'react'
+import type { EtfRecord } from '../shared/model'
+import { MAX_AMOUNT_CZK,money } from '../shared/model'
+import { PERFORMANCE_TICKERS,annualizedReturn,grossReturnFromNet,scenarioProfit,profitScale } from '../shared/performance'
+import type { HistoricalYears,PerformanceCatalog } from '../shared/performance'
+import { loadPerformance } from './performance-client'
+import HistoricalChart from './HistoricalChart'
+export interface InvestmentSettings {period:HistoricalYears;graphPeriod:HistoricalYears;horizon:number;edits:Record<string,string>}
+interface Props {comparisonId:string;funds:EtfRecord[];amount:number;draft:string;update:(value:string)=>void;invalid:boolean;settings:InvestmentSettings;onSettingsChange:Dispatch<SetStateAction<InvestmentSettings>>}
+export default function InvestmentCalculator({comparisonId,funds,amount,draft,update,invalid,settings,onSettingsChange}:Props){
+ const {period,graphPeriod,horizon,edits}=settings
+ const setPeriod=(period:HistoricalYears)=>onSettingsChange(previous=>previous.period===period?previous:{...previous,period,edits:{}})
+ const setGraphPeriod=(graphPeriod:HistoricalYears)=>onSettingsChange(previous=>({...previous,graphPeriod}))
+ const setHorizon=(horizon:number)=>onSettingsChange(previous=>({...previous,horizon}))
+ const setEdits=(update:(previous:Record<string,string>)=>Record<string,string>)=>onSettingsChange(previous=>({...previous,edits:update(previous.edits)}))
+ const [data,setData]=useState<PerformanceCatalog>(),[error,setError]=useState(''),[loading,setLoading]=useState(false)
+ const supported=funds.some(f=>PERFORMANCE_TICKERS.includes(f.ticker as typeof PERFORMANCE_TICKERS[number]))
+ async function reload(){setLoading(true);setError('');try{setData(await loadPerformance(comparisonId))}catch{setError('Historická data nyní nejsou dostupná. Vlastní předpoklady můžete zadat dál.')}finally{setLoading(false)}}
+ useEffect(()=>{
+  if(!supported)return
+  let active=true
+  loadPerformance(comparisonId).then(value=>{if(active)setData(value)}).catch(()=>{if(active)setError('Historická data nyní nejsou dostupná. Vlastní předpoklady můžete zadat dál.')})
+  return()=>{active=false}
+ },[supported,comparisonId])
+ const records=funds.flatMap(f=>{const record=data?.funds.find(r=>r.ticker===f.ticker);return record?[record]:[]})
+ function restore(){setEdits(previous=>{const next={...previous};for(const f of funds)delete next[f.ticker];return next})}
+ const models=funds.map(f=>{
+  const record=data?.funds.find(r=>r.ticker===f.ticker),annual=grossReturnFromNet(annualizedReturn(record?.[`r${period}`]??null,period),f.expenseRatioPercent)
+  const manual=Object.hasOwn(edits,f.ticker),rate=manual?edits[f.ticker]:annual===null?'':annual.toFixed(2)
+  const valid=rate.trim()!==''&&Number.isFinite(Number(rate))&&Number(rate)>=-100&&Number(rate)<=100
+  return {f,annual,manual,rate,valid,profit:valid?scenarioProfit(amount,Number(rate),horizon,f.expenseRatioPercent):null}
+ })
+ const scale=profitScale(models.map(m=>m.profit))
+ return <>
+ <section className="calculator-section investment-section" aria-labelledby="investment-title">
+ <div className="section-heading"><span className="eyebrow">02 / Odhadovaný výnos</span><h2 id="investment-title">Odhadovaný zisk</h2></div>
+ <div className="investment-setup"><div className="amount-controls"><label htmlFor="investment">Investovaná částka v Kč</label><input id="investment" type="number" min="0" max={MAX_AMOUNT_CZK} step="0.01" value={draft} onChange={e=>update(e.target.value)} aria-invalid={invalid} aria-describedby="amount-error"/><p id="amount-error" role="status">{invalid?'Zadejte částku od 0 do 10 milionů Kč, nejvýše se dvěma desetinnými místy. Model ukazuje poslední platnou částku.':''}</p><label className="range-label" htmlFor="investment-range">Upravit částku posuvníkem</label><input id="investment-range" type="range" min="0" max={MAX_AMOUNT_CZK} step="1000" value={amount} onChange={e=>update(e.target.value)} aria-valuetext={money(amount)}/><div className="range-limits"><span>0 Kč</span><span>10 mil. Kč</span></div></div><div className="investment-controls"><div><label htmlFor="investment-horizon">Investiční horizont</label><select id="investment-horizon" value={horizon} onChange={e=>setHorizon(Number(e.target.value))}>{[1,3,5,10,15,20].map(year=><option key={year} value={year}>{year} {year===1?'rok':year===3?'roky':'let'}</option>)}</select></div></div></div>
+ {error&&<p role="status">{error} <button className="back-button" disabled={loading} onClick={()=>void reload()}>Zkusit historická data znovu</button></p>}
+ <p className="profit-explainer">Rozdíl proti vkladu po {horizon} {horizon===1?'roce':'letech'} · společná stupnice všech fondů. Historická reference: {period} {period===1?'rok':period===3?'roky':'let'}.</p>
+ <table className="profit-comparison" aria-label="Srovnání odhadovaných zisků"><colgroup><col className="profit-fund-column"/><col className="profit-rate-column"/><col className="profit-value-column"/></colgroup><thead><tr><th scope="col">ETF</th><th scope="col" id="profit-rate-heading">Předpokládaný výnos ročně (%)</th><th scope="col">Odhadovaný zisk</th></tr></thead><tbody>{models.map(({f,rate,valid,profit},i)=>{
+  const bar=scale.bars[i]
+  return <tr className="profit-row" key={f.ticker}>
+   <th scope="row" className="profit-fund"><strong>{f.ticker}</strong><span>{f.name}</span></th>
+   <td className="profit-assumption"><input id={`assumed-${f.ticker}`} aria-label={`Předpokládaný výnos ročně (%) – ${f.ticker}`} type="number" min="-100" max="100" step="any" value={rate} onChange={e=>setEdits(previous=>({...previous,[f.ticker]:e.target.value}))} aria-invalid={rate!==''&&!valid} aria-describedby="profit-history-note"/></td>
+   <td><div className="profit-result"><div className="profit-track" aria-hidden="true"><span className="profit-zero" style={{left:`${scale.zero}%`}}/>{bar&&<span className={`profit-bar ${profit!<0?'negative':'positive'}`} style={{left:`${bar.start}%`,width:`${bar.width}%`}}/>}</div><strong className={profit===null?'':profit<0?'profit-loss':'profit-gain'} data-testid={`profit-${f.ticker}`}>{profit===null?'Zadejte vlastní předpoklad':`${profit>0?'+':''}${money(profit)}`}</strong>{rate!==''&&!valid&&<p role="status">Zadejte roční výnos od −100 do 100 %.</p>}</div></td>
+  </tr>
+ })}<tr className="profit-controls-row"><td colSpan={3}>
+ <p id="profit-history-note" className="profit-history-note">Procenta jsou předvyplněna podle historické výkonnosti.</p>
+ <div className="profit-controls"><button className="restore-history" type="button" onClick={restore}>Obnovit podle historie</button><div className="history-period" role="group" aria-label="Historické referenční období odhadu">{([1,3,5] as const).map(year=><button key={year} type="button" aria-pressed={period===year} onClick={()=>setPeriod(year)}>{year} {year===1?'rok':year===3?'roky':'let'}</button>)}</div></div>
+ </td></tr></tbody></table>
+ <p className="model-note">Výchozí předpoklad vychází z historické výkonnosti ETF. Jde o modelový scénář, nikoliv předpověď. Minulé výnosy nezaručují budoucí výsledky.</p><p className="calculation-note">Korunový model nezohledňuje změny USD/CZK, daně ani poplatky brokera.</p>
+ <details className="investment-methodology"><summary>Metodika výnosů a zdroje</summary><p>Roční historické tempo = ((1 + kumulativní výnos / 100)^(1 / počet let) − 1) × 100. Předvyplněný vstup je zaokrouhlen na dvě desetinná místa. Model = vklad × ((1 + roční předpoklad / 100) × (1 − nákladovost / 100))^horizont. Ruční změny zůstávají při změně částky a horizontu. Přepnutí referenčního období odhadu obnoví sazby všech fondů; období historického grafu je nezávislé; společné tlačítko obnoví sazby všech vybraných fondů. Zisk je modelová hodnota minus počáteční vklad, všechny pruhy používají společnou nulu a lineární stupnici.</p><p>Podklad tvoří dividendově upravená tržní výkonnost ETF v USD. Průběžné náklady už ovlivňují hodnotu fondu, nejde o hrubou indexovou řadu; expense ratio znovu neodečítáme. Historie ETF může zahrnovat změnu benchmarku. Není to skutečně dosažený korunový výnos ani investiční doporučení.</p><p>Graf násobí skutečné týdenní výnosy, nikoli interpolaci nebo předpokládané roční tempo. Data jsou zaokrouhlená u zdroje, součin se může mírně lišit od souhrnného r3. Datum označuje kalendářní konec týdne podle weeks_end; nejde o tvrzení, že obchodování proběhlo přesně v tento den. Chybějící týdny nenahrazujeme nulou; používáme společný souvislý úsek. Základ 100 je normalizace, nikoli historická cena.</p>{records.map(r=><p key={r.ticker}>{r.ticker}: data cen k {r.asOf}, staženo {r.retrievedAt.slice(0,10)}. <a href={r.sourceUrl} target="_blank" rel="noreferrer">Konkrétní fund JSON</a>{r.stale?' · poslední platná data po chybě obnovení':''}.</p>)}</details>
+ </section><HistoricalChart records={records} period={graphPeriod} onPeriodChange={setGraphPeriod}/>
+ </>
+}

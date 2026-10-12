@@ -1,0 +1,26 @@
+{
+  "reviewer": "admin",
+  "verifiedAt": "2026-10-12T13:12:39.752862+00:00",
+  "reviewedDraftSha256": "2803d7d49e0cea31b75ea8d55f2b8805a9c856b28b7746b3173912b2df198961",
+  "approvedTickers": [
+    "RSP",
+    "SCHB",
+    "SCHD"
+  ],
+  "confirmAllListedSources": true,
+  "technicalReviewPerformedBy": "AI assistant under operator instruction, not a claimed personal human inspection",
+  "decisionSource": "Current operator instruction to complete the final three and prepare their import using the same accepted limited-facts workflow as the previous seventeen.",
+  "usageReview": {
+    "approved": true,
+    "approvalType": "operator-publication-decision",
+    "issuerPermissionClaimed": false,
+    "basis": "Aktuální pokyn provozovatele dokončit RSP/SCHB/SCHD a připravit import stejným omezeným faktickým modelem jako předchozích 17 fondů. Skutečné ověření aktuálních veřejných produktových profilů a konkrétního API provedla AI v čase verifiedAt. Admin je administrativní label provozovatele, nikoli smyšlené osobní jméno nebo tvrzení lidské návštěvy dokumentů. Souhlas se sestavením této konkrétní dávky je oddělen od technických důkazů; správce ji před samostatným zápisem přezkoumá. Pouze jednotlivá fakta, vlastní české popisy, transparentní původ a atribuce TickerInside. Nejde o právní audit ani získanou licenci či písemný souhlas emitentů.",
+    "policyUrl": "https://tickerinside.com/legal/",
+    "limitations": [
+      "CC BY 4.0 se vztahuje na vlastní práci TickerInside v aktuálních API snapshotech; automaticky nepokrývá práva třetích stran. Historie holdings a ETF flows mají odlišná pravidla a nejsou součástí tohoto použití.",
+      "Emitenti neposkytli doloženou licenci ani písemné povolení. Provozovatel přijal model omezených jednotlivých faktických doplnění pro demo, nikoli reprodukci dokumentů, marketingu, obrázků, holdings nebo časových řad."
+    ],
+    "reviewer": "admin",
+    "reviewedAt": "2026-10-12T13:12:39.752862+00:00"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "reviewer": null,
+  "verifiedAt": null,
+  "usageReview": {
+    "approved": false,
+    "reviewedAt": null,
+    "reviewer": null,
+    "basis": null,
+    "policyUrl": null
+  },
+  "records": [
+    {
+      "ticker": "SPY",
+      "approved": false,
+      "dataAsOf": null,
+      "confirmedSourceIds": [],
+      "sourceDateOverrides": {},
+      "sourceIdsToReview": [
+        "api-spy",
+        "spy-pdf",
+        "spy-page",
+        "project-descriptions"
+      ]
+    },
+    {
+      "ticker": "VOO",
+      "approved": false,
+      "dataAsOf": null,
+      "confirmedSourceIds": [],
+      "sourceDateOverrides": {},
+      "sourceIdsToReview": [
+        "api-voo",
+        "voo-pdf",
+        "project-descriptions"
+      ]
+    },
+    {
+      "ticker": "IVV",
+      "approved": false,
+      "dataAsOf": null,
+      "confirmedSourceIds": [],
+      "sourceDateOverrides": {},
+      "sourceIdsToReview": [
+        "api-ivv",
+        "ivv-pdf",
+        "project-descriptions"
+      ]
+    },
+    {
+      "ticker": "VTI",
+      "approved": false,
+      "dataAsOf": null,
+      "confirmedSourceIds": [],
+      "sourceDateOverrides": {},
+      "sourceIdsToReview": [
+        "api-vti",
+        "vti-page",
+        "vti-pdf",
+        "project-descriptions"
+      ]
+    },
+    {
+      "ticker": "IWM",
+      "approved": false,
+      "dataAsOf": null,
+      "confirmedSourceIds": [],
+      "sourceDateOverrides": {},
+      "sourceIdsToReview": [
+        "api-iwm",
+        "iwm-pdf",
+        "project-descriptions"
+      ]
+    }
+  ]
+}

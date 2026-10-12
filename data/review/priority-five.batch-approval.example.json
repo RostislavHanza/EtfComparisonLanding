@@ -1,0 +1,12 @@
+{
+  "reviewer": null,
+  "verifiedAt": null,
+  "reviewedDraftSha256": "82c918545892daa6466f743eb0ebec46ec01f8c4557aefc329c05b6f95e016df",
+  "approvedTickers": [],
+  "confirmAllListedSources": false,
+  "usageReview": {
+    "approved": false,
+    "basis": null,
+    "policyUrl": "https://tickerinside.com/api/"
+  }
+}

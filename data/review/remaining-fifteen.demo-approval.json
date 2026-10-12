@@ -1,0 +1,35 @@
+{
+  "reviewer": "admin",
+  "verifiedAt": "2026-10-12T12:38:53.844338+00:00",
+  "reviewedDraftSha256": "f1d18637a4b04699e58fd39c529d2bf7f37bc5b85065d3e38b6466454b1bcdc8",
+  "approvedTickers": [
+    "DIA",
+    "IJH",
+    "IJR",
+    "ITOT",
+    "MDY",
+    "SPYD",
+    "VEA",
+    "VT",
+    "VTV",
+    "VUG",
+    "VWO",
+    "VYM"
+  ],
+  "confirmAllListedSources": true,
+  "decisionSource": "User request to prepare the approved remainder using the existing limited-facts demo methodology; only technically complete records included.",
+  "technicalReviewPerformedBy": "AI assistant, not a claimed personal inspection by the operator",
+  "usageReview": {
+    "approved": true,
+    "approvalType": "operator-publication-decision",
+    "issuerPermissionClaimed": false,
+    "basis": "Provozovatel v aktuálním zadání výslovně požaduje doplnění uvedených 15 fondů a přípravu schváleného importu stejnou omezenou faktickou metodikou jako první pětici. Tato dávka zahrnuje pouze 12 technicky doložených fondů; RSP/SCHB/SCHD zůstávají mimo publikaci. Kontrolor admin označuje odpovědnost provozovatele, nikoli smyšlené osobní jméno. Datum verifiedAt je skutečná technická kontrola primárních podkladů provedená AI při přípravě této dávky; nejde o tvrzení osobní návštěvy zdrojů člověkem ani právní audit. Uživatelský pokyn připravit import je oddělen od finálního lidského přezkoumání a následného samostatného spuštění zápisu správcem. Emitentské texty/dokumenty/holdings se nezveřejňují, používají se jednotlivé fakta, vlastní české popisy a transparentní původ.",
+    "policyUrl": "https://tickerinside.com/legal/",
+    "limitations": [
+      "CC BY 4.0 se vztahuje na vlastní práci TickerInside v aktuálních API snapshotech; automaticky nepokrývá práva třetích stran. Historie holdings a ETF flows mají odlišná pravidla a nejsou součástí tohoto použití.",
+      "Emitenti neposkytli doloženou licenci ani písemné povolení. Provozovatel přijal model omezených jednotlivých faktických doplnění pro demo, nikoli reprodukci dokumentů, marketingu, obrázků, holdings nebo časových řad."
+    ],
+    "reviewer": "admin",
+    "reviewedAt": "2026-10-12T12:38:53.844338+00:00"
+  }
+}

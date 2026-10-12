@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Ukázka ETF kalkulačky · SPY a VOO</title>
+  <link rel="stylesheet" href="/ads/style.css">
+  <script type="module" src="/ads/main.ts"></script>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Kalkulačka <em>výnosů</em></h1>
+      <p class="intro">Vyzkoušejte, jak částka, čas a průběžné náklady mění odhadovaný zisk.</p>
+    </header>
+    <section aria-label="Ukázková kalkulačka">
+      <div class="settings">
+        <div class="amount-controls"><label for="investment">Investovaná částka v Kč
+          <input id="investment" type="text" value="100000" inputmode="decimal" required>
+        </label>
+          <label class="sr-only" for="investment-range">Upravit částku posuvníkem</label>
+          <input id="investment-range" type="range" min="0" max="10000000" step="1000" value="100000">
+          <div class="range-limits"><span>0 Kč</span><span>10 mil. Kč</span></div>
+        </div>
+        <div class="horizon-controls"><label for="horizon">Investiční horizont (roky)
+          <input id="horizon" type="number" min="1" max="30" step="1" value="10" inputmode="numeric" required>
+        </label>
+          <label class="sr-only" for="horizon-range">Upravit horizont posuvníkem</label>
+          <input id="horizon-range" type="range" min="1" max="30" step="1" value="10">
+        </div>
+      </div>
+      <table>
+        <caption class="sr-only">Srovnání odhadovaného zisku SPY a VOO</caption>
+        <thead><tr><th scope="col">ETF</th><th scope="col">Předpokládaný výnos ročně (%)</th><th scope="col">Odhadovaný zisk</th></tr></thead>
+        <tbody id="funds"></tbody>
+        <tfoot><tr class="history-row"><td colspan="3">
+      <div class="history-controls">
+        <div role="group" aria-label="Historické referenční období">
+          <button type="button" data-period="1" aria-pressed="false">1 rok</button>
+          <button type="button" data-period="3" aria-pressed="false">3 roky</button>
+          <button type="button" data-period="5" aria-pressed="true">5 let</button>
+        </div>
+        <button type="button" id="restore">Obnovit podle historie</button>
+      </div>
+      <p class="assumption" id="reference"></p>
+        </td></tr></tfoot>
+      </table>
+      <p id="error" role="alert" hidden></p>
+      <p class="disclaimer">Hypotetický model zahrnuje roční nákladovost ETF. Nezahrnuje měnové změny, daně ani poplatky brokera. Investování může vést ke ztrátě.</p>
+    </section>
+    <section class="cta" aria-label="Vlastní srovnání">
+      <p>Chcete si sestavit vlastní srovnání ETF?</p>
+      <a class="button" href="/?utm_campaign=ad-a#comparator">Vytvořit vlastní srovnání →</a>
+    </section>
+    <footer>
+      <p>Metadata: 11. 10. 2026 · historie: 9. 10. 2026.<br>Zdroj: <a href="https://tickerinside.com/api/">TickerInside</a> (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>), vybráno a upraveno. Historie: <a href="https://tickerinside.com/api/v1/fund/spy.json">SPY</a>, <a href="https://tickerinside.com/api/v1/fund/voo.json">VOO</a>. Přesný název a nákladovost SPY: <a href="https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf">SSGA</a>. Ověření VOO: <a href="https://fund-docs.vanguard.com/F0968.pdf">Vanguard</a>.</p>
+    </footer>
+  </main>
+</body>
+</html>

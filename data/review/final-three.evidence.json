@@ -1,0 +1,232 @@
+{
+  "status": "actual_technical_review_separate_from_operator_publication_decision",
+  "reviewedAt": "2026-10-12T13:12:39.752862+00:00",
+  "sources": [
+    {
+      "id": "SCHB-factsheet",
+      "url": "https://www.schwabassetmanagement.com/resource/schwab-us-broad-market-etf-fact-sheet",
+      "error": "HTTPError",
+      "detail": "HTTP Error 404: Not Found",
+      "attemptedAt": "2026-10-12T13:06:11.705368+00:00"
+    },
+    {
+      "id": "SCHD-factsheet",
+      "url": "https://www.schwabassetmanagement.com/resource/schwab-us-dividend-equity-etf-fact-sheet",
+      "error": "HTTPError",
+      "detail": "HTTP Error 404: Not Found",
+      "attemptedAt": "2026-10-12T13:06:11.062388+00:00"
+    },
+    {
+      "id": "SCHB-prospectus",
+      "url": "https://www.schwabassetmanagement.com/resource/schwab-us-broad-market-etf-prospectus",
+      "error": "HTTPError",
+      "detail": "HTTP Error 404: Not Found",
+      "attemptedAt": "2026-10-12T13:06:11.438397+00:00"
+    },
+    {
+      "id": "SCHD-prospectus",
+      "url": "https://www.schwabassetmanagement.com/resource/schwab-us-dividend-equity-etf-prospectus",
+      "error": "HTTPError",
+      "detail": "HTTP Error 404: Not Found",
+      "attemptedAt": "2026-10-12T13:06:11.909874+00:00"
+    },
+    {
+      "id": "RSP-pdf",
+      "url": "https://www.invesco.com/us/financial-products/etfs/literature/RSP-Factsheet.pdf",
+      "httpStatus": 200,
+      "bytes": 425198,
+      "contentType": "text/html;charset=utf-8",
+      "finalUrl": "https://www.invesco.com/us/en/financial-products/etfs.html",
+      "retrievedAt": "2026-10-12T13:06:10.733206+00:00",
+      "sha256": "eb58958dc59aceff2fbbd46ec53622ccdeb9c993c729e3edf61767a8dfcbef5d"
+    },
+    {
+      "id": "RSP-issuer-pdf",
+      "url": "https://www.invesco.com/content/dam/invesco/us/en/product-documents/etf/fact-sheet/rsp-invesco-s-p-500-equal-weight-etf-fact-sheet.pdf",
+      "httpStatus": 200,
+      "bytes": 259790,
+      "finalUrl": "https://www.invesco.com/content/dam/invesco/us/en/product-documents/etf/fact-sheet/rsp-invesco-s-p-500-equal-weight-etf-fact-sheet.pdf",
+      "retrievedAt": "2026-10-12T13:07:18.079564+00:00",
+      "sha256": "1edfef8f50f4d5193ddf4b1a19dca443a5c6b9d213d944076d50c86a674bf49b",
+      "pdf": false
+    },
+    {
+      "id": "SCHB-issuer-factsheet",
+      "url": "https://www.schwabassetmanagement.com/resource/schb-fact-sheet",
+      "httpStatus": 200,
+      "bytes": 84713,
+      "finalUrl": "https://www.schwabassetmanagement.com/resource/schb-fact-sheet",
+      "retrievedAt": "2026-10-12T13:07:16.961047+00:00",
+      "sha256": "383c076e8a3b11ee0e5ccb56656c8a47f9fd738076ec0a1726a72285bcb896d1",
+      "pdf": false
+    },
+    {
+      "id": "SCHD-issuer-factsheet",
+      "url": "https://www.schwabassetmanagement.com/resource/schd-fact-sheet",
+      "httpStatus": 200,
+      "bytes": 84721,
+      "finalUrl": "https://www.schwabassetmanagement.com/resource/schd-fact-sheet",
+      "retrievedAt": "2026-10-12T13:07:17.046616+00:00",
+      "sha256": "a5bc7a8f1c74d37dfaaee5ed2817827d3efa70d5f616d7f8b9b8b19ba795f0c7",
+      "pdf": false
+    },
+    {
+      "id": "RSP-page",
+      "url": "https://www.invesco.com/us/en/financial-products/etfs/invesco-sp-500-equal-weight-etf.html",
+      "httpStatus": 200,
+      "bytes": 629251,
+      "retrievedAt": "2026-10-12T13:05:31.600247+00:00",
+      "sha256": "e79f933a54e5b3fa2a14cd75109d345c68b8c0eb9b3cc1581327749576db9968",
+      "finalUrl": "https://www.invesco.com/us/en/financial-products/etfs/invesco-sp-500-equal-weight-etf.html"
+    },
+    {
+      "id": "SCHB-page",
+      "url": "https://www.schwabassetmanagement.com/products/schb",
+      "httpStatus": 200,
+      "bytes": 761485,
+      "retrievedAt": "2026-10-12T13:05:31.145133+00:00",
+      "sha256": "5246f1c9434b21342b43b7ced69089bf94dcb35a5ccdeabbe5bccae00c89a4f9",
+      "finalUrl": "https://www.schwabassetmanagement.com/products/schb"
+    },
+    {
+      "id": "SCHD-page",
+      "url": "https://www.schwabassetmanagement.com/products/schd",
+      "httpStatus": 200,
+      "bytes": 822687,
+      "retrievedAt": "2026-10-12T13:05:31.270562+00:00",
+      "sha256": "acbe8e7b68acae85ab493d54f5c54ce66c784eb4e0e376824a686238f221d755",
+      "finalUrl": "https://www.schwabassetmanagement.com/products/schd"
+    },
+    {
+      "id": "RSP-factsheet",
+      "url": "https://www.invesco.com/us/financial-products/etfs/literature?audienceType=Investor&ticker=RSP",
+      "httpStatus": 200,
+      "bytes": 425198,
+      "retrievedAt": "2026-10-12T13:05:31.960246+00:00",
+      "sha256": "eb58958dc59aceff2fbbd46ec53622ccdeb9c993c729e3edf61767a8dfcbef5d",
+      "finalUrl": "https://www.invesco.com/us/en/financial-products/etfs.html"
+    },
+    {
+      "id": "SCHB-summary",
+      "url": "https://www.schwab.com/research/etfs/quotes/summary/schb",
+      "error": "URLError",
+      "detail": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "attemptedAt": "2026-10-12T13:05:30.686548+00:00"
+    },
+    {
+      "id": "SCHD-summary",
+      "url": "https://www.schwab.com/research/etfs/quotes/summary/schd",
+      "error": "URLError",
+      "detail": "<urlopen error Tunnel connection failed: 403 Forbidden>",
+      "attemptedAt": "2026-10-12T13:05:30.674363+00:00"
+    },
+    {
+      "id": "RSP-api",
+      "url": "https://tickerinside.com/api/v1/fund/rsp.json",
+      "httpStatus": 200,
+      "bytes": 10870,
+      "retrievedAt": "2026-10-12T13:05:30.827252+00:00",
+      "sha256": "c1eeb8e55e9b8d1cc7b611d9fdbaf231ac3947506762507a33b7887723bce8ec",
+      "finalUrl": "https://tickerinside.com/api/v1/fund/rsp.json"
+    },
+    {
+      "id": "SCHB-api",
+      "url": "https://tickerinside.com/api/v1/fund/schb.json",
+      "httpStatus": 200,
+      "bytes": 36754,
+      "retrievedAt": "2026-10-12T13:05:30.935491+00:00",
+      "sha256": "78b76174e1b455149b7177328e5480b77c948a79418954a72b7e6a55ac038653",
+      "finalUrl": "https://tickerinside.com/api/v1/fund/schb.json"
+    },
+    {
+      "id": "SCHD-api",
+      "url": "https://tickerinside.com/api/v1/fund/schd.json",
+      "httpStatus": 200,
+      "bytes": 5820,
+      "retrievedAt": "2026-10-12T13:05:31.057530+00:00",
+      "sha256": "f224bbf9073ee1ce4a35bba3d0ef60e64e6e97cb2939c119ec57294f44723637",
+      "finalUrl": "https://tickerinside.com/api/v1/fund/schd.json"
+    },
+    {
+      "id": "schwab-calendar-page",
+      "url": "https://www.schwabassetmanagement.com/resource/schwab-equity-etfs-distribution-schedule-2026",
+      "httpStatus": 200,
+      "bytes": 85080,
+      "retrievedAt": "2026-10-12T13:09:58.219539+00:00",
+      "sha256": "3029ec09f44772c328209db9a3611151ce1e4eabda44c5eedbddd3116e17e833"
+    },
+    {
+      "id": "SCHB-regulatory",
+      "url": "https://dfinview.com/Schwab/TVT/808524102/SP?site=funddocs",
+      "error": "URLError",
+      "detail": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "id": "SCHD-regulatory",
+      "url": "https://dfinview.com/Schwab/TVT/808524797/SP?site=funddocs",
+      "error": "URLError",
+      "detail": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "id": "SCHB-issuer-pdf",
+      "url": "https://bynder.schwab.com/m/e51aa6d88f06ab7/",
+      "error": "URLError",
+      "detail": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "id": "SCHD-issuer-pdf",
+      "url": "https://bynder.schwab.com/m/3fc90e8c7dd8c3f7/",
+      "error": "URLError",
+      "detail": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    }
+  ],
+  "verifiedFields": [
+    {
+      "ticker": "RSP",
+      "issuerSource": "https://www.invesco.com/us/en/financial-products/etfs/invesco-sp-500-equal-weight-etf.html",
+      "fields": {
+        "name": "meta accountName: Invesco S&P 500 Equal Weight ETF",
+        "exchange": "productListFieldValueMap ticker RSP, exchange NYSE ARCA",
+        "index": "S&P 500® Equal Weight Index",
+        "expenseRatioPercent": "totalExpenseRatio = 0.2; netExpenseRatio = 0.2",
+        "dividends": "Distribution frequency: Quarterly"
+      },
+      "reviewedAt": "2026-10-12T13:12:39.752862+00:00",
+      "reviewPerformedBy": "AI assistant; not a claim of personal human document inspection",
+      "dividendEvidenceType": "explicit_public_profile_frequency"
+    },
+    {
+      "ticker": "SCHB",
+      "issuerSource": "https://www.schwabassetmanagement.com/products/schb",
+      "fields": {
+        "name": "Schwab U.S. Broad Market ETF",
+        "exchange": "Symbol: SCHB; Exchange NYSE Arca, Inc.",
+        "index": "Index Name Dow Jones U.S. Broad Stock Market Index",
+        "expenseRatioPercent": "Total Expense Ratio 0.030%",
+        "dividends": "Rozpis emitenta: Ex-Date 12/10/2025, 03/25/2026, 06/24/2026, 09/23/2026; čtvrtletní rytmus zveřejněných příjmových distribucí. Nejde o garanci budoucích dividend."
+      },
+      "reviewedAt": "2026-10-12T13:12:39.752862+00:00",
+      "reviewPerformedBy": "AI assistant; not a claim of personal human document inspection",
+      "dividendEvidenceType": "observed_quarterly_income_distribution_dates_in_official_product_profile"
+    },
+    {
+      "ticker": "SCHD",
+      "issuerSource": "https://www.schwabassetmanagement.com/products/schd",
+      "fields": {
+        "name": "Schwab U.S. Dividend Equity ETF",
+        "exchange": "Symbol: SCHD; Exchange NYSE Arca, Inc.",
+        "index": "Index Name Dow Jones U.S. Dividend 100 Index",
+        "expenseRatioPercent": "Total Expense Ratio 0.060%",
+        "dividends": "Rozpis emitenta: Ex-Date 12/10/2025, 03/25/2026, 06/24/2026, 09/23/2026; čtvrtletní rytmus zveřejněných příjmových distribucí. Nejde o garanci budoucích dividend."
+      },
+      "reviewedAt": "2026-10-12T13:12:39.752862+00:00",
+      "reviewPerformedBy": "AI assistant; not a claim of personal human document inspection",
+      "dividendEvidenceType": "observed_quarterly_income_distribution_dates_in_official_product_profile"
+    }
+  ],
+  "limitations": [
+    "Schwab Bynder factsheets/calendar and regulatory viewer remain blocked; their document content was not verified. Dividend cadence is verified from the actual official product distribution ledger, not guessed from performance Monthly/Quarterly controls.",
+    "RSP linked PDF URL returned HTML, not PDF; it is not used as factsheet evidence. Actual public product profile embedded data proves all required fields. No internal dng API was called.",
+    "No historical date of metadata change or personal human visit is inferred."
+  ]
+}

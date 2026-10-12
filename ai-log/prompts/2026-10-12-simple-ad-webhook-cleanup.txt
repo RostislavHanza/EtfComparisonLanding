@@ -1,0 +1,146 @@
+Pracuj v repozitáři `RostislavHanza/EtfComparisonLanding` výhradně na větvi `design-exploration`. Větev `main` neměň.
+
+Proveď dvě samostatné úpravy:
+
+1. Odstraň nevyužívaný mechanismus e-mailových webhooků.
+2. Vytvoř druhou, jednoduchou reklamní stránku.
+
+## 1. Vyčištění nepotřebných e-mailových webhooků
+
+Aplikace nyní odesílá e-maily prostřednictvím Gmail SMTP. Nepoužíváme externí webhooky poskytovatele e-mailů pro sledování doručení.
+
+V databázi existuje nevyužívaná tabulka `public.webhook_receipts` a funkce `public.record_email_webhook`.
+
+Proveď bezpečné odstranění tohoto mechanismu:
+
+- Ověř, zda `webhook_receipts` a `record_email_webhook` nejsou nikde používány současným aplikačním kódem, testy nebo jinými databázovými funkcemi.
+- Připrav novou Supabase SQL migraci, která odstraní tabulku `webhook_receipts` a funkci `record_email_webhook` včetně její konkrétní signatury.
+- Uprav databázovou funkci `purge_expired_data`, aby již neodkazovala na odstraněnou tabulku.
+- Odstraň nevyužívané odkazy na webhookový mechanismus z dokumentace, testů a případného souvisejícího kódu.
+- Historické migrace nepřepisuj. Použij novou navazující migraci.
+- Nepoužívej `CASCADE` bez předchozího prověření závislostí.
+- Pokud zjistíš skutečnou aktivní závislost, nic destruktivního neprováděj a popiš ji.
+
+**Důležité:**
+- Zachovej tabulku `email_messages`, která slouží k evidenci odeslaných e-mailů.
+- Zachovej odesílání pomocí Gmail SMTP.
+- Zachovej ukládání stavu odeslání e-mailu a chyb.
+- Neměň souhlasy, kontakty, uložená srovnání ani jejich přístupové odkazy.
+- Neměň ostatní databázové tabulky ani synchronizaci ETF.
+- Nevkládej zpět podporu webhooků v jiné podobě.
+
+Migraci vytvoř v repozitáři, ale **nespouštěj ji proti vzdálené Supabase databázi**. Chci mít možnost ji před aplikováním zkontrolovat.
+
+## 2. Nová jednoduchá reklamní stránka `/add-simple`
+
+Vedle stávající interaktivní reklamy `/add` vytvoř druhou reklamní variantu na samostatné URL:
+
+`/add-simple`
+
+Tato nová reklama nebude kalkulačka. Bude to jednoduchá, statická a celá klikací reklamní plocha.
+
+### Obsah reklamy
+
+Nadpis:
+
+**Americká ETF**
+
+Podnadpis:
+
+**Vytvořte si svoje srovnání**
+
+Pod tím zobraz stejný obsah jako v bloku hlavní landing page:
+
+**Co získáte ve svém srovnání?**
+
+Čtyři položky musí mít přesně tyto texty:
+
+**Odhadovaný zisk**
+
+Spočítejte si výsledek podle vlastní částky, horizontu a předpokládaného výnosu.
+
+**Historický vývoj**
+
+Porovnejte historickou výkonnost vybraných ETF v grafu.
+
+**Detailní srovnání**
+
+Prohlédněte si nákladovost, sledované indexy a další parametry fondů.
+
+**Vlastní přehled na e-mail**
+
+Získejte odkaz ke svému srovnání, ke kterému se můžete vracet.
+
+### Vzhled
+
+- Použij vizuální styl současné hlavní landing page „Editorial – původní“.
+- Nová reklama má působit čistě, minimalisticky a profesionálně.
+- Nezaváděj nový designový směr.
+- Použij stejné typografické styly, barvy a vizuální zvýraznění jako na hlavní landing page.
+- Blok „Co získáte ve svém srovnání?“ má vzhledově odpovídat tomu, který již existuje na hlavní stránce.
+- **Nepřidávej ikony.** Ponech pouze nadpisy a popisy.
+- Nepřidávej další marketingové texty, tlačítka, formuláře ani kalkulační vstupy.
+- Reklama nesmí obsahovat výběr ETF, e-mailový formulář ani interaktivní kalkulačku.
+
+### Kliknutí na reklamu
+
+**Celá reklamní plocha musí fungovat jako jeden odkaz** na hlavní landing page aplikace.
+
+- Kliknutí nebo klepnutí kamkoliv na reklamní plochu přesměruje uživatele na hlavní landing page.
+- Odkaz musí být přístupný i z klávesnice.
+- Použij správnou HTML sémantiku pro jeden klikací odkaz, nikoliv JavaScriptové klikání přes jednotlivé elementy.
+- Odkaz musí používat stejnou správnou produkční cílovou adresu hlavní stránky jako stávající reklama `/add`; nezadávej napevno Preview doménu.
+- Nepřidávej samostatné CTA tlačítko.
+
+### Mobilní zobrazení
+
+Nová reklama je primárně určená pro mobilní telefony.
+
+- Na běžném mobilním displeji musí být celý reklamní obsah viditelný bez vertikálního scrollování.
+- Využij kompaktní rozestupy a vhodnou velikost písma.
+- Zachovej čitelnost všech čtyř položek.
+- Na menších displejích obsah nesmí být uříznutý; pokud se nevejde, musí zůstat dostupný.
+- Na desktopu musí reklama vypadat přirozeně a přehledně.
+- Reklamní plocha musí jasně působit jako jeden celek.
+
+### Zachování stávajících funkcí
+
+- Stávající interaktivní reklamní stránku `/add` zachovej přesně tak, jak je.
+- Hlavní landing page neměň.
+- Zachovej aktuální blok „Co získáte ve svém srovnání?“ na hlavní stránce.
+- Nevytvářej nové designové varianty ani přepínače designu.
+- Neměň výpočty, ETF data, API, e-mailový proces ani logiku uložených srovnání.
+
+## 3. Testování a dokončení
+
+Ověř:
+
+- `/add-simple` funguje jako samostatná stránka.
+- Celá reklamní plocha je jeden funkční odkaz na hlavní landing page.
+- Všechny texty jsou přesné.
+- Mobilní reklama se vejde na běžné výšky displejů.
+- Nejsou přítomné ikony ani zbytečné marketingové prvky.
+- `/add` dál funguje beze změny.
+- Hlavní landing page dál funguje beze změny.
+- Nová databázová migrace správně odstraňuje pouze nevyužívaný webhookový mechanismus.
+- Funkce `purge_expired_data` po migraci neobsahuje odkazy na `webhook_receipts`.
+- Gmail SMTP a evidence odeslaných zpráv zůstávají funkční.
+
+Spusť lint, typecheck, testy, build a dostupné browser testy. Ověř sestavení Vercel Functions.
+
+Aktualizuj potřebnou dokumentaci a AI log.
+
+Commitni a pushni změny pouze na `design-exploration`.
+
+**Nevykonávej žádné změny ve vzdálené Supabase databázi a neodesílej skutečné e-maily.**
+
+Na závěr uveď:
+
+1. Co bylo odstraněno z webhookového mechanismu.
+2. Název nové SQL migrace.
+3. Kde se nachází nová reklama `/add-simple`.
+4. Na jakých mobilních rozměrech byla reklama otestována.
+5. Výsledky testů.
+6. Commit SHA.
+
+Nepřidávej žádné další funkce ani vlastní obsah.

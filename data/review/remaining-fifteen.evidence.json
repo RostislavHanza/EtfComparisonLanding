@@ -1,0 +1,361 @@
+{
+  "status": "actual_technical_review_not_human_or_legal_attestation",
+  "reviewedAt": "2026-10-12T12:38:53.844338+00:00",
+  "reviewPerformedBy": "AI assistant under operator instruction",
+  "sources": [
+    {
+      "id": "DIA-api",
+      "url": "https://tickerinside.com/api/v1/fund/dia.json",
+      "httpStatus": 200,
+      "sha256": "36df685fc8718af35f78e494c93aaf58f500c4d5651acaff2e00b62763fba2b6",
+      "retrievedAt": "2026-10-12T12:33:41.049256+00:00",
+      "bytes": 4553
+    },
+    {
+      "id": "IJH-api",
+      "url": "https://tickerinside.com/api/v1/fund/ijh.json",
+      "httpStatus": 200,
+      "sha256": "580c3eeb30203ce6fbe0313b72fd2a9ab4b577ace7724629bd184476871e67c8",
+      "retrievedAt": "2026-10-12T12:33:41.162184+00:00",
+      "bytes": 9588
+    },
+    {
+      "id": "IJR-api",
+      "url": "https://tickerinside.com/api/v1/fund/ijr.json",
+      "httpStatus": 200,
+      "sha256": "b6ed84056d6721ef80e446a85dc0d6fd08b0ffc01f30ba968e9a94966c348deb",
+      "retrievedAt": "2026-10-12T12:33:41.144989+00:00",
+      "bytes": 12383
+    },
+    {
+      "id": "ITOT-api",
+      "url": "https://tickerinside.com/api/v1/fund/itot.json",
+      "httpStatus": 200,
+      "sha256": "43cc97c956daa32e1d4d759dd768608654fb95be7da551c022418a4b86177ae3",
+      "retrievedAt": "2026-10-12T12:33:41.135138+00:00",
+      "bytes": 37080
+    },
+    {
+      "id": "MDY-api",
+      "url": "https://tickerinside.com/api/v1/fund/mdy.json",
+      "httpStatus": 200,
+      "sha256": "eccbf18c62ee27ce8114edc03433124d64dabc9c42e387cea5bc628c81a4acfa",
+      "retrievedAt": "2026-10-12T12:33:41.151878+00:00",
+      "bytes": 9487
+    },
+    {
+      "id": "RSP-api",
+      "url": "https://tickerinside.com/api/v1/fund/rsp.json",
+      "httpStatus": 200,
+      "sha256": "c1eeb8e55e9b8d1cc7b611d9fdbaf231ac3947506762507a33b7887723bce8ec",
+      "retrievedAt": "2026-10-12T12:33:41.131688+00:00",
+      "bytes": 10870
+    },
+    {
+      "id": "SCHB-api",
+      "url": "https://tickerinside.com/api/v1/fund/schb.json",
+      "httpStatus": 200,
+      "sha256": "78b76174e1b455149b7177328e5480b77c948a79418954a72b7e6a55ac038653",
+      "retrievedAt": "2026-10-12T12:33:41.043893+00:00",
+      "bytes": 36754
+    },
+    {
+      "id": "SCHD-api",
+      "url": "https://tickerinside.com/api/v1/fund/schd.json",
+      "httpStatus": 200,
+      "sha256": "f224bbf9073ee1ce4a35bba3d0ef60e64e6e97cb2939c119ec57294f44723637",
+      "retrievedAt": "2026-10-12T12:33:41.058248+00:00",
+      "bytes": 5820
+    },
+    {
+      "id": "SPYD-api",
+      "url": "https://tickerinside.com/api/v1/fund/spyd.json",
+      "httpStatus": 200,
+      "sha256": "987ebdc0836efb3e32712b6a2990f65bb303e1f7a97a25c73e905e4005aa8e66",
+      "retrievedAt": "2026-10-12T12:33:41.198112+00:00",
+      "bytes": 5339
+    },
+    {
+      "id": "VEA-api",
+      "url": "https://tickerinside.com/api/v1/fund/vea.json",
+      "httpStatus": 200,
+      "sha256": "bb6ce24b27398023134661d33019226c7082c4910b98028cb8987072047240de",
+      "retrievedAt": "2026-10-12T12:33:41.111205+00:00",
+      "bytes": 69645
+    },
+    {
+      "id": "VT-api",
+      "url": "https://tickerinside.com/api/v1/fund/vt.json",
+      "httpStatus": 200,
+      "sha256": "9ac263bce9ea6375716f7f727e6f9f11a0bd0d1156222691ba3a7cf079119e6f",
+      "retrievedAt": "2026-10-12T12:33:41.332308+00:00",
+      "bytes": 171797
+    },
+    {
+      "id": "VTV-api",
+      "url": "https://tickerinside.com/api/v1/fund/vtv.json",
+      "httpStatus": 200,
+      "sha256": "5149a5bcbeaddca7623b73b3f34e74373a9deaf6500d52ff1fd367d43a874adf",
+      "retrievedAt": "2026-10-12T12:33:41.161279+00:00",
+      "bytes": 8257
+    },
+    {
+      "id": "VUG-api",
+      "url": "https://tickerinside.com/api/v1/fund/vug.json",
+      "httpStatus": 200,
+      "sha256": "d585ed77c95a64b1187ef1160e82cfb013236ce46a2077ebce29a58912693baf",
+      "retrievedAt": "2026-10-12T12:33:41.279343+00:00",
+      "bytes": 6273
+    },
+    {
+      "id": "VWO-api",
+      "url": "https://tickerinside.com/api/v1/fund/vwo.json",
+      "httpStatus": 200,
+      "sha256": "018662c9fbfab878d8684cbb7dc505322c0410f3705a2085befcb486886bdde7",
+      "retrievedAt": "2026-10-12T12:33:41.341258+00:00",
+      "bytes": 94423
+    },
+    {
+      "id": "VYM-api",
+      "url": "https://tickerinside.com/api/v1/fund/vym.json",
+      "httpStatus": 200,
+      "sha256": "03fc6cf8ef6a525ed877ac7984dfb6883e1ba434e5c7af5a84e5f93a7a54b596",
+      "retrievedAt": "2026-10-12T12:33:41.233354+00:00",
+      "bytes": 12316
+    },
+    {
+      "id": "VEA-page",
+      "url": "https://investor.vanguard.com/investment-products/etfs/profile/vea",
+      "httpStatus": 200,
+      "sha256": "e965e580d5d0a6e99068b781e1f47a228cfaafb25cf17f8c4be77a01d03cb029",
+      "retrievedAt": "2026-10-12T12:33:41.609089+00:00",
+      "bytes": 263595
+    },
+    {
+      "id": "VT-page",
+      "url": "https://investor.vanguard.com/investment-products/etfs/profile/vt",
+      "httpStatus": 200,
+      "sha256": "1cfa8f48ba4dd36a8d12e3d0b032d05e559778ef67b33a780373e8f654feb224",
+      "retrievedAt": "2026-10-12T12:33:41.496742+00:00",
+      "bytes": 266294
+    },
+    {
+      "id": "VTV-page",
+      "url": "https://investor.vanguard.com/investment-products/etfs/profile/vtv",
+      "httpStatus": 200,
+      "sha256": "4e1a2adb81a0d7000b9aff1c3272449465b6b9a6fb907de648610fff3971f31d",
+      "retrievedAt": "2026-10-12T12:33:41.428536+00:00",
+      "bytes": 263198
+    },
+    {
+      "id": "VUG-page",
+      "url": "https://investor.vanguard.com/investment-products/etfs/profile/vug",
+      "httpStatus": 200,
+      "sha256": "9c8a935519f0ec72122eeca267ab5b828c3fecebbcf38802254f57b4b98da2eb",
+      "retrievedAt": "2026-10-12T12:33:41.563261+00:00",
+      "bytes": 265163
+    },
+    {
+      "id": "VWO-page",
+      "url": "https://investor.vanguard.com/investment-products/etfs/profile/vwo",
+      "httpStatus": 200,
+      "sha256": "f765beb645f415ba43868a404cf779a6ad4ce07e0effd765088ad2ecdaac7982",
+      "retrievedAt": "2026-10-12T12:33:41.530317+00:00",
+      "bytes": 266682
+    },
+    {
+      "id": "VYM-page",
+      "url": "https://investor.vanguard.com/investment-products/etfs/profile/vym",
+      "httpStatus": 200,
+      "sha256": "bf29c30d60c2bf5aa6081dca6c07b22a0577752924984ab09374f86e64437460",
+      "retrievedAt": "2026-10-12T12:33:41.584473+00:00",
+      "bytes": 262863
+    },
+    {
+      "id": "DIA-page",
+      "url": "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-dow-jones-industrial-average-etf-trust-dia",
+      "httpStatus": 200,
+      "sha256": "be278e66532e24cae82f062e92d27b7c6a84a1653cbaa39efc8ea32aafbda22a",
+      "retrievedAt": "2026-10-12T12:33:41.780696+00:00",
+      "bytes": 233728
+    },
+    {
+      "id": "DIA-pdf",
+      "url": "https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-dia.pdf",
+      "httpStatus": 200,
+      "sha256": "bb16787393c827e2157125aa4175b2bd20623f135587c6be979100d80307a834",
+      "retrievedAt": "2026-10-12T12:33:41.779893+00:00",
+      "bytes": 232053
+    },
+    {
+      "id": "MDY-page",
+      "url": "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-sp-midcap-400-etf-trust-mdy",
+      "httpStatus": 200,
+      "sha256": "078e4bb44932e4b456a54cf1d08b2938e9c68eb3e9c8c7123eef840f9c37b1f2",
+      "retrievedAt": "2026-10-12T12:33:41.850622+00:00",
+      "bytes": 229701
+    },
+    {
+      "id": "MDY-pdf",
+      "url": "https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-mdy.pdf",
+      "httpStatus": 200,
+      "sha256": "69f27bb810f54d178c6c8377cef9fdda69536734c93295ac4893a520c44b9c5f",
+      "retrievedAt": "2026-10-12T12:33:41.653501+00:00",
+      "bytes": 230409
+    },
+    {
+      "id": "SPYD-page",
+      "url": "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-portfolio-sp-500-high-dividend-etf-spyd",
+      "httpStatus": 200,
+      "sha256": "c72500f252e687cfe534dc176ebc7857b6ed534a0c0fc324bcd5aece0df48afd",
+      "retrievedAt": "2026-10-12T12:33:42.111099+00:00",
+      "bytes": 232806
+    },
+    {
+      "id": "SPYD-pdf",
+      "url": "https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spyd.pdf",
+      "httpStatus": 200,
+      "sha256": "61f72b119e7d77b3b46fab377930a70fc149d93c6f334ed15fa50fca87f0ca92",
+      "retrievedAt": "2026-10-12T12:33:42.291571+00:00",
+      "bytes": 130954
+    },
+    {
+      "id": "IJH-page",
+      "url": "https://www.ishares.com/us/products/239763/ishares-core-sp-midcap-etf",
+      "httpStatus": 200,
+      "sha256": "6d34449927e09f0b1b1b1ac0d32a2dc6b2dd166234128b41848b706166cd1403",
+      "retrievedAt": "2026-10-12T12:33:42.151743+00:00",
+      "bytes": 1808393
+    },
+    {
+      "id": "IJR-page",
+      "url": "https://www.ishares.com/us/products/239774/ishares-core-sp-smallcap-etf",
+      "httpStatus": 200,
+      "sha256": "8155d75d776eb735a2c54911877a489bbcaa83b634fbcc1c296b726a4af16c89",
+      "retrievedAt": "2026-10-12T12:33:42.434773+00:00",
+      "bytes": 1809399
+    },
+    {
+      "id": "ITOT-page",
+      "url": "https://www.ishares.com/us/products/239724/ishares-core-sp-total-us-stock-market-etf",
+      "httpStatus": 200,
+      "sha256": "7f714d908f221877dff96c5e87b06a20860c58067c404b14b668602b15be17f3",
+      "retrievedAt": "2026-10-12T12:33:42.523766+00:00",
+      "bytes": 1794237
+    },
+    {
+      "id": "SCHB-page",
+      "url": "https://www.schwabassetmanagement.com/products/schb",
+      "error": "URLError",
+      "detail": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "id": "SCHD-page",
+      "url": "https://www.schwabassetmanagement.com/products/schd",
+      "error": "URLError",
+      "detail": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "id": "RSP-page",
+      "url": "https://www.invesco.com/us/financial-products/etfs/product-detail?audienceType=Investor&ticker=RSP",
+      "error": "URLError",
+      "detail": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "id": "SCHB-schwab",
+      "url": "https://www.schwab.com/research/etfs/quotes/summary/schb",
+      "error": "URLError",
+      "detail": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "id": "SCHD-schwab",
+      "url": "https://www.schwab.com/research/etfs/quotes/summary/schd",
+      "error": "URLError",
+      "detail": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "id": "schwab-prospectus",
+      "url": "https://www.sec.gov/Archives/edgar/data/1454889/000110465925123308/",
+      "error": "URLError",
+      "detail": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "id": "RSP-prospectus",
+      "url": "https://www.sec.gov/Archives/edgar/data/1209466/000110465926102475/",
+      "error": "URLError",
+      "detail": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+    },
+    {
+      "id": "VYM-pdf",
+      "url": "https://fund-docs.vanguard.com/F0923.pdf",
+      "httpStatus": 200,
+      "bytes": 465768,
+      "sha256": "a1b48aa0dcbe74cd03887127b92d033b0bf825816f76cb9b34dae20a43fae101",
+      "retrievedAt": "2026-10-12T12:35:36.287290+00:00"
+    },
+    {
+      "id": "VEA-pdf",
+      "url": "https://fund-docs.vanguard.com/F0936.pdf",
+      "httpStatus": 200,
+      "bytes": 466902,
+      "sha256": "1226544b381cce7bf86a84be8e81726f9c222f59cb13496857450c039629b14c",
+      "retrievedAt": "2026-10-12T12:35:36.277245+00:00"
+    },
+    {
+      "id": "VT-pdf",
+      "url": "https://fund-docs.vanguard.com/F3141.pdf",
+      "httpStatus": 200,
+      "bytes": 462808,
+      "sha256": "8425755eb9bc80fbcf80e6d987de5920db9865959eb061f84464a5de68ee7eee",
+      "retrievedAt": "2026-10-12T12:35:36.319859+00:00"
+    },
+    {
+      "id": "VTV-pdf",
+      "url": "https://fund-docs.vanguard.com/F0966.pdf",
+      "httpStatus": 200,
+      "bytes": 465622,
+      "sha256": "3259a19e88db0b0b33d9c8815c9992f00e163d6c05459a179d62d4408493f9fa",
+      "retrievedAt": "2026-10-12T12:35:36.272143+00:00"
+    },
+    {
+      "id": "VUG-pdf",
+      "url": "https://fund-docs.vanguard.com/F0967.pdf",
+      "httpStatus": 200,
+      "bytes": 479476,
+      "sha256": "309b3576948795a984e40a922c8bdcdd524566525a2519c29c07329802a3f1a4",
+      "retrievedAt": "2026-10-12T12:35:36.361497+00:00"
+    },
+    {
+      "id": "VWO-pdf",
+      "url": "https://fund-docs.vanguard.com/F0964.pdf",
+      "httpStatus": 200,
+      "bytes": 465895,
+      "sha256": "b111b71c23b95200dd38460491553df2d9e4a5be955f9dda8904318b93735d22",
+      "retrievedAt": "2026-10-12T12:35:36.250153+00:00"
+    }
+  ],
+  "discrepancies": [
+    {
+      "ticker": "VTV",
+      "apiName": "Vanguard Value ETF",
+      "issuerName": "Vanguard Morningstar Value ETF",
+      "issuerIndex": "Morningstar US Large Cap Value Index",
+      "note": "June 2026 factsheet still CRSP; current issuer profile Morningstar. Historical date of transition not inferred."
+    },
+    {
+      "ticker": "VUG",
+      "apiName": "Vanguard Growth ETF",
+      "issuerName": "Vanguard Morningstar Growth ETF",
+      "issuerIndex": "Morningstar US Large Cap Growth Index",
+      "note": "June 2026 factsheet still CRSP; current issuer profile Morningstar. Historical date of transition not inferred."
+    },
+    {
+      "ticker": "DIA",
+      "note": "API name omits current State Street branding/Trust; issuer name retained."
+    },
+    {
+      "ticker": "MDY",
+      "note": "API name omits current State Street branding/Trust; issuer name retained."
+    }
+  ]
+}

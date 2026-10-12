@@ -1,0 +1,169 @@
+/* Original palette and typography are inherited unchanged from 1716fea styles.css. */
+.original-editorial .editorial-intro { border-top: 3px solid var(--accent); padding: 28px 0; }
+.original-editorial .editorial-intro h2 { margin-top: 12px; font-size: 32px; }
+.editorial-intro ol { list-style: none; padding: 0; margin: 26px 0; }
+.editorial-intro li { display: flex; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.editorial-intro li span { font-family: Georgia, serif; color: var(--muted); }
+.original-editorial .risk-note { margin-bottom: 0; padding-left: 14px; font-size: 12px; }
+.comparator-content { margin-top: 32px; outline: none; scroll-margin-top: 155px; }
+.section-heading h2 { margin: 9px 0 14px; }
+.section-heading p { font-size: 14px; color: var(--muted); max-width: 620px; }
+.selection-section { border-top: 1px solid var(--line); padding-top: 30px; }
+.real-etf-selection { margin-top: 24px; }
+.real-etf-selection legend { font-size: 13px; margin-bottom: 10px; }
+.real-etf-selection>div { display: grid; }
+.real-etf-option { display: flex; gap: 14px; align-items: center; padding: 18px 4px; min-height: 76px; border-bottom: 1px solid var(--line); cursor: pointer; }
+.real-etf-option.chosen { border-color: var(--accent); }
+.real-etf-option strong { display: block; font-family: Georgia, serif; font-size: 23px; font-weight: 400; }
+.real-etf-option small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+.real-etf-selection>p { margin-top: 12px; font-size: 12px; color: var(--muted); }
+.data-notice { margin-top: 30px; border-left: 3px solid var(--accent); padding: 14px 18px; background: var(--surface); font-size: 12px; }
+.data-notice strong { font-size: 13px; }
+.data-notice p { margin-top: 5px; color: var(--muted); max-width: 840px; }
+.comparison-section,.calculator-section { margin-top: 46px; }
+.comparison-table { width: 100%; border-collapse: collapse; margin-top: 24px; table-layout: fixed; font-size: 13px; }
+.comparison-table caption { text-align: left; color: var(--muted); font-size: 11px; padding-bottom: 12px; }
+.comparison-table th,.comparison-table td { text-align: left; padding: 16px 12px; border-bottom: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
+.comparison-table thead th { font-family: Georgia, serif; font-size: 22px; font-weight: 400; border-top: 2px solid var(--accent); }
+.comparison-table th[scope=row] { font-size: 12px; font-weight: 600; }
+.comparison-table th small { font-size: 10px; display: block; font-weight: 400; color: var(--muted); margin-top: 5px; }
+.comparison-table td a { text-underline-offset: 3px; }
+.mobile-column-label { display: none; }
+.calculator-section { padding-top: 28px; border-top: 1px solid var(--line); }
+.calculator-layout { display: grid; gap: 28px; margin-top: 24px; }
+.amount-controls>label { font-size: 13px; font-weight: 600; }
+.amount-controls input[type=number] { display: block; width: 100%; min-height: 56px; padding: 12px 15px; margin-top: 9px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-family: Georgia, serif; font-size: 24px; border-radius: 3px; }
+.amount-controls input[aria-invalid=true] { border-color: #9a432c; }
+.amount-controls #amount-error { color: #9a432c; font-size: 12px; margin: 8px 0; }
+.range-label { display: block; margin-top: 24px; }
+.amount-controls input[type=range] { display: block; width: 100%; min-height: 44px; accent-color: var(--accent); }
+.range-limits { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); }
+.calculator-formula { font-size: 12px; margin-top: 22px; color: var(--muted); }
+.cost-chart { margin: 0; padding: 20px; background: var(--surface); border: 1px solid var(--line); }
+.cost-chart figcaption { font-family: Georgia, serif; font-size: 22px; }
+.cost-chart figcaption span { display: block; font: 11px Arial,sans-serif; margin-top: 8px; color: var(--muted); }
+.chart-axis { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); margin-top: 22px; padding-bottom: 9px; border-bottom: 1px solid var(--line); }
+.cost-chart ul { padding: 0; margin: 20px 0 0; list-style: none; }
+.cost-chart li { margin-bottom: 22px; }
+.bar-label { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
+.bar-label strong { font-weight: 600; }
+.bar-track { background: var(--paper); height: 20px; margin-top: 8px; }
+.bar-fill { height: 100%; background: var(--accent); }
+.chart-note { font-size: 10px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 13px; }
+.calculation-note { font-size: 12px; color: var(--muted); max-width: 900px; margin-top: 22px; }
+.comparison-next { border-top: 1px solid var(--line); padding-top: 25px; margin-top: 35px; display: grid; gap: 22px; }
+.comparison-next h3 { margin: 10px 0 8px; font-family: Georgia,serif; font-weight: 400; font-size: 25px; }
+.comparison-next p { font-size: 12px; color: var(--muted); }
+.comparison-next .primary { align-self: center; }
+.editorial-email { max-width: 620px; margin: 35px auto; border-top: 3px solid var(--accent); padding-top: 28px; }
+.editorial-email h2 { margin: 10px 0 20px; }
+.editorial-email>p { margin-top: 14px; font-size: 14px; }
+.saved-summary { font-family: Georgia,serif; font-size: 23px !important; padding: 15px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.editorial-email .demo-email-note { color: var(--muted); font-size: 12px; }
+.editorial-email form { margin-top: 24px; }
+.editorial-email label { display: block; margin-bottom: 8px; }
+.editorial-email form .primary { margin-top: 12px; }
+.editorial-email form p { font-size: 11px; margin-top: 12px; color: var(--muted); }
+.preview-heading { padding: 25px 20px; border: 1px solid var(--line); background: var(--surface); margin: 28px 0; }
+.preview-heading h2 { margin: 10px 0 18px; }
+.preview-heading p { font-size: 13px; color: var(--muted); margin-top: 10px; }
+.preview-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: 15px; font-size: 13px; text-underline-offset: 4px; }
+.preview-heading small { display: block; font-size: 11px; line-height: 1.6; color: var(--muted); }
+.concept-bar .desktop-switch { flex-wrap: wrap; justify-content: flex-end; }
+@media(max-width:699px) {
+  .comparison-table,.comparison-table tbody { display: block; }
+  .comparison-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .comparison-table tr { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--line); margin-top: 15px; }
+  .comparison-table th[scope=row] { padding: 12px 0; border-bottom: 0; font-size: 14px; }
+  .comparison-table th small { display: inline; margin-left: 8px; }
+  .comparison-table td { display: grid; grid-template-columns: 42px minmax(0,1fr); gap: 12px; padding: 12px 0; }
+  .mobile-column-label { display: block; font-family: Georgia,serif; font-weight: 600; }
+  .comparison-table caption { display: block; }
+}
+@media(min-width:700px) {
+  .original-editorial .opening { gap: 55px; }
+  .original-editorial .editorial-intro { margin-top: 36px; padding: 28px 0; }
+  .original-editorial .editorial-intro h2 { font-size: 38px; }
+  .real-etf-selection>div { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 22px; }
+  .calculator-layout { grid-template-columns: minmax(0,1fr) minmax(0,1.2fr); gap: 55px; }
+  .comparison-next { grid-template-columns: 1fr 300px; gap: 35px; }
+  .cost-chart { padding: 28px; }
+}
+@media(prefers-reduced-motion:no-preference) {
+  .bar-fill { transition: width 180ms ease; }
+  .real-etf-option { transition: border-color 150ms ease; }
+}
+/* Keep the study switcher within small mobile viewports with long variant names. */
+.concept-bar .prototype-label { max-width: 110px; }
+.concept-bar .mobile-switch { min-width: 0; flex: 0 1 220px; }
+.concept-bar .mobile-switch select { min-width: 0; width: 100%; }
+
+.concept-bar.palette-original { --accent: #284c39; }
+.data-attribution{font-size:.85rem;line-height:1.65;margin:0 0 20px;color:#526358}.data-attribution a,.field-sources a{color:#284c39;text-decoration:underline;overflow-wrap:anywhere}.field-sources summary{cursor:pointer;min-height:44px;padding:8px 0;font-weight:600;line-height:1.5}.field-sources ul{list-style:none;margin:8px 0;padding:0}.field-sources li{font-size:.8rem;line-height:1.6;margin-bottom:12px}.field-sources small{display:block;color:#526358}.field-sources:focus-within{outline-color:#526f40}
+
+.investment-section .amount-controls{max-width:36rem}.investment-modes{display:flex;gap:.7rem;margin:1.5rem 0;flex-wrap:wrap}.investment-modes button{padding:.8rem 1rem;border:1px solid #b7c4cb;border-radius:.5rem;background:white;color:inherit;min-height:44px}.investment-modes button[aria-pressed=true]{background:#173b46;color:white}.investment-controls{display:grid;grid-template-columns:minmax(0,1fr);gap:1rem}.investment-controls label{display:block;margin-bottom:.4rem}.investment-controls select,.investment-controls input{width:100%;max-width:100%;min-height:44px;border:1px solid #b7c4cb;border-radius:.4rem;padding:.7rem;background:white;color:inherit}.investment-result{margin-top:1.5rem;padding:1.2rem;background:#f6f8f7;border-radius:.7rem}.investment-result h3{font-family:Georgia,serif;font-size:1.45rem}.investment-result dl{display:grid;gap:1rem}.investment-result dl div{padding:.6rem 0;border-bottom:1px solid #dce4e4}.investment-result dd{font-size:1.6rem;font-weight:600;margin:.3rem 0}.investment-chart{margin:1rem 0;color:#173b46}.investment-chart svg{display:block;width:100%;height:auto;overflow:visible}.investment-chart text{font-size:13px;fill:currentColor}.performance-source{overflow-wrap:anywhere;font-size:.9rem;line-height:1.6;margin-top:1rem}.performance-source a{text-decoration:underline}.expense-section{padding-top:1rem}.expense-section .cost-chart{max-width:36rem}.investment-section button:focus-visible,.investment-section select:focus-visible{outline:3px solid #467786;outline-offset:3px}@media(min-width:720px){.investment-controls{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.investment-result dl{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+@media(max-width:600px){.investment-chart text{font-size:26px}}
+
+.investment-setup{padding-bottom:1rem}.investment-setup .amount-controls{max-width:40rem}.investment-setup .investment-controls{margin-top:1.25rem}.restore-history{background:none;border:0;text-decoration:underline;font-size:.9rem;min-height:44px;padding:.3rem 0;color:#174d61}.model-note{font-size:.95rem;margin-top:1.5rem}.investment-methodology{margin-top:1rem;line-height:1.6}.investment-methodology summary{min-height:44px;cursor:pointer}.investment-methodology a{text-decoration:underline}.historical-section{padding:2rem 0;border-top:1px solid #d6ded7}.historical-chart{margin:1rem 0}.historical-chart svg{display:block;width:100%;height:auto;min-height:230px;color:#263f35}.historical-chart text{font-size:15px;fill:currentColor}.history-legend{display:flex;list-style:none;padding:0;gap:1rem;flex-wrap:wrap}.history-legend li{display:flex;align-items:center;gap:.4rem}.history-legend span{width:12px;height:12px;border-radius:50%}.history-legend a{text-decoration:underline;min-height:44px;display:flex;align-items:center}.history-tooltip{background:#f2f5ef;border-radius:.5rem;padding:.8rem;margin-bottom:1rem;font-size:.9rem}.history-tooltip ul{display:flex;list-style:none;padding:0;gap:.5rem 1rem;flex-wrap:wrap}.historical-chart input{width:100%;min-height:44px}.history-coverage{font-size:.9rem;color:#4c625a}@media(max-width:600px){.historical-chart text{font-size:25px}}
+
+.profit-comparison{width:100%;table-layout:fixed;border-collapse:collapse;margin:1.25rem 0}.profit-fund-column{width:24%}.profit-rate-column{width:28%}.profit-value-column{width:48%}.profit-comparison th,.profit-comparison td{padding:.9rem .5rem;border-bottom:1px solid #d5ded8;text-align:left;vertical-align:middle;overflow-wrap:anywhere}.profit-comparison thead th{font-size:.85rem;line-height:1.5;font-weight:600;border-top:1px solid #d5ded8;background:#eef2eb}.profit-fund strong{display:block;font-size:1.15rem;color:#284c39}.profit-fund span{display:block;margin:.3rem 0;font-size:.85rem;font-weight:400;line-height:1.5}.profit-assumption input{display:block;width:100%;max-width:10rem;min-height:48px;box-sizing:border-box;border:1px solid #aebcb9;border-radius:.4rem;padding:.6rem;font-size:1.1rem;background:white}.profit-assumption input:focus-visible{outline:3px solid #467786;outline-offset:2px}.profit-result{min-width:0;display:grid;gap:.5rem}.profit-result strong{display:block;font-size:1.25rem;font-variant-numeric:tabular-nums;text-align:right;overflow-wrap:anywhere}.profit-history-note{font-size:.85rem;line-height:1.6;color:#4c625a;margin:.9rem 0 .2rem}.profit-track{position:relative;height:42px;background:#e8ede6;border-radius:.4rem;min-width:0;overflow:hidden}.profit-bar{position:absolute;top:5px;bottom:5px;border-radius:3px}.profit-bar.positive{background:#427a50}.profit-bar.negative{background:#af4940}.profit-zero{position:absolute;top:0;bottom:0;width:2px;background:#42594b;transform:translateX(-50%);z-index:1}.profit-gain{color:#284c39}.profit-loss{color:#9b3933}.profit-explainer{font-size:.9rem;color:#4c625a;margin-top:1.5rem}.history-period{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.25rem}.history-period button{min-height:44px;padding:.65rem 1.1rem;border:1px solid #8caa94;border-radius:.4rem;background:transparent;color:#284c39;font-size:1rem}.history-period button[aria-pressed=true]{background:#284c39;color:white}.history-period button:focus-visible{outline:3px solid #467786;outline-offset:3px}.history-period-help{font-size:.85rem;color:#4c625a;margin:.7rem 0 1.25rem}@media(min-width:800px){.profit-result{grid-template-columns:minmax(0,1fr) 11rem;align-items:center}.profit-result p{grid-column:1/-1}}@media(min-width:1000px){.investment-setup .investment-controls{max-width:20rem;grid-template-columns:minmax(0,1fr)}}
+
+@media(max-width:600px){.profit-fund-column{width:18%}.profit-rate-column{width:30%}.profit-value-column{width:52%}.profit-comparison th,.profit-comparison td{padding:.7rem .35rem}.profit-comparison thead th{font-size:.72rem}.profit-fund span{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.profit-fund strong{font-size:1rem}.profit-assumption input{font-size:1rem;padding:.35rem}.profit-result strong{font-size:1rem}.profit-track{height:32px}}
+/* Remove the inherited decorative A / B / C pseudo-element on the functional landing. */
+.editorial.original-editorial .hero::after{content:none;display:none}
+
+/* Current public comparator: compact intro and two fund choices per mobile row. */
+.editorial.original-editorial .editorial-intro{padding:12px 0}
+.editorial.original-editorial .editorial-intro ol{margin:8px 0}
+.editorial.original-editorial .real-etf-selection>div{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}
+.editorial.original-editorial .real-etf-option{gap:8px;min-width:0}
+.editorial.original-editorial .real-etf-option>span{min-width:0;overflow-wrap:anywhere}
+.editorial.original-editorial .real-etf-option input{flex-shrink:0}
+.catalog-more{min-height:44px;margin-top:12px}
+.comparison-table-scroll{max-width:100%;overflow-x:auto}
+.comparison-table-scroll:focus-visible{outline:3px solid #467786;outline-offset:3px}
+@media(min-width:700px){
+ .editorial.original-editorial .real-etf-selection>div{grid-template-columns:repeat(3,minmax(0,1fr));gap:0 22px}
+ .comparison-table-scroll.wide .comparison-table{table-layout:auto}
+ .comparison-table-scroll.wide th,.comparison-table-scroll.wide td{min-width:140px}
+}
+
+/* One divider between the introductory steps and fund selection. */
+.editorial.original-editorial .editorial-intro li:last-child{border-bottom:0}
+.editorial.original-editorial .selection-section{border-top:3px solid var(--accent)}
+.profit-controls-row .profit-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem 1rem}
+.profit-controls-row .history-period{margin-top:0}
+.profit-controls-row .profit-history-note{margin:0 0 .5rem}
+
+/* Trim only the gap below the functional opening; retain its single divider. */
+.editorial.original-editorial .comparator-content{margin-top:16px}
+.editorial.original-editorial .hero{padding-bottom:16px}
+.editorial.original-editorial .editorial-intro{padding-bottom:0}
+.editorial.original-editorial .editorial-intro ol{margin-bottom:0}
+.editorial.original-editorial .editorial-intro{align-self:end}
+
+/* Compact public overview between the opening and the existing selection divider. */
+.comparison-benefits{margin-top:16px}
+.editorial .comparison-benefits h2{font-size:clamp(1.65rem,3.5vw,2.25rem);margin:0 0 16px}
+.comparison-benefits-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 24px}
+.comparison-benefits-grid h3{font-size:14px;font-weight:700;line-height:1.4;margin:0 0 4px}
+.comparison-benefits-grid p{font-size:14px;line-height:1.5;color:var(--muted);margin:0}
+@media(max-width:480px){.comparison-benefits-grid{gap:14px 16px}.comparison-benefits-grid h3,.comparison-benefits-grid p{font-size:13px}}
+
+@media(max-width:699px){
+ .editorial .comparison-benefits h2{font-size:clamp(20.8px,6.1vw,28px)}
+ .editorial.original-editorial .has-benefits .editorial-intro{margin-top:16px}
+}
+@media(min-width:700px){
+ .editorial.original-editorial .has-benefits{row-gap:16px}
+ .has-benefits .hero{grid-column:1;grid-row:1}
+ .has-benefits .editorial-intro{grid-column:2;grid-row:1}
+ .has-benefits .comparison-benefits{grid-column:1/-1;grid-row:2;margin-top:0}
+}
+
+@media(max-width:699px){
+ .editorial.original-editorial .hero h1{font-size:min(12vw,46.4px)}
+ .editorial.original-editorial .hero h1>em{font-size:.92em}
+ .editorial.original-editorial .hero h1>span,.editorial.original-editorial .hero h1>em{white-space:nowrap}
+}

@@ -1,0 +1,489 @@
+{
+  "status": "research_evidence_not_publication_approval",
+  "recordedAt": "2026-10-11T17:10:02Z",
+  "sources": [
+    {
+      "id": "spy-page",
+      "url": "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-sp-500-etf-trust-spy",
+      "httpStatus": 200,
+      "sha256": "79798de42ad9e4536e958ae578520d5d44ea264e46daa26d33b94908ed6f6813",
+      "retrievedAt": "2026-10-11T17:04:23Z",
+      "retrievalDateMeaning": "Čas zápisu skutečně stažené odpovědi na disk; není datum platnosti ani lidského schválení.",
+      "documentAsOf": null
+    },
+    {
+      "id": "voo-page",
+      "url": "https://investor.vanguard.com/investment-products/etfs/profile/voo",
+      "httpStatus": 200,
+      "sha256": "a0afc4058f2c58c01be592c8fb07235f4976234df17fa6906570a102c8a7ef95",
+      "retrievedAt": "2026-10-11T17:04:22Z",
+      "retrievalDateMeaning": "Čas zápisu skutečně stažené odpovědi na disk; není datum platnosti ani lidského schválení.",
+      "documentAsOf": null
+    },
+    {
+      "id": "vti-page",
+      "url": "https://investor.vanguard.com/investment-products/etfs/profile/vti",
+      "httpStatus": 200,
+      "sha256": "2bc29ea80528813b7fe03883b1a7aed4b9920969cd9eb96cbd4c978fb0a756bf",
+      "retrievedAt": "2026-10-11T17:04:22Z",
+      "retrievalDateMeaning": "Čas zápisu skutečně stažené odpovědi na disk; není datum platnosti ani lidského schválení.",
+      "documentAsOf": null
+    },
+    {
+      "id": "ivv-page",
+      "url": "https://www.ishares.com/us/products/239726/ishares-core-sp-500-etf",
+      "httpStatus": 200,
+      "sha256": "6493166e69673f2b13d765538ad0526eec5c2354b45166c8f5516e088af59cb8",
+      "retrievedAt": "2026-10-11T17:04:23Z",
+      "retrievalDateMeaning": "Čas zápisu skutečně stažené odpovědi na disk; není datum platnosti ani lidského schválení.",
+      "documentAsOf": null
+    },
+    {
+      "id": "iwm-page",
+      "url": "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf",
+      "httpStatus": 200,
+      "sha256": "6b899205df8f0661dc3d67df65946d789b918ad24340d55bb62898fd38aef7f2",
+      "retrievedAt": "2026-10-11T17:04:23Z",
+      "retrievalDateMeaning": "Čas zápisu skutečně stažené odpovědi na disk; není datum platnosti ani lidského schválení.",
+      "documentAsOf": null
+    },
+    {
+      "id": "spy-pdf",
+      "url": "https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf",
+      "httpStatus": 200,
+      "sha256": "920347cf84e218ebb3fc1a962de24a0f2deb694e94b7415711ac5b7531ce9d58",
+      "retrievedAt": "2026-10-11T17:05:40Z",
+      "retrievalDateMeaning": "Čas zápisu skutečně stažené odpovědi na disk; není datum platnosti ani lidského schválení.",
+      "documentAsOf": "2026-06-30"
+    },
+    {
+      "id": "voo-pdf",
+      "url": "https://fund-docs.vanguard.com/F0968.pdf",
+      "httpStatus": 200,
+      "sha256": "e61ed989f327c2742ee91ba9267ce30907a7e6c1b067f4d1688d228e28d79bd4",
+      "retrievedAt": "2026-10-11T17:05:40Z",
+      "retrievalDateMeaning": "Čas zápisu skutečně stažené odpovědi na disk; není datum platnosti ani lidského schválení.",
+      "documentAsOf": "2026-06-30"
+    },
+    {
+      "id": "vti-pdf",
+      "url": "https://fund-docs.vanguard.com/F0970.pdf",
+      "httpStatus": 200,
+      "sha256": "aa02df64705fcbf14056bcf1a9a320a852e9670b171acd2e3591289435f1ddfd",
+      "retrievedAt": "2026-10-11T17:05:40Z",
+      "retrievalDateMeaning": "Čas zápisu skutečně stažené odpovědi na disk; není datum platnosti ani lidského schválení.",
+      "documentAsOf": "2026-06-30"
+    },
+    {
+      "id": "ivv-pdf",
+      "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",
+      "httpStatus": 200,
+      "sha256": "d3b9d8ac355f1dcfd7a436cd576876b70ba5fd1851661655d80c8805442373b0",
+      "retrievedAt": "2026-10-11T17:05:40Z",
+      "retrievalDateMeaning": "Čas zápisu skutečně stažené odpovědi na disk; není datum platnosti ani lidského schválení.",
+      "documentAsOf": "2026-06-30"
+    },
+    {
+      "id": "iwm-pdf",
+      "url": "https://www.ishares.com/us/literature/fact-sheet/iwm-ishares-russell-2000-etf-fund-fact-sheet-en-us.pdf",
+      "httpStatus": 200,
+      "sha256": "26556f04cebedb5e1a875dbd85c3220036b9a90a6ef89c4d8459402249e585dd",
+      "retrievedAt": "2026-10-11T17:05:40Z",
+      "retrievalDateMeaning": "Čas zápisu skutečně stažené odpovědi na disk; není datum platnosti ani lidského schválení.",
+      "documentAsOf": "2026-06-30"
+    },
+    {
+      "id": "api-terms",
+      "url": "https://tickerinside.com/terms/",
+      "httpStatus": 200,
+      "sha256": "5fbc75893066b6b640a9076e84c63f95a3e2f35dc6bdefb213f47b757fd0c69d",
+      "retrievedAt": "2026-10-11T17:04:22Z",
+      "retrievalDateMeaning": "Čas zápisu skutečně stažené odpovědi na disk; není datum platnosti ani lidského schválení.",
+      "documentAsOf": null
+    },
+    {
+      "id": "api-spy",
+      "url": "https://tickerinside.com/api/v1/fund/spy.json",
+      "httpStatus": 200,
+      "sha256": "9ba70f472e93176d17c1123019f2081923778dc7c69840914f0f5e1ed8a0b458",
+      "retrievedAt": "2026-10-11T19:32:03.670399+00:00",
+      "retrievalDateMeaning": "Čas zápisu skutečně stažené odpovědi na disk; není datum platnosti ani lidského schválení."
+    },
+    {
+      "id": "api-voo",
+      "url": "https://tickerinside.com/api/v1/fund/voo.json",
+      "httpStatus": 200,
+      "sha256": "a5346f808bddff2c31f9a82a53afd6b3e3e2a56d89dede0acd97c5a12f24ce5b",
+      "retrievedAt": "2026-10-11T19:32:03.714515+00:00",
+      "retrievalDateMeaning": "Čas zápisu skutečně stažené odpovědi na disk; není datum platnosti ani lidského schválení."
+    },
+    {
+      "id": "api-ivv",
+      "url": "https://tickerinside.com/api/v1/fund/ivv.json",
+      "httpStatus": 200,
+      "sha256": "450a832f0ebc4bc0686cfa78946b1ac888ad4e8d204e21cbc6dfe8bd4ec784b7",
+      "retrievedAt": "2026-10-11T19:32:03.756189+00:00",
+      "retrievalDateMeaning": "Čas zápisu skutečně stažené odpovědi na disk; není datum platnosti ani lidského schválení."
+    },
+    {
+      "id": "api-vti",
+      "url": "https://tickerinside.com/api/v1/fund/vti.json",
+      "httpStatus": 200,
+      "sha256": "883a00bdeea0d58d435626923085f1a2ca6632f5e909851e6773ad39afd2b6ca",
+      "retrievedAt": "2026-10-11T19:32:03.769535+00:00",
+      "retrievalDateMeaning": "Čas zápisu skutečně stažené odpovědi na disk; není datum platnosti ani lidského schválení."
+    },
+    {
+      "id": "api-iwm",
+      "url": "https://tickerinside.com/api/v1/fund/iwm.json",
+      "httpStatus": 200,
+      "sha256": "74a3dc32800d796e907b60a840447a0f67634122b5cbefb3370258ee46fb503a",
+      "retrievedAt": "2026-10-11T19:32:03.789935+00:00",
+      "retrievalDateMeaning": "Čas zápisu skutečně stažené odpovědi na disk; není datum platnosti ani lidského schválení."
+    },
+    {
+      "id": "project-descriptions",
+      "url": "https://github.com/RostislavHanza/EtfComparisonLanding/blob/design-exploration/data/review/priority-five.pending.json",
+      "status": "local_original_authorship_not_external_retrieval",
+      "retrievedAt": "2026-10-11T19:34:53.241442+00:00"
+    }
+  ],
+  "tickerInsideObservations": {
+    "SPY": {
+      "ticker": "SPY",
+      "name": "SPDR S&P 500 ETF Trust",
+      "identifiers": {
+        "asset_type": "etf",
+        "exchange": "NYSE Arca"
+      },
+      "expense_ratio": 0.09,
+      "expense_ratio_gross": null,
+      "expense_ratio_source": "market_data",
+      "expense_ratio_as_of": null,
+      "expense_ratio_filing_url": null,
+      "page_url": "https://tickerinside.com/etf/spy/",
+      "license": "CC BY 4.0"
+    },
+    "VOO": {
+      "ticker": "VOO",
+      "name": "Vanguard S&P 500 ETF",
+      "identifiers": {
+        "asset_type": "etf",
+        "exchange": "NYSE Arca"
+      },
+      "expense_ratio": 0.03,
+      "expense_ratio_gross": 0.03,
+      "expense_ratio_source": "sec_filing",
+      "expense_ratio_as_of": "2026-04-28",
+      "expense_ratio_filing_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640526000181/",
+      "page_url": "https://tickerinside.com/etf/voo/",
+      "license": "CC BY 4.0"
+    },
+    "IVV": {
+      "ticker": "IVV",
+      "name": "iShares Core S&P 500 ETF",
+      "identifiers": {
+        "asset_type": "etf",
+        "exchange": "NYSE Arca"
+      },
+      "expense_ratio": 0.03,
+      "expense_ratio_gross": 0.03,
+      "expense_ratio_source": "sec_filing",
+      "expense_ratio_as_of": "2026-07-27",
+      "expense_ratio_filing_url": "https://www.sec.gov/Archives/edgar/data/1100663/000119312526318131/",
+      "page_url": "https://tickerinside.com/etf/ivv/",
+      "license": "CC BY 4.0"
+    },
+    "VTI": {
+      "ticker": "VTI",
+      "name": "Vanguard Total Stock Market ETF",
+      "identifiers": {
+        "asset_type": "etf",
+        "exchange": "NYSE Arca"
+      },
+      "expense_ratio": 0.03,
+      "expense_ratio_gross": 0.03,
+      "expense_ratio_source": "sec_filing",
+      "expense_ratio_as_of": "2026-04-28",
+      "expense_ratio_filing_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640526000181/",
+      "page_url": "https://tickerinside.com/etf/vti/",
+      "license": "CC BY 4.0"
+    },
+    "IWM": {
+      "ticker": "IWM",
+      "name": "iShares Russell 2000 ETF",
+      "identifiers": {
+        "asset_type": "etf",
+        "exchange": "NYSE Arca"
+      },
+      "expense_ratio": 0.19,
+      "expense_ratio_gross": 0.19,
+      "expense_ratio_source": "sec_filing",
+      "expense_ratio_as_of": "2026-07-27",
+      "expense_ratio_filing_url": "https://www.sec.gov/Archives/edgar/data/1100663/000119312526318131/",
+      "page_url": "https://tickerinside.com/etf/iwm/",
+      "license": "CC BY 4.0"
+    }
+  },
+  "nyseChecks": [
+    {
+      "ticker": "SPY",
+      "url": "https://www.nyse.com/quote/ARCX:SPY",
+      "httpStatus": 200,
+      "listingVerified": false,
+      "finding": "Stažená stránka obsahuje obecný navigační shell; žádný důkaz konkrétního instrumentu. HTTP 200 není ověření burzy.",
+      "sha256": "783987ac111426ebc3df182cce71e27931dbb0bf34e78c33ba953b0c235a476e",
+      "retrievedAt": "2026-10-11T17:07:13Z"
+    },
+    {
+      "ticker": "VOO",
+      "url": "https://www.nyse.com/quote/ARCX:VOO",
+      "httpStatus": 200,
+      "listingVerified": false,
+      "finding": "Stažená stránka obsahuje obecný navigační shell; žádný důkaz konkrétního instrumentu. HTTP 200 není ověření burzy.",
+      "sha256": "6b38e3bb6b0f14f7b94b9b9b80158bb91e9432f218976862d5db08330233fd46",
+      "retrievedAt": "2026-10-11T17:07:13Z"
+    },
+    {
+      "ticker": "IVV",
+      "url": "https://www.nyse.com/quote/ARCX:IVV",
+      "httpStatus": 200,
+      "listingVerified": false,
+      "finding": "Stažená stránka obsahuje obecný navigační shell; žádný důkaz konkrétního instrumentu. HTTP 200 není ověření burzy.",
+      "sha256": "5e4ef2defecb1a966cd0cdeb399107185f36be3b1501487e5cc4953ed7cc5f57",
+      "retrievedAt": "2026-10-11T17:07:14Z"
+    },
+    {
+      "ticker": "VTI",
+      "url": "https://www.nyse.com/quote/ARCX:VTI",
+      "httpStatus": 200,
+      "listingVerified": false,
+      "finding": "Stažená stránka obsahuje obecný navigační shell; žádný důkaz konkrétního instrumentu. HTTP 200 není ověření burzy.",
+      "sha256": "c0ae24a584ab10141b1d1bb4957099067ede84d2095b571be418b8c14b3de52c",
+      "retrievedAt": "2026-10-11T17:07:14Z"
+    },
+    {
+      "ticker": "IWM",
+      "url": "https://www.nyse.com/quote/ARCX:IWM",
+      "httpStatus": 200,
+      "listingVerified": false,
+      "finding": "Stažená stránka obsahuje obecný navigační shell; žádný důkaz konkrétního instrumentu. HTTP 200 není ověření burzy.",
+      "sha256": "b4a44a3be5a30ac9c66b9e110dbcb3925b0aed3801b5cbb9dba20e212a28190a",
+      "retrievedAt": "2026-10-11T17:07:14Z"
+    }
+  ],
+  "usageFindings": [
+    {
+      "source": "TickerInside",
+      "url": "https://tickerinside.com/terms/",
+      "finding": "Aktuální vlastní práce poskytovatele CC BY 4.0 s atribucí; nejde o schválení jiných primárních zdrojů."
+    },
+    {
+      "source": "SSGA",
+      "url": "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-sp-500-etf-trust-spy",
+      "finding": "Footer zakazuje reprodukci/kopírování/předání obsahu bez výslovného písemného souhlasu. Právní základ pro náš omezený faktický přehled nebyl schválen."
+    },
+    {
+      "source": "Vanguard",
+      "url": "https://fund-docs.vanguard.com/F0970.pdf",
+      "finding": "Copyright a práva k indexovým označením; obecné podmínky publikace metadat nebyly kompletně ověřeny. Nejsou používány CUSIP, holdings ani výkonnost."
+    },
+    {
+      "source": "iShares / BlackRock",
+      "url": "https://www.blackrock.com/corporate/compliance/terms-and-conditions",
+      "finding": "Oficiální odkaz z produktových stránek; HTTPS proxy blokuje otevření (403 tunel). Nelze potvrdit oprávnění pro tento způsob publikace."
+    },
+    {
+      "source": "NYSE / ICE",
+      "url": "https://www.ice.com/privacy-security-center/terms-of-use",
+      "finding": "Oficiální odkaz z NYSE; HTTPS proxy blokuje otevření (403 tunel). Licenční kontrola nedokončena."
+    }
+  ],
+  "technicalRecheck": [
+    {
+      "id": "spy-page",
+      "url": "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-sp-500-etf-trust-spy",
+      "httpStatus": 200,
+      "sha256": "79798de42ad9e4536e958ae578520d5d44ea264e46daa26d33b94908ed6f6813",
+      "retrievedAt": "2026-10-11T18:44:09.204001+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    },
+    {
+      "id": "voo-page",
+      "url": "https://investor.vanguard.com/investment-products/etfs/profile/voo",
+      "httpStatus": 200,
+      "sha256": "a0afc4058f2c58c01be592c8fb07235f4976234df17fa6906570a102c8a7ef95",
+      "retrievedAt": "2026-10-11T18:44:09.271535+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    },
+    {
+      "id": "vti-page",
+      "url": "https://investor.vanguard.com/investment-products/etfs/profile/vti",
+      "httpStatus": 200,
+      "sha256": "2bc29ea80528813b7fe03883b1a7aed4b9920969cd9eb96cbd4c978fb0a756bf",
+      "retrievedAt": "2026-10-11T18:44:09.185214+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    },
+    {
+      "id": "ivv-page",
+      "url": "https://www.ishares.com/us/products/239726/ishares-core-sp-500-etf",
+      "httpStatus": 200,
+      "sha256": "e104aef8b806c964a517020c454d9ab49925e6e93e5f4fc0cbe83453053c5bed",
+      "retrievedAt": "2026-10-11T18:44:09.690762+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    },
+    {
+      "id": "iwm-page",
+      "url": "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf",
+      "httpStatus": 200,
+      "sha256": "fa3b9d031e77163aca880c48fc4364057c9359666a89fe65600f4e95c8989c53",
+      "retrievedAt": "2026-10-11T18:44:09.474519+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    },
+    {
+      "id": "spy-pdf",
+      "url": "https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf",
+      "httpStatus": 200,
+      "sha256": "920347cf84e218ebb3fc1a962de24a0f2deb694e94b7415711ac5b7531ce9d58",
+      "retrievedAt": "2026-10-11T18:44:09.584130+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    },
+    {
+      "id": "voo-pdf",
+      "url": "https://fund-docs.vanguard.com/F0968.pdf",
+      "httpStatus": 200,
+      "sha256": "e61ed989f327c2742ee91ba9267ce30907a7e6c1b067f4d1688d228e28d79bd4",
+      "retrievedAt": "2026-10-11T18:44:09.743110+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    },
+    {
+      "id": "vti-pdf",
+      "url": "https://fund-docs.vanguard.com/F0970.pdf",
+      "httpStatus": 200,
+      "sha256": "aa02df64705fcbf14056bcf1a9a320a852e9670b171acd2e3591289435f1ddfd",
+      "retrievedAt": "2026-10-11T18:44:09.780810+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    },
+    {
+      "id": "ivv-pdf",
+      "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",
+      "httpStatus": 200,
+      "sha256": "d3b9d8ac355f1dcfd7a436cd576876b70ba5fd1851661655d80c8805442373b0",
+      "retrievedAt": "2026-10-11T18:44:09.682423+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    },
+    {
+      "id": "iwm-pdf",
+      "url": "https://www.ishares.com/us/literature/fact-sheet/iwm-ishares-russell-2000-etf-fund-fact-sheet-en-us.pdf",
+      "httpStatus": 200,
+      "sha256": "26556f04cebedb5e1a875dbd85c3220036b9a90a6ef89c4d8459402249e585dd",
+      "retrievedAt": "2026-10-11T18:44:09.740539+00:00",
+      "meaning": "Technická opakovaná dostupnost zdroje, nikoli lidské ověření ani schválení práv."
+    }
+  ],
+  "methodologyReview": {
+    "recordedAt": "2026-10-11T19:34:53.241442+00:00",
+    "apiDocumentation": {
+      "url": "https://tickerinside.com/api/index.md",
+      "httpStatus": 200,
+      "sha256": "3749d749940b6d4bf064aa329dc0f2916dd72c4a5ff8d0a35eadd6e7d6d68f60"
+    },
+    "legalNotice": {
+      "url": "https://tickerinside.com/legal/",
+      "revisionDate": "2026-10-09",
+      "status": "independently_verified_by_operator",
+      "recordedAt": "2026-10-11T20:24:08.149064+00:00",
+      "verificationBasis": "Provozovatel v opravě právě probíhajícího zadání doložil nezávislé otevření a ověření /legal/, /terms/ a /api/. Nejde o nové HTTP měření této úlohy.",
+      "licenseScope": "CC BY 4.0 pro vlastní práci TickerInside v aktuálních API snapshotech včetně komerčního použití s atribucí; aktuální /api/v1/fund/ soubory. Historie holdings a ETF flows mají odlišná pravidla a nepoužíváme je.",
+      "thirdPartyRights": "Licence se automaticky nevztahuje na práva třetích stran.",
+      "relatedOfficialUrls": [
+        "https://tickerinside.com/terms/",
+        "https://tickerinside.com/api/"
+      ]
+    },
+    "scope": "Current fund JSON metadata and SEC-derived fees; no holdings/history/flows/prices/FIGI; licensing is provider declaration, operator approval still required.",
+    "issuerRecheck": [
+      {
+        "id": "spy-page",
+        "url": "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-sp-500-etf-trust-spy",
+        "httpStatus": 200,
+        "sha256": "79798de42ad9e4536e958ae578520d5d44ea264e46daa26d33b94908ed6f6813",
+        "retrievedAt": "2026-10-11T19:39:14.266915+00:00",
+        "meaning": "Assistant technical source observation, not human or legal approval"
+      },
+      {
+        "id": "voo-page",
+        "url": "https://investor.vanguard.com/investment-products/etfs/profile/voo",
+        "httpStatus": 200,
+        "sha256": "a0afc4058f2c58c01be592c8fb07235f4976234df17fa6906570a102c8a7ef95",
+        "retrievedAt": "2026-10-11T19:39:14.154103+00:00",
+        "meaning": "Assistant technical source observation, not human or legal approval"
+      },
+      {
+        "id": "vti-page",
+        "url": "https://investor.vanguard.com/investment-products/etfs/profile/vti",
+        "httpStatus": 200,
+        "sha256": "2bc29ea80528813b7fe03883b1a7aed4b9920969cd9eb96cbd4c978fb0a756bf",
+        "retrievedAt": "2026-10-11T19:39:14.412318+00:00",
+        "meaning": "Assistant technical source observation, not human or legal approval"
+      },
+      {
+        "id": "ivv-page",
+        "url": "https://www.ishares.com/us/products/239726/ishares-core-sp-500-etf",
+        "httpStatus": 200,
+        "sha256": "1f02c214056f58b524b8ff2aa2f52a3dd620d6ca7b4598225869d9a7a39cc2ff",
+        "retrievedAt": "2026-10-11T19:39:14.620922+00:00",
+        "meaning": "Assistant technical source observation, not human or legal approval"
+      },
+      {
+        "id": "iwm-page",
+        "url": "https://www.ishares.com/us/products/239710/ishares-russell-2000-etf",
+        "httpStatus": 200,
+        "sha256": "e3508011dc0675cacd1e7cc082c16c61612e6f9b5832995a7525308c3f0c34a4",
+        "retrievedAt": "2026-10-11T19:39:14.544021+00:00",
+        "meaning": "Assistant technical source observation, not human or legal approval"
+      },
+      {
+        "id": "spy-pdf",
+        "url": "https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf",
+        "httpStatus": 200,
+        "sha256": "920347cf84e218ebb3fc1a962de24a0f2deb694e94b7415711ac5b7531ce9d58",
+        "retrievedAt": "2026-10-11T19:39:14.508889+00:00",
+        "meaning": "Assistant technical source observation, not human or legal approval"
+      },
+      {
+        "id": "voo-pdf",
+        "url": "https://fund-docs.vanguard.com/F0968.pdf",
+        "httpStatus": 200,
+        "sha256": "e61ed989f327c2742ee91ba9267ce30907a7e6c1b067f4d1688d228e28d79bd4",
+        "retrievedAt": "2026-10-11T19:39:14.755945+00:00",
+        "meaning": "Assistant technical source observation, not human or legal approval"
+      },
+      {
+        "id": "vti-pdf",
+        "url": "https://fund-docs.vanguard.com/F0970.pdf",
+        "httpStatus": 200,
+        "sha256": "aa02df64705fcbf14056bcf1a9a320a852e9670b171acd2e3591289435f1ddfd",
+        "retrievedAt": "2026-10-11T19:39:14.830525+00:00",
+        "meaning": "Assistant technical source observation, not human or legal approval"
+      },
+      {
+        "id": "ivv-pdf",
+        "url": "https://www.ishares.com/us/literature/fact-sheet/ivv-ishares-core-s-p-500-etf-fund-fact-sheet-en-us.pdf",
+        "httpStatus": 200,
+        "sha256": "d3b9d8ac355f1dcfd7a436cd576876b70ba5fd1851661655d80c8805442373b0",
+        "retrievedAt": "2026-10-11T19:39:14.755910+00:00",
+        "meaning": "Assistant technical source observation, not human or legal approval"
+      },
+      {
+        "id": "iwm-pdf",
+        "url": "https://www.ishares.com/us/literature/fact-sheet/iwm-ishares-russell-2000-etf-fund-fact-sheet-en-us.pdf",
+        "httpStatus": 200,
+        "sha256": "26556f04cebedb5e1a875dbd85c3220036b9a90a6ef89c4d8459402249e585dd",
+        "retrievedAt": "2026-10-11T19:39:14.855900+00:00",
+        "meaning": "Assistant technical source observation, not human or legal approval"
+      }
+    ]
+  },
+  "usageFindingsNotice": "Původní pozorování během rešerše, nikoli aktuální stav rozhodnutí provozovatele. Následné ověření TickerInside od provozovatele je v methodologyReview.legalNotice; rozhodnutí pro omezené faktické demo v priority-five.demo-approval.json není právní povolení emitenta."
+}
