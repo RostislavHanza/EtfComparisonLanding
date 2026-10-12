@@ -4,7 +4,7 @@
 
 ## Jak web funguje
 
-Redakční úvod → výběr alespoň jednoho ETF bez pevného maxima → e-mail → bezpečný odkaz → automatické ověření v aktivním prohlížeči → interaktivní kalkulačka, historie a podrobné srovnání. Veřejná stránka obsahuje pouze výběr a e-mail; kalkulačka a podrobná data jsou chráněné serverovou session. Výběr a výchozí částka 100 000 Kč se uloží v Supabase; částku lze měnit až v otevřeném přehledu.
+Redakční úvod → kompaktní přehled „Co získáte ve svém srovnání?“ (odhadovaný zisk, historický vývoj, detailní srovnání, návratový přehled na e-mail; bez dalšího CTA) → výběr alespoň jednoho ETF bez pevného maxima → e-mail → bezpečný odkaz → automatické ověření v aktivním prohlížeči → interaktivní kalkulačka, historie a podrobné srovnání. Veřejná stránka obsahuje pouze výběr a e-mail; kalkulačka a podrobná data jsou chráněné serverovou session. Výběr a výchozí částka 100 000 Kč se uloží v Supabase; částku lze měnit až v otevřeném přehledu.
 
 Kalkulace je částka × expense ratio / 100 (100 000 Kč × 0,03 % = 30 Kč/rok). Nezahrnuje brokera, konverze, daně nebo změny hodnoty investice a nepředpovídá výnosy. Nové historické r1/r3/r5 jsou kumulativní, vlastní scénář používá složené úročení; oba ignorují historický USD/CZK kurz. Historické total returns se nesnižují znovu o expense ratio. Podrobnosti a skutečné výnosy: [PERFORMANCE.md](docs/PERFORMANCE.md). PRIIPs/KID a omezená dostupnost amerických ETF pro retail v EU jsou viditelné před formulářem; obsah není doporučení.
 
