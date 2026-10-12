@@ -10,6 +10,7 @@ test('server rejects malformed selections, amounts, consent, honeypot and attrib
  assert.equal(comparisonInput({tickers:Array.from({length:100},(_,i)=>`TEST${i}`),amountCzk:1.23}).tickers.length,100)
  for(const patch of [{tickers:[]},{tickers:['A','A']},{tickers:['a','B']},{amountCzk:NaN},{amountCzk:-1},{amountCzk:0.001},{amountCzk:10000001}])assert.throws(()=>comparisonInput({...input,...patch}))
  for(const patch of [{email:'bad'},{email:'a@b.com\r\nBcc: a@b.com'},{marketingConsent:'true'},{website:'bot'}])assert.throws(()=>leadInput({...input,...patch}))
+ for(const campaign of ['arbitrary-text','ad-c','<script>'])assert.equal(attribution({consent:true,visitId:'11111111-1111-4111-8111-111111111111',campaign})?.campaign,'direct')
  assert.equal(leadInput(input).marketingConsent,false);assert.equal(attribution({consent:false}),null);assert.throws(()=>attribution({consent:true,visitId:'-'.repeat(36)}))
 })
 function fixture(){const date=new Date().toISOString();return{ticker:'TESTONLY',name:'TEST ONLY, NOT A REAL FUND',exchange:'NYSE Arca',index:'TEST ONLY',expenseRatioPercent:0.03,dividends:'TEST ONLY',description:'TEST ONLY',verifiedAt:date,dataAsOf:date,verifiedBy:'TEST ONLY',sources:['name','exchange','index','expenseRatioPercent','dividends','description'].map(field=>({field,url:field==='exchange'?'https://nyse.com/test':'https://ssga.com/test',verified_at:date,as_of:date,evidence:'TEST ONLY'})),usageReview:{approved:true,reviewedAt:date,reviewer:'TEST ONLY',basis:'TEST ONLY',policyUrl:'https://ssga.com/test'}}}

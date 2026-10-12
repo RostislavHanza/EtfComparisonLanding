@@ -123,7 +123,7 @@ try {
 
     assert.equal(await page.getByRole('button', { name: '3 roky', exact: true }).getAttribute('aria-pressed'), 'true')
     for (const input of await page.locator('input').all()) assert.ok((await input.boundingBox()).height >= 44)
-    assert.equal(await page.getByRole('link', { name: 'Vytvořit vlastní srovnání →' }).getAttribute('href'), '/#comparator')
+    assert.equal(await page.getByRole('link', { name: 'Vytvořit vlastní srovnání →' }).getAttribute('href'), '/?utm_campaign=ad-a#comparator')
     assert.equal(await page.locator('#root').count(), 0)
     assert.equal(requests.some(url => new URL(url).origin !== new URL(base).origin || new URL(url).pathname.startsWith('/api/')), false)
     assert.deepEqual(errors, [])
@@ -133,7 +133,7 @@ try {
     await page.getByRole('link', { name: 'Vytvořit vlastní srovnání →' }).click()
     await page.locator('#comparator').waitFor()
     assert.equal(new URL(page.url()).pathname, '/')
-    assert.equal(new URL(page.url()).hash, '#comparator')
+    assert.equal(new URL(page.url()).hash, '#comparator');assert.equal(new URL(page.url()).searchParams.get('utm_campaign'),'ad-a')
     assert.equal(await page.locator('#rate-SPY').count(), 0)
     console.log(`PASS /add direct/reload, standalone requests, inputs/costs/common bars, CTA and root at ${width}px`)
     await page.close()

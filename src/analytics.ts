@@ -15,7 +15,7 @@ export async function setAnalyticsConsent(allowed:boolean){
  let retained=''
  if(allowed&&!pending){try{retained=visitId||sessionStorage.getItem('etf_visit_id')||''}catch{/* No storage. */}}
  visitId='';emitted.clear()
- if(!allowed||pending)try{localStorage.setItem('etf_analytics_consent','denied');sessionStorage.removeItem('etf_visit_id')}catch{/* In-memory opt-out still applies. */}
+ if(!allowed||pending)try{localStorage.setItem('etf_analytics_consent','denied');sessionStorage.removeItem('etf_visit_id');sessionStorage.removeItem('etf_campaign')}catch{/* In-memory opt-out still applies. */}
  if(pending){
   await Promise.allSettled([...inflight])
   try{await api('/api/events',{method:'POST',body:JSON.stringify({withdraw:true,attribution:pending})});pending=null;try{localStorage.removeItem('etf_pending_withdrawal')}catch{/* No storage. */}}catch{return false}
@@ -27,7 +27,17 @@ export async function setAnalyticsConsent(allowed:boolean){
  return true
 }
 export function initialConsent():boolean|null{if(hasPendingWithdrawal())return false;try{const value=localStorage.getItem('etf_analytics_consent');return value==='granted'?true:value==='denied'?false:null}catch{return null}}
-export function attribution():Attribution|null{if(!consent||!visitId)return null;const source=new URLSearchParams(window.location.search).get('utm_campaign');return{consent:true,visitId,campaign:source==='ad-a'||source==='ad-b'?source:'direct'}}
+export function attribution():Attribution|null{
+ if(!consent||!visitId)return null
+ const source=new URLSearchParams(window.location.search).get('utm_campaign')
+ let campaign=source==='ad-a'||source==='ad-b'?source:'direct'
+ try{
+  const retained=sessionStorage.getItem('etf_campaign')
+  if(source===null&&(retained==='ad-a'||retained==='ad-b'))campaign=retained
+  sessionStorage.setItem('etf_campaign',campaign)
+ }catch{/* Current URL still supplies validated attribution without storage. */}
+ return{consent:true,visitId,campaign}
+}
 export function track(name:ClientEvent){
  const a=attribution();if(!a||emitted.has(name))return;emitted.add(name)
  const promise=api('/api/events',{method:'POST',body:JSON.stringify({name,attribution:a})}).catch(()=>{if(visitId===a.visitId)emitted.delete(name)})
