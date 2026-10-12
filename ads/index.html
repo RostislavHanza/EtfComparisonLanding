@@ -17,13 +17,22 @@
     </header>
     <section aria-label="Ukázková kalkulačka">
       <div class="settings">
-        <label for="investment">Investovaná částka v Kč
+        <div class="amount-controls"><label for="investment">Investovaná částka v Kč
           <input id="investment" type="number" min="0" max="10000000" step="any" value="100000" inputmode="decimal" required>
         </label>
+          <label class="sr-only" for="investment-range">Upravit částku posuvníkem</label>
+          <input id="investment-range" type="range" min="0" max="10000000" step="1000" value="100000">
+          <div class="range-limits"><span>0 Kč</span><span>10 mil. Kč</span></div>
+        </div>
         <label for="horizon">Investiční horizont (roky)
           <input id="horizon" type="number" min="1" max="30" step="1" value="10" inputmode="numeric" required>
         </label>
       </div>
+      <table>
+        <caption class="sr-only">Srovnání odhadovaného zisku SPY a VOO</caption>
+        <thead><tr><th scope="col">ETF</th><th scope="col">Předpokládaný výnos ročně (%)</th><th scope="col">Odhadovaný zisk</th></tr></thead>
+        <tbody id="funds"></tbody>
+        <tfoot><tr class="history-row"><td colspan="3">
       <div class="history-controls">
         <div role="group" aria-label="Historické referenční období">
           <button type="button" data-period="1" aria-pressed="false">1 rok</button>
@@ -33,10 +42,7 @@
         <button type="button" id="restore">Obnovit podle historie</button>
       </div>
       <p class="assumption" id="reference"></p>
-      <table>
-        <caption class="sr-only">Srovnání odhadovaného zisku SPY a VOO</caption>
-        <thead><tr><th scope="col">ETF</th><th scope="col">Předpokládaný výnos ročně (%)</th><th scope="col">Odhadovaný zisk</th></tr></thead>
-        <tbody id="funds"></tbody>
+        </td></tr></tfoot>
       </table>
       <p id="error" role="alert" hidden></p>
       <p class="disclaimer">Hypotetický model zahrnuje roční nákladovost ETF. Nezahrnuje měnové změny, daně ani poplatky brokera.</p>

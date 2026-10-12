@@ -1,10 +1,12 @@
 import { funds } from './funds.js'
 import { history, historicalAssumption } from './history.js'
 import type { HistoricalYears } from '../shared/performance.js'
-import { money } from '../shared/model.js'
+import { MAX_AMOUNT_CZK, money } from '../shared/model.js'
 import { profitScale, scenarioProfit } from '../shared/performance.js'
 
 const investment = document.querySelector<HTMLInputElement>('#investment')!
+const slider = document.querySelector<HTMLInputElement>('#investment-range')!
+investment.max = slider.max = String(MAX_AMOUNT_CZK)
 const horizon = document.querySelector<HTMLInputElement>('#horizon')!
 const error = document.querySelector<HTMLParagraphElement>('#error')!
 const body = document.querySelector<HTMLTableSectionElement>('#funds')!
@@ -17,6 +19,10 @@ for (const fund of funds) {
 }
 const rates = funds.map(f => document.querySelector<HTMLInputElement>(`#rate-${f.ticker}`)!)
 function update() {
+  if (investment.checkValidity()) {
+    slider.value = investment.value
+    slider.setAttribute('aria-valuetext', money(investment.valueAsNumber))
+  }
   const validSettings = investment.checkValidity() && horizon.checkValidity()
   const profits = funds.map((fund, i) => validSettings && rates[i].checkValidity()
     ? scenarioProfit(investment.valueAsNumber, rates[i].valueAsNumber, horizon.valueAsNumber, fund.expenseRatioPercent) : null)
@@ -58,5 +64,6 @@ for (const button of periodButtons) button.addEventListener('click', () => {
   restoreHistory()
 })
 document.querySelector<HTMLButtonElement>('#restore')!.addEventListener('click', restoreHistory)
+slider.addEventListener('input', () => { investment.value = slider.value; update() })
 for (const input of [investment, horizon, ...rates]) input.addEventListener('input', update)
 restoreHistory()

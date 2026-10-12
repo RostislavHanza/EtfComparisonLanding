@@ -51,3 +51,8 @@ footer a { color: #284c39; text-underline-offset: 3px; }
 .history-controls [role="group"] { display: flex; gap: 4px; }
 .history-controls button { min-height: 44px; padding: 10px 12px; font: inherit; font-size: .8rem; color: #284c39; background: #fffdf8; border: 1px solid #bdc8ba; border-radius: 3px; cursor: pointer; }
 .history-controls button[aria-pressed="true"] { color: #fff; background: #284c39; border-color: #284c39; }
+
+.history-row td{padding-bottom:0;border-bottom:0}
+.history-row .history-controls{margin-top:0}
+.amount-controls input[type=range]{display:block;width:100%;min-height:44px;padding:0;border:0;background:transparent;accent-color:#284c39}
+.range-limits{display:flex;justify-content:space-between;font-size:11px;color:#56675e}

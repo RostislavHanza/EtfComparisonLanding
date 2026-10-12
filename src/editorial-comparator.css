@@ -145,8 +145,19 @@
 
 /* Compact public overview between the opening and the existing selection divider. */
 .comparison-benefits{margin-top:16px}
-.editorial .comparison-benefits h2{font-size:clamp(1.3rem,2.5vw,1.65rem);margin:0 0 16px}
+.editorial .comparison-benefits h2{font-size:clamp(1.65rem,3.5vw,2.25rem);margin:0 0 16px}
 .comparison-benefits-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 24px}
 .comparison-benefits-grid h3{font-size:14px;font-weight:700;line-height:1.4;margin:0 0 4px}
 .comparison-benefits-grid p{font-size:14px;line-height:1.5;color:var(--muted);margin:0}
 @media(max-width:480px){.comparison-benefits-grid{gap:14px 16px}.comparison-benefits-grid h3,.comparison-benefits-grid p{font-size:13px}}
+
+@media(max-width:699px){
+ .editorial .comparison-benefits h2{font-size:clamp(20.8px,6.1vw,28px)}
+ .editorial.original-editorial .has-benefits .editorial-intro{margin-top:16px}
+}
+@media(min-width:700px){
+ .editorial.original-editorial .has-benefits{row-gap:16px}
+ .has-benefits .hero{grid-column:1;grid-row:1}
+ .has-benefits .editorial-intro{grid-column:2;grid-row:1}
+ .has-benefits .comparison-benefits{grid-column:1/-1;grid-row:2;margin-top:0}
+}
