@@ -46,10 +46,15 @@ try{
   assert.deepEqual(await benefits.locator('h3').allTextContents(),['Odhadovaný zisk','Historický vývoj','Detailní srovnání','Vlastní přehled na e-mail'])
   assert.deepEqual(await benefits.locator('p').allTextContents(),['Spočítejte si výsledek podle vlastní částky, horizontu a předpokládaného výnosu.','Porovnejte historickou výkonnost vybraných ETF v grafu.','Prohlédněte si nákladovost, sledované indexy a další parametry fondů.','Získejte odkaz ke svému srovnání, ke kterému se můžete vracet.'])
   assert.equal(await benefits.locator('button,a,input').count(),0)
+  assert.equal(await page.locator('.comparison-benefits').count(),1)
   assert.ok(await page.evaluate(()=>{
-   const opening=document.querySelector('.opening').getBoundingClientRect(),benefits=document.querySelector('.comparison-benefits').getBoundingClientRect(),selection=document.querySelector('.selection-section').getBoundingClientRect()
-   const intro=document.querySelector('.editorial-intro li:last-child')
-   return benefits.top-opening.bottom>=0&&benefits.top-opening.bottom<=24&&selection.top-benefits.bottom>=0&&selection.top-benefits.bottom<=24&&getComputedStyle(intro).borderBottomWidth==='0px'&&getComputedStyle(document.querySelector('.comparison-benefits')).borderTopWidth==='0px'&&getComputedStyle(document.querySelector('.comparison-benefits')).borderBottomWidth==='0px'
+   const hero=document.querySelector('.hero').getBoundingClientRect(),benefits=document.querySelector('.comparison-benefits').getBoundingClientRect(),steps=document.querySelector('.editorial-intro').getBoundingClientRect(),selection=document.querySelector('.selection-section').getBoundingClientRect()
+   const style=getComputedStyle(document.querySelector('.editorial-intro'))
+   if(innerWidth<700){
+    const heading=document.querySelector('#benefits-title'),range=document.createRange();range.selectNodeContents(heading)
+    return benefits.top-hero.bottom>=0&&benefits.top-hero.bottom<=24&&steps.top-benefits.bottom>=0&&steps.top-benefits.bottom<=24&&selection.top-steps.bottom>=0&&selection.top-steps.bottom<=24&&style.borderTopWidth==='4px'&&range.getClientRects().length===1&&heading.scrollWidth<=heading.clientWidth
+   }
+   return steps.left>hero.left&&benefits.top>=hero.bottom&&benefits.top>=steps.bottom&&selection.top-benefits.bottom>=0&&selection.top-benefits.bottom<=24
   }))
   const items=await benefits.locator('.comparison-benefits-grid>div').evaluateAll(es=>es.map(e=>e.getBoundingClientRect().toJSON()))
   assert.equal(items[0].y,items[1].y);assert.equal(items[2].y,items[3].y);assert.ok(items[2].y>items[0].y)

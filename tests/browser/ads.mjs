@@ -13,7 +13,7 @@ const format = value => `${value > 0 ? '+' : ''}${new Intl.NumberFormat('cs-CZ',
 const expected = (amount, rate, years, fee) => format(amount * ((1 + rate / 100) * (1 - fee / 100)) ** years - amount)
 try {
   for (const width of [320, 390, 1440]) {
-    const page = await browser.newPage({ viewport: { width, height: 900 } })
+    const page = await browser.newPage({ viewport: { width, height: 900 }, hasTouch: width < 700, isMobile: width < 700 })
     const requests = [], errors = []
     page.on('request', request => requests.push(request.url()))
     page.on('pageerror', error => errors.push(error.message))
@@ -29,6 +29,16 @@ try {
       assert.equal(await page.locator('#profit-VOO').textContent(), expected(amount, voo, years, .03))
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
     }
+    assert.equal(await page.locator('tfoot .history-row').count(),1)
+    assert.equal(await page.locator('tfoot [data-period]').count(),3)
+    assert.equal(await page.locator('tfoot #restore').count(),1)
+    assert.equal(await page.locator('tfoot #reference').count(),1)
+    assert.ok(await page.locator('tfoot').evaluate(footer=>footer.getBoundingClientRect().top>=document.querySelector('#funds').getBoundingClientRect().bottom))
+    const slider=page.locator('#investment-range')
+    assert.equal(await slider.getAttribute('min'),'0')
+    assert.equal(await slider.getAttribute('max'),'10000000')
+    assert.equal(await slider.getAttribute('step'),'1000')
+    assert.ok(await slider.evaluate(e=>e.getBoundingClientRect().top>=document.querySelector('#investment').getBoundingClientRect().bottom))
     await check(100000, spyDefault, vooDefault, 10)
     await page.reload(); await check(100000, spyDefault, vooDefault, 10)
     for (const years of [1, 3, 5]) {
@@ -48,7 +58,31 @@ try {
     assert.equal(Number(await page.locator('#rate-VOO').inputValue()), vooDefault)
     assert.equal(await page.locator('tr:has(#rate-SPY) .bar.negative').count(), 1)
     await page.locator('#rate-VOO').fill('-4'); await check(200000, 0, -4, 3)
-    await page.locator('#investment').fill('100000'); await check(100000, 0, -4, 3)
+    for(const amount of [0,10000000,300000]){
+      await slider.fill(String(amount))
+      assert.equal(await page.locator('#investment').inputValue(),String(amount))
+      await check(amount,0,-4,3)
+      if(amount===0)assert.ok((await page.locator('.bar').evaluateAll(es=>es.map(e=>parseFloat(e.style.width)))).every(w=>w===0))
+    }
+    if(width<700){
+      await slider.scrollIntoViewIfNeeded()
+      const bounds=await slider.boundingBox()
+      await page.touchscreen.tap(bounds.x+bounds.width*.65,bounds.y+bounds.height/2)
+      const amount=Number(await slider.inputValue())
+      assert.ok(amount>0&&amount<10000000)
+      assert.equal(Number(await page.locator('#investment').inputValue()),amount)
+      await check(amount,0,-4,3)
+      await slider.fill('300000')
+    }
+    await slider.focus();await page.keyboard.press('ArrowRight')
+    assert.equal(await page.locator('#investment').inputValue(),'301000')
+    await check(301000,0,-4,3)
+    await page.locator('#investment').fill('200000')
+    assert.equal(await slider.inputValue(),'200000')
+    assert.equal(await slider.getAttribute('aria-valuetext'),new Intl.NumberFormat('cs-CZ',{style:'currency',currency:'CZK',maximumFractionDigits:2}).format(200000))
+    await check(200000,0,-4,3)
+
+    await page.locator('#investment').fill('100000'); assert.equal(await slider.inputValue(),'100000'); await check(100000, 0, -4, 3)
     await page.locator('#investment').fill('200000'); await check(200000, 0, -4, 3)
     await page.locator('#horizon').fill('1')
     await page.locator('#rate-VOO').fill('0'); await check(200000, 0, 0, 1)
