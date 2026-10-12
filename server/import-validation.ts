@@ -1,12 +1,14 @@
 import { object, InputError } from '../shared/validation.js'
 const fields=['name','exchange','index','expenseRatioPercent','dividends','description']
-const hosts=['nyse.com','ssga.com','investor.vanguard.com','fund-docs.vanguard.com','ishares.com','tickerinside.com','sec.gov']
+const hosts=['nyse.com','ssga.com','investor.vanguard.com','fund-docs.vanguard.com','ishares.com','tickerinside.com','sec.gov','invesco.com','schwabassetmanagement.com']
 function text(value:unknown,label:string){if(typeof value!=='string'||!value.trim()||value.length>4000)throw new InputError(`Chybí ${label}.`);return value.trim()}
 function date(value:unknown,label:string){const v=text(value,label);if(!Number.isFinite(Date.parse(v))||Date.parse(v)>Date.now())throw new InputError(`Neplatné datum ${label}.`);return v}
 const issuers:Record<string,string[]>={}
 for(const ticker of ['SPY','SPYD','MDY','DIA'])issuers[ticker]=['ssga.com']
 for(const ticker of ['VOO','VTI','VYM','VTV','VUG','VT','VEA','VWO'])issuers[ticker]=['investor.vanguard.com','fund-docs.vanguard.com']
 for(const ticker of ['IVV','ITOT','IWM','IJH','IJR'])issuers[ticker]=['ishares.com']
+issuers.RSP=['invesco.com']
+for(const ticker of ['SCHB','SCHD'])issuers[ticker]=['schwabassetmanagement.com']
 const onHost=(hostname:string,host:string)=>hostname===host||hostname.endsWith('.'+host)
 function approvedUrl(value:unknown,policy=false){const u=new URL(text(value,'URL'));if(u.protocol!=='https:'||u.username||u.password||![...hosts,...(policy?['blackrock.com','ice.com']:[])].some(h=>u.hostname===h||u.hostname.endsWith('.'+h)))throw new InputError('Zdroj není na schválené HTTPS doméně.');return u.toString()}
 export function validateImport(input:unknown){

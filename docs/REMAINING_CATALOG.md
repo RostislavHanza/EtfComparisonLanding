@@ -1,4 +1,6 @@
-# Zbývající katalog: 12 připravených fondů, 3 blokované
+# Zbývající katalog: archiv přípravy dvanácti fondů
+
+Aktuální stav: správce potvrdil import této dvanáctky a celkem 17 publikovaných ETF. Produktové stránky posledních tří jsou nyní dostupné a nová samostatná dávka je připravená podle [FINAL_THREE_CATALOG.md](FINAL_THREE_CATALOG.md). Níže zůstává pravdivá historická evidence původních blokací a dávky; neopakujte import dvanácti kvůli dokončení posledních tří.
 
 Skutečná technická kontrola 12. října 2026 využila aktuální veřejné produktové stránky emitentů, jejich veřejné factsheety a konkrétní TickerInside fund JSON. Nejde o tvrzení osobní kontroly provedené člověkem. Přesný čas stažení, SHA-256 odpovědi, chyby a čas následné technické kontroly jsou v `data/review/remaining-fifteen.evidence.json`. Úplné HTML/PDF/holdings se do repozitáře nekopírují.
 
