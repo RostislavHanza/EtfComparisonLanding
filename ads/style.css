@@ -10,7 +10,7 @@ section { padding: 24px; background: #fffdf8; border: 1px solid #d5d9cb; border-
 .settings { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 label { display: block; font-size: .85rem; font-weight: 600; }
 input { display: block; width: 100%; min-height: 44px; margin-top: 8px; padding: 10px; font: inherit; color: inherit; background: white; border: 1px solid #bdc8ba; border-radius: 3px; }
-a:focus-visible, input:focus-visible { outline: 3px solid #467786; outline-offset: 3px; }
+a:focus-visible, input:focus-visible, button:focus-visible { outline: 3px solid #467786; outline-offset: 3px; }
 .assumption, .disclaimer { color: #56675e; font-size: .8rem; }
 table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 thead th { text-align: left; font-size: .76rem; line-height: 1.4; padding: 14px 8px; border-bottom: 1px solid #d5d9cb; }
@@ -46,3 +46,8 @@ footer a { color: #284c39; text-underline-offset: 3px; }
   input { padding: 8px 5px; }
   .name, .fee { font-size: .69rem; }
 }
+
+.history-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 20px; }
+.history-controls [role="group"] { display: flex; gap: 4px; }
+.history-controls button { min-height: 44px; padding: 10px 12px; font: inherit; font-size: .8rem; color: #284c39; background: #fffdf8; border: 1px solid #bdc8ba; border-radius: 3px; cursor: pointer; }
+.history-controls button[aria-pressed="true"] { color: #fff; background: #284c39; border-color: #284c39; }

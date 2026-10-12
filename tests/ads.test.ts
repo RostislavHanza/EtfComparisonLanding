@@ -29,3 +29,28 @@ test('ad scenarios use the main model including fees for positive, zero and nega
   assert.ok(Math.abs(scenarioProfit(100000, 0, 1, funds[0].expenseRatioPercent)! + 94.5) < 1e-8)
   assert.ok(Math.abs(scenarioProfit(100000, 0, 1, funds[1].expenseRatioPercent)! + 30) < 1e-8)
 })
+
+test('ad history preserves the documented per-fund cumulative returns, source and dates', async () => {
+  const { history } = await import('../ads/history.js')
+  const observed = JSON.parse(await readFile('data/review/performance-observations.json', 'utf8')).funds
+  for (const snapshot of history) {
+    const original = observed.find((f: { ticker: string }) => f.ticker === snapshot.ticker)
+    for (const key of Object.keys(snapshot)) assert.equal(snapshot[key as keyof typeof snapshot], original[key])
+  }
+  assert.deepEqual(history.map(h => [h.r1, h.r3, h.r5]), [[20.5, 87.1, 86.7], [20.5, 87.5, 87.2]])
+})
+test('ad annualizes history and restores gross assumptions without subtracting expenses twice', async () => {
+  const { history, historicalAssumption } = await import('../ads/history.js')
+  for (const years of [1, 3, 5] as const) {
+    for (const fund of funds) {
+      const cumulative = history.find(h => h.ticker === fund.ticker)![`r${years}`]
+      const gross = historicalAssumption(cumulative, years, fund.expenseRatioPercent)!
+      const net = ((1 + cumulative / 100) ** (1 / years) - 1) * 100
+      assert.ok(Math.abs((1 + gross / 100) * (1 - fund.expenseRatioPercent / 100) - (1 + net / 100)) < 1e-12)
+      assert.ok(Math.abs(scenarioProfit(100000, gross, years, fund.expenseRatioPercent)! - 100000 * cumulative / 100) < 1e-7)
+    }
+  }
+  assert.equal(historicalAssumption(null, 5, .03), null)
+  assert.equal(historicalAssumption(20, 3, null), null)
+  assert.ok(historicalAssumption(-20, 3, .03)! < 0)
+})

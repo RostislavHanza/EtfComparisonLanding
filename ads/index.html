@@ -12,7 +12,7 @@
   <main>
     <header>
       <p class="eyebrow">ETF NYSE / Ukázka kalkulačky</p>
-      <h1>Dva fondy.<br>Váš předpoklad.</h1>
+      <h1>Kalkulačka výnosů</h1>
       <p class="intro">Vyzkoušejte, jak částka, čas a průběžné náklady mění odhadovaný zisk.</p>
     </header>
     <section aria-label="Ukázková kalkulačka">
@@ -24,14 +24,23 @@
           <input id="horizon" type="number" min="1" max="30" step="1" value="10" inputmode="numeric" required>
         </label>
       </div>
-      <p class="assumption">Výchozích 6 % ročně je ilustrační předpoklad před náklady, nikoli historický ani garantovaný výnos.</p>
+      <div class="history-controls">
+        <div role="group" aria-label="Historické referenční období">
+          <button type="button" data-period="1" aria-pressed="false">1 rok</button>
+          <button type="button" data-period="3" aria-pressed="false">3 roky</button>
+          <button type="button" data-period="5" aria-pressed="true">5 let</button>
+        </div>
+        <button type="button" id="restore">Obnovit podle historie</button>
+      </div>
+      <p class="assumption" id="reference"></p>
       <table>
         <caption class="sr-only">Srovnání odhadovaného zisku SPY a VOO</caption>
         <thead><tr><th scope="col">ETF</th><th scope="col">Předpokládaný výnos ročně (%)</th><th scope="col">Odhadovaný zisk</th></tr></thead>
         <tbody id="funds"></tbody>
       </table>
       <p id="error" role="alert" hidden></p>
-      <p class="disclaimer">Hypotetický model zahrnuje roční nákladovost ETF. Nezahrnuje měnové změny, daně ani poplatky brokera. Výsledky nejsou investičním doporučením. Investování může vést ke ztrátě; americká ETF mohou být pro retail v EU kvůli PRIIPs/KID nedostupná.</p>
+      <p class="disclaimer">Hypotetický model zahrnuje roční nákladovost ETF. Nezahrnuje měnové změny, daně ani poplatky brokera.</p>
+      <p class="disclaimer">Investování může vést ke ztrátě.</p>
     </section>
     <section class="cta" aria-label="Vlastní srovnání">
       <p>Chcete si sestavit vlastní srovnání ETF?</p>
@@ -39,7 +48,7 @@
     </section>
     <footer>
       <p>Statická metadata z ověřeného katalogu · kontrola 11. 10. 2026.</p>
-      <p>Základní údaje: <a href="https://tickerinside.com/api/">TickerInside</a>, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Data byla vybrána a upravena. Přesný název a nákladovost SPY: <a href="https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf">SSGA</a>. Ověření VOO: <a href="https://fund-docs.vanguard.com/F0968.pdf">Vanguard</a>. Ilustrační výnosy nejsou údaji TickerInside.</p>
+      <p>Základní údaje: <a href="https://tickerinside.com/api/">TickerInside</a>, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Data byla vybrána a upravena. Přesný název a nákladovost SPY: <a href="https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-spy.pdf">SSGA</a>. Ověření VOO: <a href="https://fund-docs.vanguard.com/F0968.pdf">Vanguard</a>. Historické souhrnné výnosy: <a href="https://tickerinside.com/api/v1/fund/spy.json">SPY</a> a <a href="https://tickerinside.com/api/v1/fund/voo.json">VOO</a>, TickerInside, CC BY 4.0.</p>
     </footer>
   </main>
 </body>
